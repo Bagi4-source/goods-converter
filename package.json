@@ -1,0 +1,30 @@
+{
+  "name": "converter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.ts",
+  "scripts": {
+    "start": "ts-node main.ts",
+    "test": "ts-mocha test/*.test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.8.7",
+    "axios": "^1.5.1",
+    "fast-xml-parser": "^4.3.2",
+    "json-2-csv": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.9",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^10.0.3",
+    "@types/sinon": "^10.0.20",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "sinon": "^17.0.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.2.2"
+  }
+}
