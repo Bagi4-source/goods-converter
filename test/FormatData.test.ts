@@ -1,4 +1,4 @@
-import {type Formatter, Formatters, FormatterTypes, IProduct} from "../src/types";
+import {Formatters, FormatterTypes, IProduct} from "../src/types";
 import {describe, it} from "node:test";
 import {expect} from "chai";
 

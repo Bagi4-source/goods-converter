@@ -3,7 +3,7 @@ import {CSV} from "../Formetter/CSV";
 import {YML} from "../Formetter/YML";
 
 export interface Formatter {
-    export: (data: IProduct[]) => Promise<Buffer>;
+    export: (data: IProduct[]) => Promise<String>;
 }
 
 export const Formatters = {
