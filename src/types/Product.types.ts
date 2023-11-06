@@ -1,4 +1,4 @@
-export interface IProduct {
+export interface Product {
     /**
      * **ID товара**
      *
@@ -466,7 +466,12 @@ export enum Vat {
 }
 
 export enum Currency {
-    RUR, BYN, EUR, USD, UAN, KZT
+    RUR = "RUR",
+    BYN = "BYN",
+    EUR = "EUR",
+    USD = "USD",
+    UAN = "UAN",
+    KZT = "KZT"
 }
 
 export interface IParam {

@@ -1,5 +1,2 @@
-import {FormatterTypes} from "./types";
-
-export function FormatData(formatter: FormatterTypes) {
-    console.log(formatter)
-}
+export * from "./exporter"
+export * from "./formatter"

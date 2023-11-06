@@ -1,3 +1,2 @@
-export * from "./IProduct";
-export * from "./ICategory";
-export * from "./formater.types";
+export * from "./Product.types";
+export * from "./Category.types";
