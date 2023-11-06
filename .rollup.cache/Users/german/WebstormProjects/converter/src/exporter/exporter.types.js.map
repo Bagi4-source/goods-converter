@@ -1,1 +1,0 @@
-{"version":3,"file":"exporter.types.js","sourceRoot":"","sources":["exporter.types.ts"],"names":[],"mappings":"","sourcesContent":["import {Product} from \"../types\";\n\nexport type Transformer = (product: Product) => Product;\n\n\n"]}
