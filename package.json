@@ -3,6 +3,13 @@
     "name": "German Bagdasaryan",
     "email": "german.bagdasaryan@mail.ru"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bagi4-source/goods-converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Bagi4-source/goods-converter/issues"
+  },
   "name": "goods-exporter",
   "version": "0.1.0",
   "description": "A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data export tasks with ease.",
