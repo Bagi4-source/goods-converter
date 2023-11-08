@@ -6,7 +6,7 @@
 A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data
 export tasks with ease.
 
-[![Telegram](https://img.shields.io/badge/Telegram-%40goods_exporter-blue?logo=telegram)](https://t.me/goods_exporter)
+[![Telegram](https://img.shields.io/badge/Telegram-%40goods_exporter-blue?logo=telegram)](https://t.me/+gGHmBC8VZ4BjYjZi)
 
 ## Features
 
