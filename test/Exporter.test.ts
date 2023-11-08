@@ -1,11 +1,11 @@
 import {describe, it} from "node:test";
-import {Exporter, Formatters, YMLFormatter, Transformer} from "../src";
+import {GoodsExporter, Formatters, YMLFormatter, Transformer} from "../src";
 import {Category, Currency, Product, Vat} from "../src/types";
 import {expect} from "chai";
 
 
-describe('Exporter', () => {
-    const exporter = new Exporter();
+describe('GoodsExporter', () => {
+    const exporter = new GoodsExporter();
     const products: Product[] = [
         {
             productId: 1,
@@ -50,7 +50,7 @@ describe('Exporter', () => {
         {id: 3, name: "Все товары"},
     ];
 
-    it('should check if all formatters implement the Formatter interface', async () => {
+    it('check export with transformers', async () => {
         const Transformers: Record<string, Transformer> = {
             PRICE: (product) => ({
                 ...product,

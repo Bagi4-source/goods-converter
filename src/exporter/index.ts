@@ -1,2 +1,2 @@
-export * from "./exporter"
+export * from "./goodsExporter"
 export * from "./exporter.types"
