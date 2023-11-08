@@ -5,13 +5,13 @@ export default [{
     input: "./src/index.ts",
     output: [
         {
-            file: "dist/index.js",
+            file: "dist/cjs/index.cjs",
             format: "cjs",
             sourcemap: true,
             exports: "auto",
         },
         {
-            file: "dist/index.esm.js",
+            file: "dist/esm/index.mjs",
             format: "esm",
             sourcemap: true,
             exports: "auto",
