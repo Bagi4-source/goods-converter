@@ -1,6 +1,5 @@
 import {Product, Vat, Currency, Category} from "../src/types";
-import {describe, it} from "node:test";
-import {expect} from 'chai';
+import { expect, describe, it} from 'vitest'
 import {Formatters} from "../src";
 
 
@@ -54,10 +53,10 @@ describe('CSVConverter', () => {
         ];
         const resultSplit = await formatter.format(products, categories, {splitParams: true});
         const expectedResultSplit = "productId,parentId,variantId,currency,title,description,vendor,vendorCode,categoryId,countryOfOrigin,images,price,oldPrice,additionalExpenses,purchasePrice,available,barcode,weight,dimensions,vat,count,params,age.unit,age.value,tags,adult,category,videos,codesTN,Param [p1],Param [p2]\n1,0,1111,RUR,Title,Description,Nike,NIKE-1111,1,Китай,\"image1,image2\",19000,20000,1000,15000,true,567890567893,0.15,12/32/43,VAT_20,24,\"p1=v1,p2=v2\",year,6,\"Nike,Кроссовки\",false,Обувь,,,v1,v2";
-        expect(resultSplit).to.deep.equal(expectedResultSplit);
+        expect(resultSplit).toBe(expectedResultSplit);
 
         const result = await formatter.format(products, categories);
         const expectedResult = "productId,parentId,variantId,currency,title,description,vendor,vendorCode,categoryId,countryOfOrigin,images,price,oldPrice,additionalExpenses,purchasePrice,available,barcode,weight,dimensions,vat,count,params,age.unit,age.value,tags,adult,category,videos,codesTN\n1,0,1111,RUR,Title,Description,Nike,NIKE-1111,1,Китай,\"image1,image2\",19000,20000,1000,15000,true,567890567893,0.15,12/32/43,VAT_20,24,\"p1=v1,p2=v2\",year,6,\"Nike,Кроссовки\",false,Обувь,,";
-        expect(result).to.deep.equal(expectedResult);
+        expect(result).toBe(expectedResult);
     });
 });

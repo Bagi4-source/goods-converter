@@ -1,9 +1,12 @@
 # goods-exporter
 
-![Version](https://img.shields.io/badge/version-0.2.2-blue)
+[![npm version](https://badge.fury.io/js/goods-exporter.svg)](https://badge.fury.io/js/goods-exporter)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data export tasks with ease.
+A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data
+export tasks with ease.
+
+[![Telegram](https://img.shields.io/badge/Telegram-%40goods_exporter-blue?logo=telegram)](https://t.me/goods_exporter)
 
 ## Features
 
@@ -27,3 +30,49 @@ npm install goods-exporter --save
 # or
 yarn add goods-exporter
 ```
+
+## Usage
+
+```typescript
+import {GoodsExporter, Formatters, Transformer, Category, Currency, Product, Vat} from "goods-exporter";
+import fs from "fs"; // Import the 'fs' module for file writing.
+
+// Create an instance of the GoodsExporter class.
+const exporter = new GoodsExporter();
+
+// Define an object 'transformers' that contains data transformation functions.
+const transformers: Record<string, Transformer> = {
+    PRICE: (product) => ({
+        ...product,
+        price: product.price + 10000
+    }),
+    IMAGE: (product) => ({
+        ...product,
+        images: product.images?.map(image => image.replace("image", "pic"))
+    })
+}
+
+// Define an array 'keys' that contains the transformation keys you want to apply.
+const keys = ["PRICE"];
+
+// Set the formatter for exporting data to YML.
+exporter.setFormatter(Formatters.YML);
+
+// Set transformers based on the specified keys.
+exporter.setTransformers(keys.map(key => transformers[key]));
+
+// Set an exporter that saves the data to the "output.yml" file.
+exporter.setExporter((data: Buffer) => {
+    fs.writeFileSync("output.yml", data); // Write data to the "output.yml" file.
+    return data; // Return the data (you can return any type).
+});
+
+// Call the data export method specifying the data type (Buffer) and expect the result as a promise.
+exporter.export<Buffer>(products, categories)
+    .then(data => {
+        // Here, you can add additional handling for the export result if needed.
+    });
+```
+
+# Supported by [PoizonAPI](https://t.me/PoizonAPI) 
+[![PoizonAPI](https://i.ibb.co/HBbTpp0/Group-1.png)](https://t.me/PoizonAPI)

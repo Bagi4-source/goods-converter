@@ -1,6 +1,5 @@
 import {Product} from "../src/types";
-import {describe, it} from "node:test";
-import {expect} from "chai";
+import { expect, describe, it} from 'vitest'
 import {Formatters} from "../src";
 
 

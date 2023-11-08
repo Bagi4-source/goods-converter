@@ -1,7 +1,6 @@
-import {describe, it} from "node:test";
-import {GoodsExporter, Formatters, YMLFormatter, Transformer} from "../src";
-import {Category, Currency, Product, Vat} from "../src/types";
-import {expect} from "chai";
+import {GoodsExporter, Formatters, Transformer, Category, Currency, Product, Vat} from "../src";
+import {describe, expect, it} from 'vitest'
+import * as fs from "fs";
 
 
 describe('GoodsExporter', () => {
@@ -51,7 +50,7 @@ describe('GoodsExporter', () => {
     ];
 
     it('check export with transformers', async () => {
-        const Transformers: Record<string, Transformer> = {
+        const transformers: Record<string, Transformer> = {
             PRICE: (product) => ({
                 ...product,
                 price: product.price + 10000
@@ -65,11 +64,15 @@ describe('GoodsExporter', () => {
         const keys = ["PRICE", "IMAGE"]
 
         exporter.setFormatter(Formatters.YML);
-        exporter.setTransformers(keys.map(key => Transformers[key]));
+        exporter.setTransformers(keys.map(key => transformers[key]));
+        exporter.setExporter((data: Buffer) => {
+            fs.writeFileSync("output.yml", data)
+            return data
+        });
 
-        const result = await exporter.export(products, categories);
-        const date = new Date().toISOString().replace(/.\d+Z/, '');
-        const expectedResult = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><yml_catalog date="${date}"><shop><name>ShopName</name><company>CompanyName</company><categories><category id="1" parentId="2">Обувь</category><category id="2" parentId="3">Одежда, обувь и аксессуары</category><category id="3">Все товары</category></categories><offers><offer id="1111"><name>Title</name><price>29000</price><oldprice>20000</oldprice><purchase_price>15000</purchase_price><additional_expenses>1000</additional_expenses><currencyId>RUR</currencyId><categoryId>1</categoryId><vendor>Nike</vendor><vendorCode>NIKE-1111</vendorCode><picture>pic1</picture><picture>pic2</picture><available>true</available><param name="p1">v1</param><param name="p2">v2</param><description><![CDATA[Description]]></description><country_of_origin>Китай</country_of_origin><barcode>567890567893</barcode><vat>VAT_20</vat><count>24</count><set-ids>Nike, Кроссовки</set-ids><adult>false</adult><weight>0.15</weight><dimensions>12/32/43</dimensions><age unit="year">6</age></offer></offers></shop></yml_catalog>`;
-        expect(result).to.deep.equal(expectedResult);
+        const data = await exporter.export<Buffer>(products, categories);
+        const expectedResult = fs.readFileSync("output.yml");
+
+        expect(data).toStrictEqual(expectedResult);
     });
 });

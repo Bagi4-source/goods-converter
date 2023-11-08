@@ -6,7 +6,10 @@ import * as fs from "fs";
 
 export class GoodsExporter {
     private formatter: Formatter = Formatters.YML
-    private exporter: Exporter = (data: Buffer) => fs.writeFileSync("output.yml", data)
+    private exporter: Exporter = (data: Buffer) => {
+        fs.writeFileSync("output.yml", data);
+        return data;
+    };
 
     private transformers = new Array<Transformer>()
 
@@ -19,11 +22,11 @@ export class GoodsExporter {
         this.formatter = formatter
     }
 
-    setExporter(formatter: Exporter) {
-        this.exporter = formatter
+    setExporter(exporter: Exporter) {
+        this.exporter = exporter
     }
 
-    async export(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<void> {
+    async export<T>(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<T> {
         const transformedProducts = deepcopy(products).map(product => {
             let transformedProduct: Product = product;
             this.transformers.forEach(transformer => {
@@ -32,6 +35,6 @@ export class GoodsExporter {
             return transformedProduct
         })
         const data = await this.formatter.format(transformedProducts, categories, option);
-        this.exporter(Buffer.from(data, "utf-8"))
+        return this.exporter(Buffer.from(data, "utf-8"))
     }
 }
