@@ -1,9 +1,11 @@
 import {XMLBuilder} from "fast-xml-parser";
 import {Product, Category} from "../types";
-import {Formatter, FormatterOptions} from "./formater.types";
+import {Extension, Formatter, FormatterOptions} from "./formater.types";
 
 
 export class YMLFormatter implements Formatter {
+    formatterName = "YMl";
+    fileExtension = Extension.YML;
     builder = new XMLBuilder({ignoreAttributes: false, cdataPropName: '__cdata',});
 
     async format(products: Product[], categories?: Category[], options?: FormatterOptions): Promise<string> {

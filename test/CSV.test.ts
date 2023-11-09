@@ -1,5 +1,5 @@
 import {Product, Vat, Currency, Category} from "../src/types";
-import { expect, describe, it} from 'vitest'
+import {expect, describe, it} from 'vitest'
 import {Formatters} from "../src";
 
 

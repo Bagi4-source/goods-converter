@@ -7,7 +7,8 @@ import * as fs from "fs";
 export class GoodsExporter {
     private formatter: Formatter = Formatters.YML
     private exporter: Exporter = (data: Buffer) => {
-        fs.writeFileSync("output.yml", data);
+        const filename = `${this.formatter.formatterName}-output.${this.formatter.fileExtension}`;
+        fs.writeFileSync(filename, data);
         return data;
     };
 
