@@ -1,9 +1,10 @@
-import {YMLFormatter} from "./YML.formatter";
 import {Category, Product} from "../types";
-import {CSVFormatter} from "./CSV.formatter";
 
-export interface Formatter {
-    format(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string>;
+export abstract class FormatterAbstract {
+    public abstract formatterName: string;
+    public abstract fileExtension: Extension;
+
+    public abstract format(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string>;
 }
 
 export interface FormatterOptions {
@@ -12,8 +13,9 @@ export interface FormatterOptions {
     splitParams?: boolean
 }
 
-export const Formatters = {
-    CSV: new CSVFormatter(),
-    YML: new YMLFormatter(),
-}
 
+export enum Extension {
+    CSV = "CSV",
+    YML = "YML",
+    XLSX = "XLSX"
+}

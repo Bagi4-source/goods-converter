@@ -1,12 +1,14 @@
 import {XMLBuilder} from "fast-xml-parser";
 import {Product, Category} from "../types";
-import {Formatter, FormatterOptions} from "./formater.types";
+import {Extension, FormatterAbstract, FormatterOptions} from "./formater.types";
 
 
-export class YMLFormatter implements Formatter {
-    builder = new XMLBuilder({ignoreAttributes: false, cdataPropName: '__cdata',});
+export class YMLFormatter implements FormatterAbstract {
+    public formatterName = "YMl";
+    public fileExtension = Extension.YML;
+    private builder = new XMLBuilder({ignoreAttributes: false, cdataPropName: '__cdata',});
 
-    async format(products: Product[], categories?: Category[], options?: FormatterOptions): Promise<string> {
+    public async format(products: Product[], categories?: Category[], options?: FormatterOptions): Promise<string> {
         const mappedCategories = {
             category: categories?.map(cat => ({
                 "@_id": cat.id, "@_parentId": cat.parentId, "#text": cat.name
@@ -88,7 +90,7 @@ export class YMLFormatter implements Formatter {
                 "tn-ved-code": product.codesTN
             }
         };
-        if (product.parentId)
+        if (product.parentId !== undefined)
             return {
                 ...result,
                 "@_group_id": product.parentId

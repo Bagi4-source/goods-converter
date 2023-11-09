@@ -1,9 +1,13 @@
 import {Category, Product} from "../types";
 import {json2csv} from "json-2-csv";
-import {Formatter, FormatterOptions} from "./formater.types";
+import {Extension, FormatterAbstract, FormatterOptions} from "./formater.types";
 
-export class CSVFormatter implements Formatter {
-    async format(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string> {
+export class CSVFormatter implements FormatterAbstract {
+    public formatterName = "CSV";
+    public fileExtension = Extension.CSV;
+
+
+    public async format(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string> {
         const mappedCategories: Record<number, string> = {};
         categories?.forEach(({id, name}) => mappedCategories[id] = name);
 

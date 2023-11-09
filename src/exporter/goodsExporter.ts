@@ -1,13 +1,14 @@
-import {Formatter, FormatterOptions, Formatters} from "../formatter";
+import {FormatterAbstract, FormatterOptions, Formatters} from "../formatter";
 import {Exporter, Transformer} from "./exporter.types";
 import {Category, Product} from "../types";
 import deepcopy from "deepcopy";
 import * as fs from "fs";
 
 export class GoodsExporter {
-    private formatter: Formatter = Formatters.YML
+    private formatter: FormatterAbstract = Formatters.YML
     private exporter: Exporter = (data: Buffer) => {
-        fs.writeFileSync("output.yml", data);
+        const filename = `${this.formatter.formatterName}-output.${this.formatter.fileExtension}`;
+        fs.writeFileSync(filename, data);
         return data;
     };
 
@@ -18,7 +19,7 @@ export class GoodsExporter {
         this.transformers = transformers
     }
 
-    setFormatter(formatter: Formatter) {
+    setFormatter(formatter: FormatterAbstract) {
         this.formatter = formatter
     }
 

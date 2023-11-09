@@ -1,6 +1,5 @@
-import {Product} from "../src/types";
 import { expect, describe, it} from 'vitest'
-import {Formatters} from "../src";
+import {Formatters, Product} from "../src";
 
 
 describe('Formatter', () => {
