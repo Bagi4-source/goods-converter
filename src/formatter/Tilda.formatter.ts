@@ -1,14 +1,16 @@
 import {Category, Product} from "../types";
 import {json2csv} from "json-2-csv";
-import {Extension, Formatter, FormatterOptions} from "./formater.types";
+import {Extension, FormatterAbstract, FormatterOptions} from "./formater.types";
+import {s} from "@vitest/runner/dist/tasks-e594cd24";
 
-export class TildaFormatter implements Formatter {
-    formatterName = "Tilda";
-    fileExtension = Extension.CSV;
+export class TildaFormatter implements FormatterAbstract {
+    public formatterName = "Tilda";
+    public fileExtension = Extension.CSV;
 
-    async format(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string> {
+    public async format(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string> {
         const mappedCategories: Record<number, string> = {};
         categories?.forEach(({id, name}) => mappedCategories[id] = name);
+
 
         const data = products.map(product => ({
             SKU: product.vendorCode,
@@ -24,6 +26,7 @@ export class TildaFormatter implements Formatter {
             "External ID": product.variantId,
             "Parent UID": product.parentId
         }))
+        // toDo(add characteristics)
         return json2csv(data, {emptyFieldValue: "", delimiter: {field: ";"}})
     }
 }
