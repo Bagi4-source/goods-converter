@@ -28,8 +28,8 @@ exports[`GoodsExporter > check export 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
-        <param name="p1">v1</param>
-        <param name="p2">v2</param>
+        <param name="param1">v1</param>
+        <param name="param2">v2</param>
         <description>
           <![CDATA[Description]]>
         </description>
@@ -136,8 +136,8 @@ exports[`GoodsExporter > check export with transformers 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
-        <param name="p1">v1</param>
-        <param name="p2">v2</param>
+        <param name="param1">v1</param>
+        <param name="param2">v2</param>
         <description>
           <![CDATA[Description]]>
         </description>
