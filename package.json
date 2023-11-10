@@ -11,7 +11,7 @@
     "url": "https://github.com/Bagi4-source/goods-converter/issues"
   },
   "name": "goods-exporter",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data export tasks with ease.",
   "main": "./dist/cjs/index.cjs",
   "exports": {
@@ -24,6 +24,7 @@
     "dist"
   ],
   "scripts": {
+    "publish": "npm run build && npm publish",
     "build": "rollup -c",
     "test": "vitest --typecheck",
     "lint": "eslint ./{src,test}/** --fix",
