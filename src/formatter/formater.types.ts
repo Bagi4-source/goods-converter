@@ -8,8 +8,23 @@ export abstract class FormatterAbstract {
 }
 
 export interface FormatterOptions {
+  /**
+     * **Название магазина**
+     *
+     * Используется в YML формате
+     */
   shopName?: string
+  /**
+     * **Название компании**
+     *
+     * Используется в YML формате
+     */
   companyName?: string
+  /**
+     * **Параметры в отдельных столбцах**
+     *
+     * Используется в CSV и XLSX формате
+     */
   splitParams?: boolean
 }
 

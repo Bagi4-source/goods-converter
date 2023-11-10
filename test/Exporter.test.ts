@@ -1,4 +1,4 @@
-import { GoodsExporter, type Transformer, YMLFormatter } from '../src'
+import { GoodsExporter, YMLFormatter } from '../src'
 import { describe, expect, it, vi } from 'vitest'
 import { categories, products } from './constants'
 
@@ -14,21 +14,14 @@ describe('GoodsExporter', () => {
   })
 
   it('check export with transformers', async () => {
-    const transformers: Record<string, Transformer> = {
-      PRICE: (product) => ({
+    exporter.setFormatter(formatter)
+    exporter.setTransformers([
+      (product) => ({
         ...product,
-        price: product.price + 10000
-      }),
-      IMAGE: (product) => ({
-        ...product,
+        price: product.price + 10000,
         images: product.images?.map(image => image.replace('image', 'pic'))
       })
-    }
-
-    const keys = ['PRICE', 'IMAGE']
-
-    exporter.setFormatter(formatter)
-    exporter.setTransformers(keys.map(key => transformers[key]))
+    ])
 
     exporter.setExporter((data: Buffer) => {
       return data

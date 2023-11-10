@@ -20,6 +20,9 @@ export tasks with ease.
 - YML (Yandex Market Language)
 - CSV
 - Excel
+- TgShop
+- Insales
+- Tilda
 
 ## Installation
 
@@ -31,35 +34,46 @@ npm install goods-exporter --save
 yarn add goods-exporter
 ```
 
-## Usage
+## Quick start
 
 ```typescript
-import {GoodsExporter, Formatters, Transformer, Category, Currency, Product, Vat} from "goods-exporter";
+import { GoodsExporter, Product, Category, YMLFormatter } from '../src'
+
+// Create an instance of the GoodsExporter class.
+const exporter = new GoodsExporter()
+
+const products: Product[] = [] // Put your products;
+const categories: Category[] = [{ id: 1, name: 'Обувь' }]
+
+// Call the data export method.
+exporter.export(products, categories)
+```
+
+## Example
+
+```typescript
 import fs from "fs"; // Import the 'fs' module for file writing.
 
 // Create an instance of the GoodsExporter class.
-const exporter = new GoodsExporter();
+const exporter = new GoodsExporter()
 
 // Define an object 'transformers' that contains data transformation functions.
-const transformers: Record<string, Transformer> = {
-    PRICE: (product) => ({
+const transformers: Transformer[] = [
+    (product) => ({
         ...product,
         price: product.price + 10000
     }),
-    IMAGE: (product) => ({
+    (product) => ({
         ...product,
         images: product.images?.map(image => image.replace("image", "pic"))
     })
-}
-
-// Define an array 'keys' that contains the transformation keys you want to apply.
-const keys = ["PRICE"];
+]
 
 // Set the formatter for exporting data to YML.
-exporter.setFormatter(Formatters.YML);
+exporter.setFormatter(new YMLFormatter()) // or your own Formatter;
 
 // Set transformers based on the specified keys.
-exporter.setTransformers(keys.map(key => transformers[key]));
+exporter.setTransformers(transformers);
 
 // Set an exporter that saves the data to the "output.yml" file.
 exporter.setExporter((data: Buffer) => {
