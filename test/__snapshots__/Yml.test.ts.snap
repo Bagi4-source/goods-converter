@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`YMLConverter > should export YML data 1`] = `
+exports[`YML formatter > should export YML data 1`] = `
 "<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <yml_catalog date="2020-01-01T00:00:00">
   <shop>

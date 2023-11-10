@@ -49,7 +49,8 @@
   "dependencies": {
     "deepcopy": "^2.1.0",
     "fast-xml-parser": "^4.3.2",
-    "json-2-csv": "^5.0.1"
+    "json-2-csv": "^5.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@rollup/plugin-multi-entry": "^6.0.1",

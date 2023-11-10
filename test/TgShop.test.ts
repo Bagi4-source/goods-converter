@@ -1,11 +1,11 @@
-import { TildaFormatter } from '../src'
 import { expect, describe, it } from 'vitest'
 import { categories, products } from './constants'
+import { TgShopFormatter } from '../src'
 
-describe('Tilda formatter', () => {
-  const formatter = new TildaFormatter()
+describe('TgShop formatter', () => {
+  const formatter = new TgShopFormatter()
 
-  it('should export Tilda csv data', async () => {
+  it('should export TgShop data', async () => {
     const result = await formatter.format(products, categories)
     expect(result).toMatchSnapshot()
   })

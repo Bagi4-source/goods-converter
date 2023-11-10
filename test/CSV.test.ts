@@ -2,7 +2,7 @@ import { expect, describe, it } from 'vitest'
 import { categories, products } from './constants'
 import { CSVFormatter } from '../src'
 
-describe('CSVConverter', () => {
+describe('CSV formatter', () => {
   const formatter = new CSVFormatter()
 
   it('should export CSV data', async () => {
