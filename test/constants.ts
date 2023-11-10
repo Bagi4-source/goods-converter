@@ -32,10 +32,17 @@ export const products: Product[] = [
     vat: Vat.VAT_20,
     count: 24,
     params: [{
-      key: 'p1',
+      key: 'param1',
       value: 'v1'
     }, {
-      key: 'p2',
+      key: 'param2',
+      value: 'v2'
+    }],
+    properties: [{
+      key: 'prop1',
+      value: 'v1'
+    }, {
+      key: 'prop2',
       value: 'v2'
     }],
     age: {

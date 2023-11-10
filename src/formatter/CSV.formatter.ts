@@ -18,6 +18,16 @@ export class CSVFormatter implements FormatterAbstract {
       product.params?.forEach(({ key, value }) => (params[`Param [${key}]`] = value))
       return params
     }
+
+    const getProperties = (product: Product): Record<string, string> => {
+      const properties: Record<string, string> = {}
+
+      if ((option?.splitParams) === false) { return properties }
+
+      product.properties?.forEach(({ key, value }) => (properties[`Property [${key}]`] = value))
+      return properties
+    }
+
     const data = products.map(product => ({
       ...product,
       category: mappedCategories[product.categoryId],
@@ -26,7 +36,8 @@ export class CSVFormatter implements FormatterAbstract {
       tags: product.tags?.join(','),
       codesTN: product.codesTN?.join(', '),
       params: product.params?.map(({ key, value }) => `${key}=${value}`).join(','),
-      ...getParams(product)
+      ...getParams(product),
+      ...getProperties(product)
     }))
     return json2csv(data, { emptyFieldValue: '' })
   }
