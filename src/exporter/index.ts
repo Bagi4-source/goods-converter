@@ -1,2 +1,2 @@
-export * from "./goodsExporter"
-export * from "./exporter.types"
+export * from './goodsExporter'
+export * from './exporter.types'

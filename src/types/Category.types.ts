@@ -1,18 +1,18 @@
 export interface Category {
-    /**
+  /**
      * **ID категории**
      *
      * Целое число
      */
-    id:number
-    /**
+  id: number
+  /**
      * **ID родительской категории**
      *
      * Целое число
      */
-    parentId?: number
-    /**
+  parentId?: number
+  /**
      * **Название категории**
      */
-    name: string
+  name: string
 }
