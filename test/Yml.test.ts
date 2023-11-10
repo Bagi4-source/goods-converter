@@ -2,7 +2,7 @@ import { YMLFormatter } from '../src'
 import { expect, describe, it, vi } from 'vitest'
 import { categories, products } from './constants'
 
-describe('YMLConverter', () => {
+describe('YML formatter', () => {
   const formatter = new YMLFormatter()
   vi.useFakeTimers().setSystemTime(new Date('2020-01-01'))
 
