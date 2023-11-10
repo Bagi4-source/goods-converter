@@ -1,15 +1,15 @@
-import {Formatters} from "../src";
-import {expect, describe, it, vi} from 'vitest'
-import {categories, products} from "./constants";
+import { YMLFormatter } from '../src'
+import { expect, describe, it, vi } from 'vitest'
+import { categories, products } from './constants'
 
 describe('YMLConverter', () => {
-    const formatter = Formatters.YML;
+  const formatter = new YMLFormatter()
 
-    it('should export YML data', async () => {
-        vi.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  it('should export YML data', async () => {
+    vi.useFakeTimers().setSystemTime(new Date('2020-01-01'))
 
-        const result = await formatter.format(products, categories, {shopName: "Bagi4", companyName: "Bagi4"});
+    const result = await formatter.format(products, categories, { shopName: 'Bagi4', companyName: 'Bagi4' })
 
-        expect(result).toMatchSnapshot();
-    });
-});
+    expect(result).toMatchSnapshot()
+  })
+})

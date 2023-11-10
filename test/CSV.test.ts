@@ -1,17 +1,15 @@
-import {expect, describe, it} from 'vitest'
-import {Formatters} from "../src";
-import {categories, products} from "./constants";
-
+import { expect, describe, it } from 'vitest'
+import { categories, products } from './constants'
+import { CSVFormatter } from '../src'
 
 describe('CSVConverter', () => {
-    const formatter = Formatters.CSV;
+  const formatter = new CSVFormatter()
 
+  it('should export CSV data', async () => {
+    const resultSplit = await formatter.format(products, categories, { splitParams: true })
+    expect(resultSplit).toMatchSnapshot()
 
-    it('should export CSV data', async () => {
-        const resultSplit = await formatter.format(products, categories, {splitParams: true});
-        expect(resultSplit).toMatchSnapshot();
-
-        const result = await formatter.format(products, categories);
-        expect(result).toMatchSnapshot();
-    });
-});
+    const result = await formatter.format(products, categories)
+    expect(result).toMatchSnapshot()
+  })
+})
