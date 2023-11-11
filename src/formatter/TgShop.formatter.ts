@@ -6,7 +6,7 @@ export class TgShopFormatter implements FormatterAbstract {
   public formatterName = 'TgShop'
   public fileExtension = Extension.XLSX
 
-  public async format (products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string> {
+  public async format (products: Product[], categories?: Category[], option?: FormatterOptions): Promise<Buffer> {
     const getParameter = (product: Product, key: string): IParam | undefined => product.params?.find((value) => (value.key === key))
     const productsData = products.map(product => ({
       'category id': product.categoryId,
@@ -20,8 +20,8 @@ export class TgShopFormatter implements FormatterAbstract {
       description: product.description,
       shortDescription: product.description,
       quantityInStock: product.count,
-      color: getParameter(product, 'color'),
-      size: getParameter(product, 'size'),
+      color: getParameter(product, 'color')?.value,
+      size: getParameter(product, 'size')?.value,
       priority: undefined
     }))
 
@@ -32,6 +32,6 @@ export class TgShopFormatter implements FormatterAbstract {
     xlsx.utils.book_append_sheet(workBook, productsWorkSheet, 'offers')
     xlsx.utils.book_append_sheet(workBook, categoriesWorkSheet, 'categories')
 
-    return xlsx.write(workBook, { bookType: 'xlsx', type: 'buffer' }).toString()
+    return xlsx.write(workBook, { bookType: 'xlsx', type: 'buffer' })
   }
 }

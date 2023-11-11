@@ -1,12 +1,12 @@
 import { type Category, type Product } from '../types'
 import { Extension, type FormatterAbstract, type FormatterOptions } from './formater.types'
-import xlsx from 'xlsx'
+import { writeXLSX, utils } from 'xlsx'
 
 export class ExcelFormatter implements FormatterAbstract {
   public formatterName = 'Excel'
   public fileExtension = Extension.XLSX
 
-  public async format (products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string> {
+  public async format (products: Product[], categories?: Category[], option?: FormatterOptions): Promise<Buffer> {
     const mappedCategories: Record<number, string> = {}
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name))
 
@@ -33,11 +33,10 @@ export class ExcelFormatter implements FormatterAbstract {
       ...getParams(product),
       ...getProperties(product)
     }))
-    const workBook = xlsx.utils.book_new()
-    const productsWorkSheet = xlsx.utils.json_to_sheet(data)
+    const workBook = utils.book_new()
+    const productsWorkSheet = utils.json_to_sheet(data)
 
-    xlsx.utils.book_append_sheet(workBook, productsWorkSheet, 'products')
-
-    return xlsx.write(workBook, { bookType: 'xlsx', type: 'buffer' }).toString()
+    utils.book_append_sheet(workBook, productsWorkSheet, 'products')
+    return writeXLSX(workBook, { type: 'buffer' })
   }
 }

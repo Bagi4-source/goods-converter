@@ -73,8 +73,8 @@ exports[`YML formatter > should export YML data 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
-        <param name=\\"p1\\">v1</param>
-        <param name=\\"p2\\">v2</param>
+        <param name=\\"size\\">44</param>
+        <param name=\\"color\\">white</param>
         <description>
           <![CDATA[Description]]>
         </description>

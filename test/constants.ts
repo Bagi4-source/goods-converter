@@ -92,11 +92,15 @@ export const products: Product[] = [
     vat: Vat.VAT_20,
     count: 24,
     params: [{
-      key: 'p1',
-      value: 'v1'
+      key: 'size',
+      value: '44'
     }, {
-      key: 'p2',
-      value: 'v2'
+      key: 'color',
+      value: 'white'
+    }],
+    properties: [{
+      key: 'seasons',
+      value: 'spring, summer'
     }],
     age: {
       unit: 'year',

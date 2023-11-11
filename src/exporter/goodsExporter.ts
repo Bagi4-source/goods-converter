@@ -35,6 +35,8 @@ export class GoodsExporter {
       return transformedProduct
     })
     const data = await this.formatter.format(transformedProducts, categories, option)
-    return this.exporter(Buffer.from(data, 'utf-8'))
+
+    if (typeof data === 'string') { return this.exporter(Buffer.from(data, 'utf-8')) }
+    return this.exporter(data)
   }
 }

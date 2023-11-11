@@ -6,7 +6,7 @@ export class InsalesFormatter implements FormatterAbstract {
   public formatterName = 'Insales'
   public fileExtension = Extension.XLSX
 
-  public async format (products: Product[], categories?: Category[], option?: FormatterOptions): Promise<string> {
+  public async format (products: Product[], categories?: Category[], option?: FormatterOptions): Promise<Buffer> {
     const mappedCategories: Record<number, string> = {}
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name))
 
@@ -42,6 +42,6 @@ export class InsalesFormatter implements FormatterAbstract {
 
     xlsx.utils.book_append_sheet(workBook, productsWorkSheet, 'products')
 
-    return xlsx.write(workBook, { bookType: 'xlsx', type: 'buffer' }).toString()
+    return xlsx.write(workBook, { bookType: 'xlsx', type: 'buffer' })
   }
 }
