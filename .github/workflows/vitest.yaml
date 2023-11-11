@@ -3,7 +3,8 @@ on:
   pull_request:
 
 jobs:
-  test:
+  vitest:
+    name: Run vitest
     runs-on: ubuntu-latest
 
     permissions:
@@ -19,7 +20,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: 'Install Deps'
-        run: npm install --force
+        run: npm i
       - name: 'Test'
         run: npx vitest --coverage
       - name: 'Report Coverage'
