@@ -1,9 +1,9 @@
 import { expect, describe, it } from 'vitest'
 import { categories, products } from './constants'
-import { CSVFormatter } from '../src'
+import { Formatters } from '../src'
 
 describe('CSV formatter', () => {
-  const formatter = new CSVFormatter()
+  const formatter = new Formatters.CSVFormatter()
 
   it('should export CSV data', async () => {
     const resultSplit = await formatter.format(products, categories, { splitParams: true })
