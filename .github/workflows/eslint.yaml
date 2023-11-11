@@ -13,15 +13,18 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+
+      - name: 'Install Node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
 
       - name: Install ESLint
-        run: npm install eslint@8.10.0 @microsoft/eslint-formatter-sarif@2.1.7
+        run: npm i @microsoft/eslint-formatter-sarif@3.0.0
 
       - name: Run ESLint
-        run: npx eslint ./{src,test}/**
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
+        run: npx eslint ./{src,test}/** -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
