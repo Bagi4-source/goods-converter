@@ -1,4 +1,4 @@
-module.exports = {
+{
     "env": {
         "browser": true,
         "es2021": true
@@ -10,7 +10,7 @@ module.exports = {
                 "node": true
             },
             "files": [
-                ".eslintrc.{js,cjs}"
+                ".eslintrc.json"
             ],
             "parserOptions": {
                 "sourceType": "script"
@@ -18,9 +18,8 @@ module.exports = {
         }
     ],
     "parserOptions": {
-        ecmaVersion: "latest",
-        sourceType: 'module'
+        "ecmaVersion": "latest",
+        "sourceType": "module"
     },
-    "rules": {
-    },
+    "rules": {}
 }

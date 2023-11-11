@@ -26,7 +26,7 @@ jobs:
       - run: ls
 
       - name: Run ESLint
-        run: npx eslint ./{src,test}/** -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
+        run: eslint ./{src,test}/** -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v2
