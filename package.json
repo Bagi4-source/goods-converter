@@ -27,7 +27,7 @@
     "publish": "npm run build && npm publish",
     "build": "rollup -c",
     "test": "vitest --typecheck",
-    "lint": "eslint ./{src,test}/** --fix",
+    "lint": "eslint --ext .ts --fix",
     "test-ui": "vitest --ui",
     "coverage": "vitest run --coverage"
   },
