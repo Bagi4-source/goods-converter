@@ -1,4 +1,4 @@
-import { GoodsExporter, YMLFormatter } from '../src'
+import { Formatters, GoodsExporter } from '../src'
 import { describe, expect, it, vi } from 'vitest'
 import { categories, products } from './constants'
 
@@ -6,7 +6,7 @@ describe('GoodsExporter', () => {
   vi.useFakeTimers().setSystemTime(new Date('2020-01-01'))
 
   const exporter = new GoodsExporter()
-  const formatter = new YMLFormatter()
+  const formatter = new Formatters.YMLFormatter()
 
   it('check export', async () => {
     const data = await exporter.export<Buffer>(products, categories)
