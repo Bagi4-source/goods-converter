@@ -1,18 +1,18 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`GoodsExporter > check export 1`] = `
-"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<yml_catalog date="2020-01-01T00:00:00">
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<yml_catalog date=\\"2020-01-01T00:00:00\\">
   <shop>
     <name>ShopName</name>
     <company>CompanyName</company>
     <categories>
-      <category id="1" parentId="2">Обувь</category>
-      <category id="2" parentId="3">Одежда, обувь и аксессуары</category>
-      <category id="3">Все товары</category>
+      <category id=\\"1\\" parentId=\\"2\\">Обувь</category>
+      <category id=\\"2\\" parentId=\\"3\\">Одежда, обувь и аксессуары</category>
+      <category id=\\"3\\">Все товары</category>
     </categories>
     <offers>
-      <offer id="1111">
+      <offer id=\\"1111\\">
         <name>Title</name>
         <price>19000</price>
         <oldprice>20000</oldprice>
@@ -28,8 +28,8 @@ exports[`GoodsExporter > check export 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
-        <param name="param1">v1</param>
-        <param name="param2">v2</param>
+        <param name=\\"param1\\">v1</param>
+        <param name=\\"param2\\">v2</param>
         <description>
           <![CDATA[Description]]>
         </description>
@@ -52,12 +52,12 @@ exports[`GoodsExporter > check export 1`] = `
         <dimensions>12/32/43</dimensions>
         <boxCount>1</boxCount>
         <disabled>false</disabled>
-        <age unit="year">6</age>
+        <age unit=\\"year\\">6</age>
         <tn-ved-codes>
           <tn-ved-code>code</tn-ved-code>
         </tn-ved-codes>
       </offer>
-      <offer id="1112" group_id="1111">
+      <offer id=\\"1112\\" group_id=\\"1111\\">
         <name>Title</name>
         <price>19000</price>
         <oldprice>20000</oldprice>
@@ -73,8 +73,8 @@ exports[`GoodsExporter > check export 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
-        <param name="p1">v1</param>
-        <param name="p2">v2</param>
+        <param name=\\"p1\\">v1</param>
+        <param name=\\"p2\\">v2</param>
         <description>
           <![CDATA[Description]]>
         </description>
@@ -97,7 +97,7 @@ exports[`GoodsExporter > check export 1`] = `
         <dimensions>12/32/43</dimensions>
         <boxCount>1</boxCount>
         <disabled>false</disabled>
-        <age unit="year">6</age>
+        <age unit=\\"year\\">6</age>
         <tn-ved-codes>
           <tn-ved-code>code</tn-ved-code>
         </tn-ved-codes>
@@ -109,18 +109,18 @@ exports[`GoodsExporter > check export 1`] = `
 `;
 
 exports[`GoodsExporter > check export with transformers 1`] = `
-"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<yml_catalog date="2020-01-01T00:00:00">
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<yml_catalog date=\\"2020-01-01T00:00:00\\">
   <shop>
     <name>ShopName</name>
     <company>CompanyName</company>
     <categories>
-      <category id="1" parentId="2">Обувь</category>
-      <category id="2" parentId="3">Одежда, обувь и аксессуары</category>
-      <category id="3">Все товары</category>
+      <category id=\\"1\\" parentId=\\"2\\">Обувь</category>
+      <category id=\\"2\\" parentId=\\"3\\">Одежда, обувь и аксессуары</category>
+      <category id=\\"3\\">Все товары</category>
     </categories>
     <offers>
-      <offer id="1111">
+      <offer id=\\"1111\\">
         <name>Title</name>
         <price>29000</price>
         <oldprice>20000</oldprice>
@@ -136,8 +136,8 @@ exports[`GoodsExporter > check export with transformers 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
-        <param name="param1">v1</param>
-        <param name="param2">v2</param>
+        <param name=\\"param1\\">v1</param>
+        <param name=\\"param2\\">v2</param>
         <description>
           <![CDATA[Description]]>
         </description>
@@ -160,12 +160,12 @@ exports[`GoodsExporter > check export with transformers 1`] = `
         <dimensions>12/32/43</dimensions>
         <boxCount>1</boxCount>
         <disabled>false</disabled>
-        <age unit="year">6</age>
+        <age unit=\\"year\\">6</age>
         <tn-ved-codes>
           <tn-ved-code>code</tn-ved-code>
         </tn-ved-codes>
       </offer>
-      <offer id="1112" group_id="1111">
+      <offer id=\\"1112\\" group_id=\\"1111\\">
         <name>Title</name>
         <price>29000</price>
         <oldprice>20000</oldprice>
@@ -181,8 +181,8 @@ exports[`GoodsExporter > check export with transformers 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
-        <param name="p1">v1</param>
-        <param name="p2">v2</param>
+        <param name=\\"p1\\">v1</param>
+        <param name=\\"p2\\">v2</param>
         <description>
           <![CDATA[Description]]>
         </description>
@@ -205,7 +205,7 @@ exports[`GoodsExporter > check export with transformers 1`] = `
         <dimensions>12/32/43</dimensions>
         <boxCount>1</boxCount>
         <disabled>false</disabled>
-        <age unit="year">6</age>
+        <age unit=\\"year\\">6</age>
         <tn-ved-codes>
           <tn-ved-code>code</tn-ved-code>
         </tn-ved-codes>
