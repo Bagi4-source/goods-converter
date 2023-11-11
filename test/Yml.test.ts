@@ -1,9 +1,9 @@
-import { YMLFormatter } from '../src'
+import { Formatters } from '../src'
 import { expect, describe, it, vi } from 'vitest'
 import { categories, products } from './constants'
 
 describe('YML formatter', () => {
-  const formatter = new YMLFormatter()
+  const formatter = new Formatters.YMLFormatter()
   vi.useFakeTimers().setSystemTime(new Date('2020-01-01'))
 
   it('should export YML data', async () => {
