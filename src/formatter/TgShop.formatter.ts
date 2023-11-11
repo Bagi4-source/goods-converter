@@ -29,8 +29,8 @@ export class TgShopFormatter implements FormatterAbstract {
     const productsWorkSheet = xlsx.utils.json_to_sheet(productsData)
     const categoriesWorkSheet = xlsx.utils.json_to_sheet(categories ?? [])
 
-    xlsx.utils.book_append_sheet(workBook, productsWorkSheet, 'offers')
     xlsx.utils.book_append_sheet(workBook, categoriesWorkSheet, 'categories')
+    xlsx.utils.book_append_sheet(workBook, productsWorkSheet, 'offers')
 
     return xlsx.write(workBook, { bookType: 'xlsx', type: 'buffer' })
   }
