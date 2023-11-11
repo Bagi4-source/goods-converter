@@ -10,10 +10,11 @@
                 "node": true
             },
             "files": [
-                ".eslintrc.json"
+                ".eslintrc.{js,cjs}"
             ],
             "parserOptions": {
-                "sourceType": "script"
+                "sourceType": "script",
+                "extraFileExtensions": [".json"]
             }
         }
     ],
