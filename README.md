@@ -1,7 +1,7 @@
 # goods-exporter
 
 [![npm version](https://badge.fury.io/js/goods-exporter.svg)](https://badge.fury.io/js/goods-exporter)
-![License](https://img.shields.io/badge/license-MIT-green)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/Bagi4-source/goods-converter/blob/main/LICENSE)
 
 A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data
 export tasks with ease.
@@ -37,7 +37,7 @@ yarn add goods-exporter
 ## Quick start
 
 ```typescript
-import { GoodsExporter, Product, Category, YMLFormatter } from '../src'
+import { GoodsExporter, Product, Category, Formatters } from '../src'
 
 // Create an instance of the GoodsExporter class.
 const exporter = new GoodsExporter()
@@ -70,7 +70,7 @@ const transformers: Transformer[] = [
 ]
 
 // Set the formatter for exporting data to YML.
-exporter.setFormatter(new YMLFormatter()) // or your own Formatter;
+exporter.setFormatter(new Formatters.YMLFormatter()) // or your own Formatter;
 
 // Set transformers based on the specified keys.
 exporter.setTransformers(transformers);
