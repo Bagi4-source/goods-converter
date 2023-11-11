@@ -14,7 +14,7 @@ exports[`GoodsExporter > check export 1`] = `
     <offers>
       <offer id=\\"1111\\">
         <name>Title</name>
-        <price>29000</price>
+        <price>19000</price>
         <oldprice>20000</oldprice>
         <purchase_price>15000</purchase_price>
         <additional_expenses>1000</additional_expenses>
@@ -23,8 +23,8 @@ exports[`GoodsExporter > check export 1`] = `
         <categoryId>1</categoryId>
         <vendor>Nike</vendor>
         <vendorCode>NIKE-1111</vendorCode>
-        <picture>pic1</picture>
-        <picture>pic2</picture>
+        <picture>image1</picture>
+        <picture>image2</picture>
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
@@ -59,7 +59,7 @@ exports[`GoodsExporter > check export 1`] = `
       </offer>
       <offer id=\\"1112\\" group_id=\\"1111\\">
         <name>Title</name>
-        <price>29000</price>
+        <price>19000</price>
         <oldprice>20000</oldprice>
         <purchase_price>15000</purchase_price>
         <additional_expenses>1000</additional_expenses>
@@ -68,8 +68,8 @@ exports[`GoodsExporter > check export 1`] = `
         <categoryId>1</categoryId>
         <vendor>Nike</vendor>
         <vendorCode>NIKE-1111</vendorCode>
-        <picture>pic1</picture>
-        <picture>pic2</picture>
+        <picture>image1</picture>
+        <picture>image2</picture>
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>

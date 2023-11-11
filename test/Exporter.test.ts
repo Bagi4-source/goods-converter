@@ -1,5 +1,5 @@
 import { Formatters, GoodsExporter } from '../src'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { categories, products } from './constants'
 
 describe('GoodsExporter', () => {
@@ -7,7 +7,14 @@ describe('GoodsExporter', () => {
 
   const exporter = new GoodsExporter()
 
-  beforeAll(() => {
+  it('check export', async () => {
+    const data = await exporter.export<Buffer>(products, categories)
+
+    expect(data.toString('utf-8')).toMatchSnapshot()
+  })
+
+  it('check export with transformers', async () => {
+    exporter.setFormatter(new Formatters.YMLFormatter())
     exporter.setExporter((data: Buffer) => {
       return data
     })
@@ -18,15 +25,7 @@ describe('GoodsExporter', () => {
         images: product.images?.map(image => image.replace('image', 'pic'))
       })
     ])
-  })
 
-  it('check export', async () => {
-    const data = await exporter.export<Buffer>(products, categories)
-
-    expect(data.toString('utf-8')).toMatchSnapshot()
-  })
-
-  it('check export with transformers', async () => {
     const data = await exporter.export<Buffer>(products, categories)
 
     expect(data.toString('utf-8')).toMatchSnapshot()
