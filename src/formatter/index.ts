@@ -1,6 +1,17 @@
+import { TildaFormatter } from './Tilda.formatter'
+import { CSVFormatter } from './CSV.formatter'
+import { InsalesFormatter } from './Insales.formatter'
+import { YMLFormatter } from './YML.formatter'
+import { TgShopFormatter } from './TgShop.formatter'
+import { ExcelFormatter } from './Excel.formatter'
+
 export * from './formater.types'
-export * from './CSV.formatter'
-export * from './Tilda.formatter'
-export * from './YML.formatter'
-export * from './TgShop.formatter'
-export * from './Insales.formatter'
+
+export const Formatters = {
+  TildaFormatter,
+  CSVFormatter,
+  InsalesFormatter,
+  YMLFormatter,
+  TgShopFormatter,
+  ExcelFormatter
+}
