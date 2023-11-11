@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: 'Install Deps'
-        run: npm install
+        run: npm install --force
       - name: 'Test'
         run: npx vitest --coverage
       - name: 'Report Coverage'
