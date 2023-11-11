@@ -1,11 +1,11 @@
-import { type FormatterAbstract, type FormatterOptions, YMLFormatter } from '../formatter'
+import { type FormatterAbstract, type FormatterOptions, Formatters } from '../formatter'
 import { type Exporter, type Transformer } from './exporter.types'
 import { type Category, type Product } from '../types'
 import deepcopy from 'deepcopy'
 import * as fs from 'fs'
 
 export class GoodsExporter {
-  private formatter: FormatterAbstract = new YMLFormatter()
+  private formatter: FormatterAbstract = new Formatters.YMLFormatter()
   private exporter: Exporter = (data: Buffer) => {
     const filename = `${this.formatter.formatterName}.output.${this.formatter.fileExtension}`
     fs.writeFileSync(filename, data)

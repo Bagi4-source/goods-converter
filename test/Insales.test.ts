@@ -1,9 +1,9 @@
 import { expect, describe, it } from 'vitest'
 import { categories, products } from './constants'
-import { InsalesFormatter } from '../src'
+import { Formatters } from '../src'
 
 describe('Insales formatter', () => {
-  const formatter = new InsalesFormatter()
+  const formatter = new Formatters.InsalesFormatter()
 
   it('should export Insales data', async () => {
     const result = await formatter.format(products, categories)
