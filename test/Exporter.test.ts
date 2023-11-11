@@ -1,20 +1,16 @@
 import { Formatters, GoodsExporter } from '../src'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { categories, products } from './constants'
 
 describe('GoodsExporter', () => {
   vi.useFakeTimers().setSystemTime(new Date('2020-01-01'))
 
   const exporter = new GoodsExporter()
-  const formatter = new Formatters.YMLFormatter()
 
-  it('check export', async () => {
-    const data = await exporter.export<Buffer>(products, categories)
-    expect(data.toString('utf-8')).toMatchSnapshot()
-  })
-
-  it('check export with transformers', async () => {
-    exporter.setFormatter(formatter)
+  beforeAll(() => {
+    exporter.setExporter((data: Buffer) => {
+      return data
+    })
     exporter.setTransformers([
       (product) => ({
         ...product,
@@ -22,13 +18,24 @@ describe('GoodsExporter', () => {
         images: product.images?.map(image => image.replace('image', 'pic'))
       })
     ])
+  })
 
-    exporter.setExporter((data: Buffer) => {
-      return data
-    })
-
+  it('check export', async () => {
     const data = await exporter.export<Buffer>(products, categories)
 
     expect(data.toString('utf-8')).toMatchSnapshot()
+  })
+
+  it('check export with transformers', async () => {
+    const data = await exporter.export<Buffer>(products, categories)
+
+    expect(data.toString('utf-8')).toMatchSnapshot()
+  })
+  it('check export with transformers', async () => {
+    exporter.setFormatter(new Formatters.ExcelFormatter())
+
+    const data = await exporter.export<Buffer>(products, categories)
+
+    expect(data).toMatchSnapshot()
   })
 })
