@@ -1,8 +1,9 @@
 import { type FormatterAbstract, type FormatterOptions, Formatters } from '../formatter'
 import { type Exporter, type Transformer } from './exporter.types'
-import { type Category, type Product } from '../types'
-import deepcopy from 'deepcopy'
+import { type Category } from '../types'
 import * as fs from 'fs'
+import { transformerToStreamTransformer } from '../utils/transformerToStreamTransformer'
+import { type Readable } from 'stream'
 
 export class GoodsExporter {
   private formatter: FormatterAbstract = new Formatters.YMLFormatter()
@@ -26,17 +27,22 @@ export class GoodsExporter {
     this.exporter = exporter
   }
 
-  async export<T>(products: Product[], categories?: Category[], option?: FormatterOptions): Promise<T> {
-    const transformedProducts = deepcopy(products).map(product => {
-      let transformedProduct: Product = product
-      this.transformers.forEach(transformer => {
-        transformedProduct = transformer(transformedProduct)
-      })
-      return transformedProduct
-    })
-    const data = await this.formatter.format(transformedProducts, categories, option)
+  async export<T>(products: Readable, categories?: Category[], option?: FormatterOptions): Promise<T> {
+    const transformersForStream = this.transformers.map(transformerToStreamTransformer)
 
-    if (typeof data === 'string') { return this.exporter(Buffer.from(data, 'utf-8')) }
+    let output = products
+
+    transformersForStream.forEach(transformer => {
+      output = output.pipe(transformer)
+    })
+
+    products.pipe(transformersForStream[0])
+
+    const data = await this.formatter.format(output, categories, option)
+
+    if (typeof data === 'string') {
+      return this.exporter(Buffer.from(data, 'utf-8'))
+    }
     return this.exporter(data)
   }
 }
