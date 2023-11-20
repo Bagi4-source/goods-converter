@@ -13,14 +13,14 @@ export class InsalesFormatter implements FormatterAbstract {
     const getParams = (product: Product): Record<string, string> => {
       const properties: Record<string, string> = {}
 
-      product.params?.forEach(p => (properties[`Параметр: ${p.key}`] = p.value))
+      product.params?.forEach(p => (properties[`Свойство: ${p.key}`] = p.value))
 
       return properties
     }
     const getProperties = (product: Product): Record<string, string> => {
       const properties: Record<string, string> = {}
 
-      product.properties?.forEach(p => (properties[`Свойство: ${p.key}`] = p.value))
+      product.properties?.forEach(p => (properties[`Параметр: ${p.key}`] = p.value))
 
       return properties
     }
