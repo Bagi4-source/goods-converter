@@ -1,12 +1,13 @@
-import { expect, describe, it } from 'vitest'
-import { categories, products } from './constants'
-import { Formatters } from '../src'
+import { expect, describe, it } from "vitest";
 
-describe('TgShop formatter', () => {
-  const formatter = new Formatters.TgShopFormatter()
+import { Formatters } from "../src";
+import { categories, products } from "./constants";
 
-  it('should export TgShop data', async () => {
-    const result = await formatter.format(products, categories)
-    expect(result).toMatchSnapshot()
-  })
-})
+describe("TgShop formatter", () => {
+  const formatter = new Formatters.TgShopFormatter();
+
+  it("should export TgShop data", async () => {
+    const result = await formatter.format(products, categories);
+    expect(result).toMatchSnapshot();
+  });
+});

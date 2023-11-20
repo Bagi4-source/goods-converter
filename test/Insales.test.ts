@@ -1,12 +1,13 @@
-import { expect, describe, it } from 'vitest'
-import { categories, products } from './constants'
-import { Formatters } from '../src'
+import { expect, describe, it } from "vitest";
 
-describe('Insales formatter', () => {
-  const formatter = new Formatters.InsalesFormatter()
+import { Formatters } from "../src";
+import { categories, products } from "./constants";
 
-  it('should export Insales data', async () => {
-    const result = await formatter.format(products, categories)
-    expect(result).toMatchSnapshot()
-  })
-})
+describe("Insales formatter", () => {
+  const formatter = new Formatters.InsalesFormatter();
+
+  it("should export Insales data", async () => {
+    const result = await formatter.format(products, categories);
+    expect(result).toMatchSnapshot();
+  });
+});
