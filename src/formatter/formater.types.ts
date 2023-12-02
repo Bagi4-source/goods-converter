@@ -1,35 +1,26 @@
-import { type Category, type Product } from '../types'
+import { type Category, type Product } from "../types";
 
 export abstract class FormatterAbstract {
-  public abstract formatterName: string
-  public abstract fileExtension: Extension
+  public abstract formatterName: string;
+  public abstract fileExtension: Extension;
 
-  public abstract format (products: Product[], categories?: Category[], option?: FormatterOptions): Promise<Buffer | string>
+  public abstract format(
+    products: Product[],
+    categories?: Category[],
+    option?: FormatterOptions,
+  ): Promise<Buffer | string>;
 }
 
 export interface FormatterOptions {
-  /**
-     * **Название магазина**
-     *
-     * Используется в YML формате
-     */
-  shopName?: string
-  /**
-     * **Название компании**
-     *
-     * Используется в YML формате
-     */
-  companyName?: string
-  /**
-     * **Параметры в отдельных столбцах**
-     *
-     * Используется в CSV и XLSX формате
-     */
-  splitParams?: boolean
+  shopName?: string;
+
+  companyName?: string;
+
+  splitParams?: boolean;
 }
 
 export enum Extension {
-  CSV = 'csv',
-  YML = 'yml',
-  XLSX = 'xlsx'
+  CSV = "csv",
+  YML = "yml",
+  XLSX = "xlsx",
 }
