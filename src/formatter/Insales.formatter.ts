@@ -42,19 +42,25 @@ export class InsalesFormatter implements FormatterAbstract {
 
     const getCategories = (product: Product) => {
       const categories: Record<string, string> = {};
+      const categoryList = new Array<string>();
 
-      function addCategory(categoryId: number | undefined, level: number) {
+      function addCategory(categoryId: number | undefined) {
         if (categoryId === undefined) return;
 
-        const key = level <= 0 ? "Корневая" : `Подкатегория ${level}`;
         const category = mappedCategories[categoryId];
         if (category) {
-          categories[key] = category.name;
-          addCategory(category.parentId, level + 1);
+          categoryList.push(category.name);
+          addCategory(category.parentId);
         }
       }
 
-      addCategory(product.categoryId, 0);
+      addCategory(product.categoryId);
+
+      categoryList.forEach((name, i) => {
+        const index = categoryList.length - 1 - i;
+        const key = index === 0 ? "Корневая" : `Подкатегория ${index}`;
+        categories[key] = name;
+      });
 
       return categories;
     };
