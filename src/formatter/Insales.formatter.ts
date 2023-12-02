@@ -16,8 +16,10 @@ export class InsalesFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: FormatterOptions,
   ): Promise<Buffer> {
-    const mappedCategories: Record<number, string> = {};
-    categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
+    const mappedCategories: Record<number, Category> = {};
+    categories?.forEach(
+      (category) => (mappedCategories[category.id] = category),
+    );
 
     const getParams = (product: Product): Record<string, string> => {
       const properties: Record<string, string> = {};
@@ -38,7 +40,28 @@ export class InsalesFormatter implements FormatterAbstract {
       return properties;
     };
 
+    const getCategories = (product: Product) => {
+      const categories: Record<string, string> = {};
+
+      function addCategory(categoryId: number | undefined, level: number) {
+        if (categoryId === undefined) return;
+
+        const key = level <= 0 ? "Корневая" : `Подкатегория ${level}`;
+        const category = mappedCategories[categoryId];
+        if (category) {
+          categories[key] = category.name;
+          addCategory(category.parentId, level + 1);
+        }
+      }
+
+      addCategory(product.categoryId, 0);
+
+      return categories;
+    };
+
     const data = products.map((product) => ({
+      "ID товара": product.productId,
+      ...getCategories(product),
       "Параметр: Дата выхода": product.saleDate,
       "Название товара или услуги": product.title,
       "Изображение варианта": product.images?.join(" "),

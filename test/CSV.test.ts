@@ -6,9 +6,16 @@ import { categories, products } from "./constants";
 describe("CSV formatter", () => {
   const formatter = new Formatters.CSVFormatter();
 
-  it("should export CSV data", async () => {
+  it("should export CSV data with split parameters", async () => {
     const resultSplit = await formatter.format(products, categories, {
       splitParams: true,
+    });
+    expect(resultSplit).toMatchSnapshot();
+  });
+
+  it("should export CSV data without split parameters", async () => {
+    const resultSplit = await formatter.format(products, categories, {
+      splitParams: false,
     });
     expect(resultSplit).toMatchSnapshot();
 
