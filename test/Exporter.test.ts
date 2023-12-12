@@ -31,7 +31,7 @@ describe("GoodsExporter", () => {
 
     expect(data.toString("utf-8")).toMatchSnapshot();
   });
-  it("check export with transformers", async () => {
+  it("check export without transformers", async () => {
     exporter.setFormatter(new Formatters.ExcelFormatter());
 
     const data = await exporter.export(products, categories);

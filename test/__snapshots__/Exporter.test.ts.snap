@@ -216,7 +216,7 @@ exports[`GoodsExporter > check export with transformers 1`] = `
 "
 `;
 
-exports[`GoodsExporter > check export with transformers 2`] = `
+exports[`GoodsExporter > check export without transformers 1`] = `
 {
   "data": [
     80,
