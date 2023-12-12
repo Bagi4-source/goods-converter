@@ -37,13 +37,12 @@ export class GoodsExporter {
     categories?: Category[],
     option?: FormatterOptions,
   ): Promise<Buffer> {
-    const transformedProducts = deepcopy(products).map((product) => {
+    const transformedProducts = deepcopy(products);
+    for (const product of transformedProducts) {
       let transformedProduct: Product = product;
-      this.transformers.forEach((transformer) => {
-        transformedProduct = transformer(transformedProduct);
-      });
-      return transformedProduct;
-    });
+      for (const transformer of this.transformers)
+        transformedProduct = await transformer(transformedProduct);
+    }
     const data = await this.formatter.format(
       transformedProducts,
       categories,
