@@ -85,6 +85,7 @@ export class InsalesFormatter implements FormatterAbstract {
       Изображения: product.images?.join(" "),
       "Ссылка на видео": product.videos ? product.videos[0] : undefined,
       "Цена продажи": product.price,
+      "Параметр: Бренд": product.vendor,
       Артикул: product.vendorCode,
       ...getParams(product),
       ...getProperties(product),
