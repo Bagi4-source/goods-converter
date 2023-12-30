@@ -69,6 +69,10 @@ export class YMLFormatter implements FormatterAbstract {
       available: product.available,
       "min-quantity": product.minQuantity,
       "step-quantity": product.stepQuantity,
+      property: product.properties?.map((property) => ({
+        "#text": property.value,
+        "@_name": property.key,
+      })),
       param: product.params?.map((param) => ({
         "#text": param.value,
         "@_name": param.key,

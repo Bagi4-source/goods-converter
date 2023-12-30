@@ -28,6 +28,8 @@ exports[`YML formatter > should export YML data 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
+        <property name=\\"prop1\\">v1</property>
+        <property name=\\"prop2\\">v2</property>
         <param name=\\"param1\\">v1</param>
         <param name=\\"param2\\">v2</param>
         <description>
@@ -73,6 +75,7 @@ exports[`YML formatter > should export YML data 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
+        <property name=\\"seasons\\">spring, summer</property>
         <param name=\\"size\\">44</param>
         <param name=\\"color\\">white</param>
         <description>
