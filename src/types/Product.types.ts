@@ -478,6 +478,14 @@ export interface Product {
    * **Размерная сетка**
    */
   sizes?: ISize[];
+  /**
+   * **Связанные товары**
+   *
+   * Указываются id товаров
+   *
+   * Пример: 1234
+   */
+  relatedProducts?: number[]
 }
 
 export enum Vat {

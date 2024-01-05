@@ -100,6 +100,7 @@ export class InsalesFormatter implements FormatterAbstract {
       ...getParams(product),
       ...getProperties(product),
       ...getSizes(product),
+      "Связанные товары": product.relatedProducts?.join(","),
     }));
     const workBook = xlsx.utils.book_new();
     const productsWorkSheet = xlsx.utils.json_to_sheet(data);

@@ -61,6 +61,7 @@ exports[`YML formatter > should export YML data 1`] = `
         <tn-ved-codes>
           <tn-ved-code>code</tn-ved-code>
         </tn-ved-codes>
+        <relatedProduct>1234</relatedProduct>
       </offer>
       <offer id=\\"1112\\" group_id=\\"1111\\">
         <name>Title</name>

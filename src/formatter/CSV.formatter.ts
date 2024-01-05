@@ -32,9 +32,10 @@ export class CSVFormatter implements FormatterAbstract {
         .join(","),
       ...UTILS.getParams(product, options),
       ...UTILS.getProperties(product, options),
+      ...UTILS.getSizes(product, options),
       sizes: undefined,
       keywords: product.keywords?.join(","),
-      ...UTILS.getSizes(product, options),
+      relatedProducts: product.relatedProducts?.join(","),
     }));
     return json2csv(data, { emptyFieldValue: "" });
   }

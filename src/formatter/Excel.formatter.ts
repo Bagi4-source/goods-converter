@@ -27,6 +27,7 @@ export class ExcelFormatter implements FormatterAbstract {
       videos: product.videos?.join(","),
       tags: product.tags?.join(","),
       keywords: product.keywords?.join(","),
+      relatedProducts: product.relatedProducts?.join(","),
       codesTN: product.codesTN?.join(", "),
       params: product.params
         ?.map(({ key, value }) => `${key}=${value}`)

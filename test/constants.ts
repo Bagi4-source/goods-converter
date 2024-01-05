@@ -71,7 +71,8 @@ export const products: Product[] = [
       name: "UK",
       delimiter: ",",
       value: "36,37,38,39"
-    }]
+    }],
+    relatedProducts: [1234]
   },
   {
     productId: 1,

@@ -113,6 +113,7 @@ export class YMLFormatter implements FormatterAbstract {
       "tn-ved-codes": product.codesTN?.length != null && {
         "tn-ved-code": product.codesTN,
       },
+      relatedProduct: product.relatedProducts,
     };
     if (product.parentId !== undefined) {
       return {
