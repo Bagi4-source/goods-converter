@@ -69,6 +69,12 @@ export class YMLFormatter implements FormatterAbstract {
       available: product.available,
       "min-quantity": product.minQuantity,
       "step-quantity": product.stepQuantity,
+      size: product.sizes?.map((size) => ({
+        "#text": size.value,
+        "@_name": size.name,
+        "@_delimiter": size.delimiter,
+      })),
+      keyword: product.keywords,
       property: product.properties?.map((property) => ({
         "#text": property.value,
         "@_name": property.key,

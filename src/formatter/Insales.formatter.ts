@@ -40,6 +40,16 @@ export class InsalesFormatter implements FormatterAbstract {
       return properties;
     };
 
+    const getSizes = (product: Product): Record<string, string> => {
+      const sizes: Record<string, string> = {};
+
+      product.sizes?.forEach(
+          ({name, value}) => (sizes[`Размеры [${name}]:`] = value),
+      );
+
+      return sizes;
+    };
+
     const getCategories = (product: Product) => {
       const categories: Record<string, string> = {};
       const categoryList = new Array<string>();
@@ -89,6 +99,7 @@ export class InsalesFormatter implements FormatterAbstract {
       Артикул: product.vendorCode,
       ...getParams(product),
       ...getProperties(product),
+      ...getSizes(product),
     }));
     const workBook = xlsx.utils.book_new();
     const productsWorkSheet = xlsx.utils.json_to_sheet(data);

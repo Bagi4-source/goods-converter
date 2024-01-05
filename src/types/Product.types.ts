@@ -468,6 +468,16 @@ export interface Product {
    * Пример: 6241421
    */
   certificate?: string;
+  /**
+   * **Ключевые слова**
+   *
+   * Пример: Кроссовки, высокая подошва
+   */
+  keywords?: string[];
+  /**
+   * **Размерная сетка**
+   */
+  sizes?: ISize[];
 }
 
 export enum Vat {
@@ -493,6 +503,23 @@ export interface IParam {
   key: string;
   /**
    * **Значение**
+   */
+  value: string;
+}
+
+export interface ISize {
+  /**
+   * **Название единицы измерения**
+   */
+  name: string;
+  /**
+   * **Разделитель**
+   */
+  delimiter: string;
+  /**
+   * **Значения размерного ряда**
+   *
+   * Размеры указываются через разделитель
    */
   value: string;
 }

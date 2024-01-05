@@ -66,6 +66,12 @@ export const products: Product[] = [
     warrantyComment: "",
     manufacturerWarranty: true,
     certificate: "111",
+    keywords: ["Обувь", "Кроссовки"],
+    sizes: [{
+      name: "UK",
+      delimiter: ",",
+      value: "36,37,38,39"
+    }]
   },
   {
     productId: 1,

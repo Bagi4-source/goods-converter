@@ -28,6 +28,9 @@ exports[`YML formatter > should export YML data 1`] = `
         <available>true</available>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
+        <size name=\\"UK\\" delimiter=\\",\\">36,37,38,39</size>
+        <keyword>Обувь</keyword>
+        <keyword>Кроссовки</keyword>
         <property name=\\"prop1\\">v1</property>
         <property name=\\"prop2\\">v2</property>
         <param name=\\"param1\\">v1</param>

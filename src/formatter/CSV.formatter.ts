@@ -6,6 +6,7 @@ import {
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
+import {UTILS} from "../util/formatter.util";
 
 export class CSVFormatter implements FormatterAbstract {
   public formatterName = "CSV";
@@ -14,36 +15,10 @@ export class CSVFormatter implements FormatterAbstract {
   public async format(
     products: Product[],
     categories?: Category[],
-    option?: FormatterOptions,
+    options?: FormatterOptions,
   ): Promise<string> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
-
-    const getParams = (product: Product): Record<string, string> => {
-      const params: Record<string, string> = {};
-
-      if (option?.splitParams === false) {
-        return params;
-      }
-
-      product.params?.forEach(
-        ({ key, value }) => (params[`Param [${key}]`] = value),
-      );
-      return params;
-    };
-
-    const getProperties = (product: Product): Record<string, string> => {
-      const properties: Record<string, string> = {};
-
-      if (option?.splitParams === false) {
-        return properties;
-      }
-
-      product.properties?.forEach(
-        ({ key, value }) => (properties[`Property [${key}]`] = value),
-      );
-      return properties;
-    };
 
     const data = products.map((product) => ({
       ...product,
@@ -55,8 +30,11 @@ export class CSVFormatter implements FormatterAbstract {
       params: product.params
         ?.map(({ key, value }) => `${key}=${value}`)
         .join(","),
-      ...getParams(product),
-      ...getProperties(product),
+      ...UTILS.getParams(product, options),
+      ...UTILS.getProperties(product, options),
+      sizes: undefined,
+      keywords: product.keywords?.join(","),
+      ...UTILS.getSizes(product, options),
     }));
     return json2csv(data, { emptyFieldValue: "" });
   }
