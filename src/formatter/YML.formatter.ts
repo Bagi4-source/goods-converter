@@ -67,6 +67,7 @@ export class YMLFormatter implements FormatterAbstract {
       picture: product.images,
       video: product.videos,
       available: product.available,
+      series: product.seriesName,
       "min-quantity": product.minQuantity,
       "step-quantity": product.stepQuantity,
       size: product.sizes?.map((size) => ({

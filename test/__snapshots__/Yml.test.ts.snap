@@ -26,6 +26,7 @@ exports[`YML formatter > should export YML data 1`] = `
         <picture>image1</picture>
         <picture>image2</picture>
         <available>true</available>
+        <series>Jordan 4</series>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
         <size name=\\"UK\\" delimiter=\\",\\">36,37,38,39</size>
@@ -77,6 +78,7 @@ exports[`YML formatter > should export YML data 1`] = `
         <picture>image1</picture>
         <picture>image2</picture>
         <available>true</available>
+        <series>Jordan 4</series>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
         <property name=\\"seasons\\">spring, summer</property>

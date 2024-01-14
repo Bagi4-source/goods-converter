@@ -485,7 +485,13 @@ export interface Product {
    *
    * Пример: 1234
    */
-  relatedProducts?: number[]
+  relatedProducts?: number[];
+  /**
+   * **Название ряда или серии товара**
+   *
+   * Пример: Jordan 4
+   */
+  seriesName?: string;
 }
 
 export enum Vat {

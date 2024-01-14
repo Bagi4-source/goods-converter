@@ -67,12 +67,15 @@ export const products: Product[] = [
     manufacturerWarranty: true,
     certificate: "111",
     keywords: ["Обувь", "Кроссовки"],
-    sizes: [{
-      name: "UK",
-      delimiter: ",",
-      value: "36,37,38,39"
-    }],
-    relatedProducts: [1234]
+    sizes: [
+      {
+        name: "UK",
+        delimiter: ",",
+        value: "36,37,38,39",
+      },
+    ],
+    relatedProducts: [1234],
+    seriesName: "Jordan 4",
   },
   {
     productId: 1,
@@ -136,6 +139,7 @@ export const products: Product[] = [
     warrantyComment: "",
     manufacturerWarranty: true,
     certificate: "111",
+    seriesName: "Jordan 4",
   },
 ];
 export const categories: Category[] = [
