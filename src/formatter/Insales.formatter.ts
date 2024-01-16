@@ -44,7 +44,7 @@ export class InsalesFormatter implements FormatterAbstract {
       const sizes: Record<string, string> = {};
 
       product.sizes?.forEach(
-          ({name, value}) => (sizes[`Размеры [${name}]:`] = value),
+        ({ name, value }) => (sizes[`Размеры [${name}]:`] = value),
       );
 
       return sizes;
@@ -77,27 +77,29 @@ export class InsalesFormatter implements FormatterAbstract {
 
     const data = products.map((product) => ({
       "Внешний ID": product.productId,
+      Артикул: product.vendorCode,
+      "Название товара или услуги": product.title,
+      "Старая цена": product.oldPrice,
+      "Цена продажи": product.price,
+      "Цена закупки": product.purchasePrice,
       ...getCategories(product),
       Остаток: product.count,
       "Штрих-код": product.barcode,
-      "Параметр: Дата выхода": product.saleDate,
-      "Название товара или услуги": product.title,
       "Краткое описание": undefined,
       "Полное описание": product.description,
       "Габариты варианта": product.dimensions,
       Вес: product.weight,
       "Размещение на сайте": product.available,
-      "Старая цена": product.oldPrice,
-      "Цена закупки": product.purchasePrice,
       НДС: product.vat.toString(),
       "Валюта склада": product.currency.toString(),
       "Изображения варианта": product.images?.join(" "),
       Изображения: product.images?.join(" "),
       "Ссылка на видео": product.videos ? product.videos[0] : undefined,
-      "Цена продажи": product.price,
-      "Параметр: Бренд": product.vendor,
-      Артикул: product.vendorCode,
       ...getParams(product),
+      "Параметр: Бренд": product.vendor,
+      "Параметр: Коллекция": product.seriesName,
+      "Параметр: Пол": product.gender,
+      "Параметр: Дата выхода": product.saleDate,
       ...getProperties(product),
       ...getSizes(product),
       "Связанные товары": product.relatedProducts?.join(","),
