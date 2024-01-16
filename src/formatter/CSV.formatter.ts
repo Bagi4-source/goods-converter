@@ -1,12 +1,12 @@
 import { json2csv } from "json-2-csv";
 
 import { type Category, type Product } from "../types";
+import { UTILS } from "../util/formatter.util";
 import {
   Extension,
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
-import {UTILS} from "../util/formatter.util";
 
 export class CSVFormatter implements FormatterAbstract {
   public formatterName = "CSV";

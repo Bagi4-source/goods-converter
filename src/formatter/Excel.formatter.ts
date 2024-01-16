@@ -1,12 +1,12 @@
 import { writeXLSX, utils } from "xlsx";
 
 import { type Category, type Product } from "../types";
+import { UTILS } from "../util/formatter.util";
 import {
   Extension,
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
-import {UTILS} from "../util/formatter.util";
 
 export class ExcelFormatter implements FormatterAbstract {
   public formatterName = "Excel";

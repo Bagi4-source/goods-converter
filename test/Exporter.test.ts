@@ -11,6 +11,9 @@ describe("GoodsExporter", () => {
   it("check export", async () => {
     const data = await exporter.export(products, categories);
 
+    exporter.setFormatter(new Formatters.InsalesFormatter());
+    await exporter.export(products, categories);
+
     expect(data.toString("utf-8")).toMatchSnapshot();
   });
 
