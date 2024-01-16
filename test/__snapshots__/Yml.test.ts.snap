@@ -32,6 +32,7 @@ exports[`YML formatter > should export YML data 1`] = `
         <size name=\\"UK\\" delimiter=\\",\\">36,37,38,39</size>
         <keyword>Обувь</keyword>
         <keyword>Кроссовки</keyword>
+        <saleDate>01.01.2020</saleDate>
         <property name=\\"prop1\\">v1</property>
         <property name=\\"prop2\\">v2</property>
         <param name=\\"param1\\">v1</param>
@@ -82,6 +83,7 @@ exports[`YML formatter > should export YML data 1`] = `
         <series>Jordan 4</series>
         <min-quantity>1</min-quantity>
         <step-quantity>1</step-quantity>
+        <saleDate>01.01.2020</saleDate>
         <property name=\\"seasons\\">spring, summer</property>
         <param name=\\"size\\">44</param>
         <param name=\\"color\\">white</param>

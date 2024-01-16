@@ -76,6 +76,7 @@ export class YMLFormatter implements FormatterAbstract {
         "@_delimiter": size.delimiter,
       })),
       keyword: product.keywords,
+      saleDate: product.saleDate,
       property: product.properties?.map((property) => ({
         "#text": property.value,
         "@_name": property.key,
