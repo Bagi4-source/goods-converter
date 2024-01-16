@@ -115,6 +115,7 @@ export class YMLFormatter implements FormatterAbstract {
         "tn-ved-code": product.codesTN,
       },
       relatedProduct: product.relatedProducts,
+      gender: product.gender,
     };
     if (product.parentId !== undefined) {
       return {

@@ -76,6 +76,7 @@ export const products: Product[] = [
     ],
     relatedProducts: [1234],
     seriesName: "Jordan 4",
+    gender: "Мужское",
   },
   {
     productId: 1,

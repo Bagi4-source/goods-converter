@@ -487,11 +487,17 @@ export interface Product {
    */
   relatedProducts?: number[];
   /**
-   * **Название ряда или серии товара**
+   * **Название коллекции, ряда или серии товара**
    *
    * Пример: Jordan 4
    */
   seriesName?: string;
+  /**
+   * **Пол или название группы потребителей**
+   *
+   * Пример: Дети, Женское, Унисекс
+   */
+  gender?: string;
 }
 
 export enum Vat {
