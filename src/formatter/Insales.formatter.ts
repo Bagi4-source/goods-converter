@@ -96,11 +96,11 @@ export class InsalesFormatter implements FormatterAbstract {
       Изображения: product.images?.join(" "),
       "Ссылка на видео": product.videos ? product.videos[0] : undefined,
       ...getParams(product),
+      ...getProperties(product),
       "Параметр: Бренд": product.vendor,
       "Параметр: Коллекция": product.seriesName,
       "Параметр: Пол": product.gender,
       "Параметр: Дата выхода": product.saleDate,
-      ...getProperties(product),
       ...getSizes(product),
       "Связанные товары": product.relatedProducts?.join(","),
     }));
