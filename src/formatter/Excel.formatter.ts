@@ -1,4 +1,4 @@
-import { writeXLSX, utils } from "xlsx";
+import xlsx from "xlsx";
 
 import { type Category, type Product } from "../types";
 import { UTILS } from "../util/formatter.util";
@@ -7,6 +7,7 @@ import {
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
+const { writeXLSX, utils } = xlsx;
 
 export class ExcelFormatter implements FormatterAbstract {
   public formatterName = "Excel";
