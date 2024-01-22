@@ -23,4 +23,5 @@ export enum Extension {
   CSV = "csv",
   YML = "yml",
   XLSX = "xlsx",
+  JSON = "json",
 }

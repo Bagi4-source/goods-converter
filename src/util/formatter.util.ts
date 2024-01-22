@@ -35,7 +35,7 @@ const getProperties = (
 
 const getSizes = (
   product: Product,
-  option?: FormatterOptions,
+  _?: FormatterOptions,
 ): Record<string, string> => {
   const sizes: Record<string, string> = {};
   product.sizes?.forEach(
