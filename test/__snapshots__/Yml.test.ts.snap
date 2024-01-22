@@ -11,6 +11,11 @@ exports[`YML formatter > should export YML data 1`] = `
       <category id=\\"2\\" parentId=\\"3\\">Одежда, обувь и аксессуары</category>
       <category id=\\"3\\">Все товары</category>
     </categories>
+    <brands>
+      <category id=\\"1\\">Adidas</category>
+      <category id=\\"2\\" url=\\"url\\">Nike</category>
+      <category id=\\"3\\">New Balance</category>
+    </brands>
     <offers>
       <offer id=\\"1111\\">
         <name>Title</name>

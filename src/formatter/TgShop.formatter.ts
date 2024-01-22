@@ -1,6 +1,6 @@
 import xlsx from "xlsx";
 
-import { type Category, type IParam, type Product } from "../types";
+import { type Brand, type Category, type IParam, type Product } from "../types";
 import {
   Extension,
   type FormatterAbstract,
@@ -14,7 +14,8 @@ export class TgShopFormatter implements FormatterAbstract {
   public async format(
     products: Product[],
     categories?: Category[],
-    _?: FormatterOptions,
+    _?: Brand[],
+    __?: FormatterOptions,
   ): Promise<Buffer> {
     const getParameter = (product: Product, key: string): IParam | undefined =>
       product.params?.find((value) => value.key === key);

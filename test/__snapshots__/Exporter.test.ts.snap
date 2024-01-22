@@ -4,13 +4,12 @@ exports[`GoodsExporter > check export 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
 <yml_catalog date=\\"2020-01-01T00:00:00\\">
   <shop>
-    <name>ShopName</name>
-    <company>CompanyName</company>
     <categories>
       <category id=\\"1\\" parentId=\\"2\\">Обувь</category>
       <category id=\\"2\\" parentId=\\"3\\">Одежда, обувь и аксессуары</category>
       <category id=\\"3\\">Все товары</category>
     </categories>
+    <brands></brands>
     <offers>
       <offer id=\\"1111\\">
         <name>Title</name>
@@ -124,13 +123,12 @@ exports[`GoodsExporter > check export with transformers 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
 <yml_catalog date=\\"2020-01-01T00:00:00\\">
   <shop>
-    <name>ShopName</name>
-    <company>CompanyName</company>
     <categories>
       <category id=\\"1\\" parentId=\\"2\\">Обувь</category>
       <category id=\\"2\\" parentId=\\"3\\">Одежда, обувь и аксессуары</category>
       <category id=\\"3\\">Все товары</category>
     </categories>
+    <brands></brands>
     <offers>
       <offer id=\\"1111\\">
         <name>Title</name>

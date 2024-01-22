@@ -1,4 +1,4 @@
-import { type Product, type Category } from "../types";
+import { type Product, type Category, type Brand } from "../types";
 import {
   Extension,
   type FormatterAbstract,
@@ -12,10 +12,12 @@ export class JSONFormatter implements FormatterAbstract {
   public async format(
     products: Product[],
     categories?: Category[],
+    brands?: Brand[],
     _?: FormatterOptions,
   ): Promise<string> {
     const result = {
       categories,
+      brands,
       products,
     };
 

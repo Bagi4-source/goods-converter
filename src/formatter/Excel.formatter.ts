@@ -1,6 +1,6 @@
 import xlsx from "xlsx";
 
-import { type Category, type Product } from "../types";
+import { type Brand, type Category, type Product } from "../types";
 import { UTILS } from "../util/formatter.util";
 import {
   Extension,
@@ -16,6 +16,7 @@ export class ExcelFormatter implements FormatterAbstract {
   public async format(
     products: Product[],
     categories?: Category[],
+    _?: Brand[],
     options?: FormatterOptions,
   ): Promise<Buffer> {
     const mappedCategories: Record<number, string> = {};

@@ -13,7 +13,7 @@ export tasks with ease.
 
 ## Features
 
-- Export goods data to YML, CSV, and Excel formats.
+- Export goods data to JSON, YML, CSV, and Excel formats.
 - Easily integrate into your JavaScript projects.
 - Compatible with Node.js version 16 and above.
 - Comprehensive TypeScript type definitions included.
@@ -21,6 +21,7 @@ export tasks with ease.
 ## Supported formats
 
 - YML (Yandex Market Language)
+- JSON
 - CSV
 - Excel
 - TgShop

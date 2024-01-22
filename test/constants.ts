@@ -1,4 +1,4 @@
-import { type Category, Currency, type Product, Vat } from "../src";
+import { type Brand, type Category, Currency, type Product, Vat } from "../src";
 
 export const products: Product[] = [
   {
@@ -147,4 +147,10 @@ export const categories: Category[] = [
   { id: 1, parentId: 2, name: "Обувь" },
   { id: 2, parentId: 3, name: "Одежда, обувь и аксессуары" },
   { id: 3, name: "Все товары" },
+];
+
+export const brands: Brand[] = [
+  { id: 1, name: "Adidas" },
+  { id: 2, name: "Nike", coverURL: "url" },
+  { id: 3, name: "New Balance" },
 ];

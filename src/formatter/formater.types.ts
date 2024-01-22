@@ -1,4 +1,4 @@
-import { type Category, type Product } from "../types";
+import { type Brand, type Category, type Product } from "../types";
 
 export abstract class FormatterAbstract {
   public abstract formatterName: string;
@@ -7,6 +7,7 @@ export abstract class FormatterAbstract {
   public abstract format(
     products: Product[],
     categories?: Category[],
+    brands?: Brand[],
     option?: FormatterOptions,
   ): Promise<Buffer | string>;
 }

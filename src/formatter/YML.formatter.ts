@@ -1,6 +1,6 @@
 import { XMLBuilder } from "fast-xml-parser";
 
-import { type Product, type Category } from "../types";
+import { type Product, type Category, type Brand } from "../types";
 import {
   Extension,
   type FormatterAbstract,
@@ -19,17 +19,9 @@ export class YMLFormatter implements FormatterAbstract {
   public async format(
     products: Product[],
     categories?: Category[],
+    brands?: Brand[],
     options?: FormatterOptions,
   ): Promise<string> {
-    const mappedCategories = {
-      category: categories?.map((cat) => ({
-        "@_id": cat.id,
-        "@_parentId": cat.parentId,
-        "#text": cat.name,
-      })),
-    };
-    const shopName = options?.shopName ?? "ShopName";
-    const companyName = options?.companyName ?? "CompanyName";
     const offers = { offer: products.map(this.getOffers) };
     const result = {
       "?xml": {
@@ -40,15 +32,36 @@ export class YMLFormatter implements FormatterAbstract {
       yml_catalog: {
         "@_date": new Date().toISOString().replace(/.\d+Z/, ""),
         shop: {
-          name: shopName,
-          company: companyName,
-          categories: mappedCategories,
+          name: options?.shopName,
+          company: options?.companyName,
+          categories: this.getCategories(categories),
+          brands: this.getBrands(brands),
           offers,
         },
       },
     };
 
     return this.builder.build(result);
+  }
+
+  private getBrands(brands?: Brand[]) {
+    return {
+      category: brands?.map((brand) => ({
+        "@_id": brand.id,
+        "@_url": brand.coverURL,
+        "#text": brand.name,
+      })),
+    };
+  }
+
+  private getCategories(categories?: Category[]) {
+    return {
+      category: categories?.map((cat) => ({
+        "@_id": cat.id,
+        "@_parentId": cat.parentId,
+        "#text": cat.name,
+      })),
+    };
   }
 
   private getOffers(product: Product): any {

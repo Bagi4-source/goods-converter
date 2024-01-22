@@ -1,6 +1,6 @@
 import { json2csv } from "json-2-csv";
 
-import { type Category, type Product } from "../types";
+import { type Brand, type Category, type Product } from "../types";
 import {
   Extension,
   type FormatterAbstract,
@@ -14,7 +14,8 @@ export class TildaFormatter implements FormatterAbstract {
   public async format(
     products: Product[],
     categories?: Category[],
-    _?: FormatterOptions,
+    _?: Brand[],
+    __?: FormatterOptions,
   ): Promise<string> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));

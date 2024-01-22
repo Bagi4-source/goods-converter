@@ -5,7 +5,7 @@ import {
   type FormatterOptions,
   Formatters,
 } from "../formatter";
-import { type Category, type Product } from "../types";
+import { type Brand, type Category, type Product } from "../types";
 import { type Exporter, type Transformer } from "./exporter.types";
 
 import * as fs from "fs";
@@ -35,6 +35,7 @@ export class GoodsExporter {
   async export(
     products: Product[],
     categories?: Category[],
+    brands?: Brand[],
     option?: FormatterOptions,
   ): Promise<Buffer> {
     const copyProducts = deepcopy(products);
@@ -49,6 +50,7 @@ export class GoodsExporter {
     const data = await this.formatter.format(
       transformedProducts,
       categories,
+      brands,
       option,
     );
 
