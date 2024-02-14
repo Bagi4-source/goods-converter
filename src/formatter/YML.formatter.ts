@@ -46,7 +46,7 @@ export class YMLFormatter implements FormatterAbstract {
 
   private getBrands(brands?: Brand[]) {
     return {
-      category: brands?.map((brand) => ({
+      brand: brands?.map((brand) => ({
         "@_id": brand.id,
         "@_url": brand.coverURL,
         "#text": brand.name,

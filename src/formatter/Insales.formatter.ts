@@ -78,6 +78,7 @@ export class InsalesFormatter implements FormatterAbstract {
 
     const data = products.map((product) => ({
       "Внешний ID": product.productId,
+      "Ссылка на товар": product.url,
       Артикул: product.vendorCode,
       "Название товара или услуги": product.title,
       "Старая цена": product.oldPrice,
