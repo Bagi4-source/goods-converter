@@ -19,7 +19,7 @@ export const products: Product[] = [
     purchasePrice: 15000,
     cofinancePrice: 0,
     currency: Currency.RUR,
-    url: undefined,
+    url: "http://localhost:8080/?param1=value1&param2=value2",
     minQuantity: 1,
     stepQuantity: 1,
     disabled: false,

@@ -12,6 +12,7 @@ export class YMLFormatter implements FormatterAbstract {
   public fileExtension = Extension.YML;
   private readonly builder = new XMLBuilder({
     ignoreAttributes: false,
+    processEntities: false,
     format: true,
     cdataPropName: "__cdata",
   });
