@@ -105,6 +105,7 @@ export class InsalesFormatter implements FormatterAbstract {
       "Параметр: Дата выхода": product.saleDate,
       ...getSizes(product),
       "Связанные товары": product.relatedProducts?.join(","),
+      "Ключевые слова": product.keywords?.join(","),
     }));
     const workBook = xlsx.utils.book_new();
     const productsWorkSheet = xlsx.utils.json_to_sheet(data);
