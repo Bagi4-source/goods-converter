@@ -63,14 +63,14 @@ const exporter = new GoodsExporter()
 
 // Define an object 'transformers' that contains data transformation functions.
 const transformers: Transformer[] = [
-    (product) => ({
+    (products) => products.map(product => ({
         ...product,
         price: product.price + 10000
-    }),
-    (product) => ({
+    })),
+    (products) => products.map(product => ({
         ...product,
         images: product.images?.map(image => image.replace("image", "pic"))
-    })
+    }))
 ]
 
 // Set the formatter for exporting data to YML.
