@@ -1,5 +1,3 @@
-import deepcopy from "deepcopy";
-
 import {
   type FormatterAbstract,
   type FormatterOptions,
@@ -38,15 +36,11 @@ export class GoodsExporter {
     brands?: Brand[],
     option?: FormatterOptions,
   ): Promise<Buffer> {
-    const copyProducts = deepcopy(products);
-    const transformedProducts = await Promise.all(
-      copyProducts.map(async (product) => {
-        let transformedProduct: Product = product;
-        for (const transformer of this.transformers)
-          transformedProduct = await transformer(transformedProduct);
-        return transformedProduct;
-      }),
-    );
+    let transformedProducts: Product[] = products;
+
+    for (const transformer of this.transformers)
+      transformedProducts = await transformer(transformedProducts);
+
     const data = await this.formatter.format(
       transformedProducts,
       categories,

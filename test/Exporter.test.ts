@@ -23,11 +23,13 @@ describe("GoodsExporter", () => {
       return data;
     });
     exporter.setTransformers([
-      (product) => ({
-        ...product,
-        price: product.price + 10000,
-        images: product.images?.map((image) => image.replace("image", "pic")),
-      }),
+      (products) => {
+        return products.map((product) => ({
+          ...product,
+          price: product.price + 10000,
+          images: product.images?.map((image) => image.replace("image", "pic")),
+        }));
+      },
     ]);
 
     const data = await exporter.export(products, categories);
