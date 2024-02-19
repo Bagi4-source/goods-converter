@@ -41,16 +41,6 @@ export class InsalesFormatter implements FormatterAbstract {
       return properties;
     };
 
-    const getSizes = (product: Product): Record<string, string> => {
-      const sizes: Record<string, string> = {};
-
-      product.sizes?.forEach(
-        ({ name, value }) => (sizes[`Размеры [${name}]:`] = value),
-      );
-
-      return sizes;
-    };
-
     const getCategories = (product: Product) => {
       const categories: Record<string, string> = {};
       const categoryList = new Array<string>();
@@ -103,7 +93,7 @@ export class InsalesFormatter implements FormatterAbstract {
       "Параметр: Коллекция": product.seriesName,
       "Параметр: Пол": product.gender,
       "Параметр: Дата выхода": product.saleDate,
-      ...getSizes(product),
+      "Размерная сетка": product.sizes,
       "Связанные товары": product.relatedProducts?.join(","),
       "Ключевые слова": product.keywords?.join(","),
     }));
