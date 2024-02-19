@@ -93,7 +93,7 @@ export class InsalesFormatter implements FormatterAbstract {
       "Параметр: Коллекция": product.seriesName,
       "Параметр: Пол": product.gender,
       "Параметр: Дата выхода": product.saleDate,
-      "Размерная сетка": product.sizes,
+      "Размерная сетка": JSON.stringify(product.sizes),
       "Связанные товары": product.relatedProducts?.join(","),
       "Ключевые слова": product.keywords?.join(","),
     }));
