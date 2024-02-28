@@ -3,25 +3,28 @@ import { describe, expect, it, vi } from "vitest";
 import { Formatters, GoodsExporter } from "../src";
 import { categories, products } from "./constants";
 
+import { PassThrough } from "stream";
+
 describe("GoodsExporter", () => {
   vi.useFakeTimers().setSystemTime(new Date("2020-01-01"));
-
   const exporter = new GoodsExporter();
 
   it("check export", async () => {
-    const data = await exporter.export(products, categories);
-
-    exporter.setFormatter(new Formatters.InsalesFormatter());
     await exporter.export(products, categories);
+  });
 
-    expect(data.toString("utf-8")).toMatchSnapshot();
+  it("check export with formatter", async () => {
+    const stream = new PassThrough();
+    exporter.setExporter(() => stream);
+    exporter.setFormatter(new Formatters.CSVFormatter());
+    await exporter.export(products, categories);
+    expect(stream).toMatchSnapshot();
   });
 
   it("check export with transformers", async () => {
+    const stream = new PassThrough();
+    exporter.setExporter(() => stream);
     exporter.setFormatter(new Formatters.YMLFormatter());
-    exporter.setExporter((data: Buffer) => {
-      return data;
-    });
     exporter.setTransformers([
       (products) => {
         return products.map((product) => ({
@@ -31,16 +34,17 @@ describe("GoodsExporter", () => {
         }));
       },
     ]);
-
-    const data = await exporter.export(products, categories);
-
-    expect(data.toString("utf-8")).toMatchSnapshot();
+    await exporter.export(products, categories);
+    expect(stream).toMatchSnapshot();
   });
+
   it("check export without transformers", async () => {
-    exporter.setFormatter(new Formatters.ExcelFormatter());
-
-    const data = await exporter.export(products, categories);
-
-    expect(data).toMatchSnapshot();
+    const stream = new PassThrough();
+    exporter.setExporter(() => stream);
+    exporter.setFormatter(new Formatters.CSVFormatter());
+    await exporter.export(products, categories);
+    expect(stream).toMatchSnapshot();
   });
+
+  vi.useFakeTimers().useRealTimers();
 });

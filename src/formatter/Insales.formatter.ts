@@ -1,4 +1,4 @@
-import xlsx from "xlsx";
+import { stream } from "exceljs";
 
 import { type Brand, type Category, type Product } from "../types";
 import {
@@ -6,6 +6,8 @@ import {
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
+
+import { type Stream } from "stream";
 
 export class InsalesFormatter implements FormatterAbstract {
   public formatterName = "Insales";
@@ -16,7 +18,7 @@ export class InsalesFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Buffer> {
+  ): Promise<Stream> {
     const mappedCategories: Record<number, Category> = {};
     categories?.forEach(
       (category) => (mappedCategories[category.id] = category),
@@ -65,43 +67,97 @@ export class InsalesFormatter implements FormatterAbstract {
 
       return categories;
     };
-
-    const data = products.map((product) => ({
-      "Внешний ID": product.productId,
-      "Ссылка на товар": product.url,
-      Артикул: product.vendorCode,
-      "Название товара или услуги": product.title,
-      "Старая цена": product.oldPrice,
-      "Цена продажи": product.price,
-      "Цена закупки": product.purchasePrice,
-      ...getCategories(product),
-      Остаток: product.count,
-      "Штрих-код": product.barcode,
-      "Краткое описание": undefined,
-      "Полное описание": product.description,
-      "Габариты варианта": product.dimensions,
-      Вес: product.weight,
-      "Размещение на сайте": product.available,
-      НДС: product.vat.toString(),
-      "Валюта склада": product.currency.toString(),
-      "Изображения варианта": product.images?.join(" "),
-      Изображения: product.images?.join(" "),
-      "Ссылка на видео": product.videos ? product.videos[0] : undefined,
-      ...getParams(product),
-      ...getProperties(product),
-      "Параметр: Бренд": product.vendor,
-      "Параметр: Коллекция": product.seriesName,
-      "Параметр: Пол": product.gender,
-      "Параметр: Дата выхода": product.saleDate,
-      "Размерная сетка": JSON.stringify(product.sizes),
-      "Связанные товары": product.relatedProducts?.join(","),
-      "Ключевые слова": product.keywords?.join(","),
+    const workbook = new stream.xlsx.WorkbookWriter({});
+    const worksheet = workbook.addWorksheet("products");
+    const columns = new Set<string>([
+      "Внешний ID",
+      "Ссылка на товар",
+      "Артикул",
+      "Корневая",
+      "Подкатегория 1",
+      "Подкатегория 2",
+      "Название товара или услуги",
+      "Старая цена",
+      "Цена продажи",
+      "Cебестоимость",
+      "Категории",
+      "Остаток",
+      "Штрих-код",
+      "Краткое описание",
+      "Полное описание",
+      "Габариты варианта",
+      "Вес",
+      "Размещение на сайте",
+      "НДС",
+      "Валюта склада",
+      "Изображения варианта",
+      "Изображения",
+      "Ссылка на видео",
+      "Параметры",
+      "Свойства",
+      "Параметр: Бренд",
+      "Параметр: Коллекция",
+      "Параметр: Пол",
+      "Параметр: Дата выхода",
+      "Размерная сетка",
+      "Связанные товары",
+      "Ключевые слова",
+    ]);
+    products.forEach((product) => {
+      Object.keys({
+        ...getParams(product),
+        ...getProperties(product),
+      }).forEach((key) => {
+        columns.add(key);
+      });
+    });
+    worksheet.columns = Array.from(columns).map((column) => ({
+      header: column,
+      key: column,
     }));
-    const workBook = xlsx.utils.book_new();
-    const productsWorkSheet = xlsx.utils.json_to_sheet(data);
-
-    xlsx.utils.book_append_sheet(workBook, productsWorkSheet, "products");
-
-    return xlsx.write(workBook, { bookType: "xlsx", type: "buffer" });
+    products.forEach((product) => {
+      const row = {
+        "Внешний ID": product.productId,
+        "Ссылка на товар": product.url,
+        Артикул: product.vendorCode,
+        "Название товара или услуги": product.title,
+        "Старая цена": product.oldPrice,
+        "Цена продажи": product.price,
+        Cебестоимость: product.purchasePrice,
+        ...getCategories(product),
+        Остаток: product.count,
+        "Штрих-код": product.barcode,
+        "Краткое описание": undefined,
+        "Полное описание": product.description,
+        "Габариты варианта": product.dimensions,
+        Вес: product.weight,
+        "Размещение на сайте": product.available,
+        НДС: product.vat.toString(),
+        "Валюта склада": product.currency.toString(),
+        "Изображения варианта":
+          product.parentId === undefined
+            ? product.images?.join(" ")
+            : undefined,
+        Изображения:
+          product.parentId === undefined
+            ? undefined
+            : product.images?.join(" "),
+        "Ссылка на видео": product.videos ? product.videos[0] : undefined,
+        ...getParams(product),
+        ...getProperties(product),
+        "Параметр: Бренд": product.vendor,
+        "Параметр: Коллекция": product.seriesName,
+        "Параметр: Пол": product.gender,
+        "Параметр: Дата выхода": product.saleDate,
+        "Размерная сетка": JSON.stringify(product.sizes),
+        "Связанные товары": product.relatedProducts?.join(","),
+        "Ключевые слова": product.keywords?.join(","),
+      };
+      worksheet.addRow(row).commit();
+    });
+    worksheet.commit();
+    await workbook.commit();
+    // @ts-ignore
+    return workbook.stream;
   }
 }

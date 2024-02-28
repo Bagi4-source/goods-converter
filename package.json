@@ -11,15 +11,15 @@
     "url": "https://github.com/Bagi4-source/goods-converter/issues"
   },
   "name": "goods-exporter",
-  "version": "0.4.7",
+  "version": "0.5.1",
   "description": "A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data export tasks with ease.",
   "main": "./dist/cjs/index.cjs",
+  "type": "module",
   "exports": {
     "require": "./dist/cjs/index.cjs",
     "import": "./dist/esm/index.mjs"
   },
   "types": "./dist/bundle.d.ts",
-  "type": "module",
   "files": [
     "dist"
   ],
@@ -48,17 +48,16 @@
     "market"
   ],
   "dependencies": {
-    "deepcopy": "^2.1.0",
+    "exceljs": "^4.4.0",
     "fast-xml-parser": "^4.3.2",
-    "json-2-csv": "^5.0.1",
-    "xlsx": "^0.18.5"
+    "json-stream-stringify": "^3.1.2",
+    "xml": "^1.0.1"
   },
   "devDependencies": {
     "@rollup/plugin-multi-entry": "^6.0.1",
     "@rollup/plugin-typescript": "^11.1.5",
-    "@types/big-json": "^3.2.3",
-    "@types/jsonstream": "^0.8.33",
     "@types/node": "^20.8.7",
+    "@types/xml": "^1.0.11",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@vitest/coverage-v8": "^0.34.6",
     "eslint": "^8.53.0",

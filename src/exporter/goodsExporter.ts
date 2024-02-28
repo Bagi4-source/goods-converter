@@ -6,14 +6,14 @@ import {
 import { type Brand, type Category, type Product } from "../types";
 import { type Exporter, type Transformer } from "./exporter.types";
 
-import * as fs from "fs";
+import fs from "fs";
 
 export class GoodsExporter {
   private formatter: FormatterAbstract = new Formatters.YMLFormatter();
-  private exporter: Exporter = (data: Buffer) => {
-    const filename = `${this.formatter.formatterName}.output.${this.formatter.fileExtension}`;
-    fs.writeFileSync(filename, data);
-    return data;
+  private exporter: Exporter = () => {
+    return fs.createWriteStream(
+      `${this.formatter.formatterName}.output.${this.formatter.fileExtension}`,
+    );
   };
 
   private transformers = new Array<Transformer>();
@@ -35,22 +35,18 @@ export class GoodsExporter {
     categories?: Category[],
     brands?: Brand[],
     option?: FormatterOptions,
-  ): Promise<Buffer> {
+  ): Promise<void> {
     let transformedProducts: Product[] = products;
 
     for (const transformer of this.transformers)
       transformedProducts = await transformer(transformedProducts);
 
-    const data = await this.formatter.format(
+    const stream = await this.formatter.format(
       transformedProducts,
       categories,
       brands,
       option,
     );
-
-    if (typeof data === "string") {
-      return await this.exporter(Buffer.from(data, "utf-8"));
-    }
-    return await this.exporter(data);
+    stream.pipe(this.exporter());
   }
 }

@@ -1,9 +1,13 @@
-import { type Product, type Category, type Brand } from "../types";
+import { JsonStreamStringify } from "json-stream-stringify";
+
+import { type Brand, type Category, type Product } from "../types";
 import {
   Extension,
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
+
+import { type Stream } from "stream";
 
 export class JSONFormatter implements FormatterAbstract {
   public formatterName = "JSON";
@@ -14,13 +18,11 @@ export class JSONFormatter implements FormatterAbstract {
     categories?: Category[],
     brands?: Brand[],
     _?: FormatterOptions,
-  ): Promise<string> {
-    const result = {
+  ): Promise<Stream> {
+    return new JsonStreamStringify({
       categories,
       brands,
       products,
-    };
-
-    return JSON.stringify(result);
+    });
   }
 }
