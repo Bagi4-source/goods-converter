@@ -1,4 +1,4 @@
-import Excel from "exceljs";
+import { stream } from "exceljs";
 
 import { type Brand, type Category, type Product } from "../types";
 import {
@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { PassThrough, type Readable } from "stream";
+import { type Stream } from "stream";
 
 export class InsalesFormatter implements FormatterAbstract {
   public formatterName = "Insales";
@@ -18,7 +18,7 @@ export class InsalesFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Readable> {
+  ): Promise<Stream> {
     const mappedCategories: Record<number, Category> = {};
     categories?.forEach(
       (category) => (mappedCategories[category.id] = category),
@@ -67,9 +67,7 @@ export class InsalesFormatter implements FormatterAbstract {
 
       return categories;
     };
-    const result = new PassThrough();
-
-    const workbook = new Excel.stream.xlsx.WorkbookWriter({});
+    const workbook = new stream.xlsx.WorkbookWriter({});
     const worksheet = workbook.addWorksheet("products");
     const columns = new Set<string>([
       "Внешний ID",
@@ -160,7 +158,6 @@ export class InsalesFormatter implements FormatterAbstract {
     worksheet.commit();
     await workbook.commit();
     // @ts-ignore
-    workbook.stream.pipe(result);
-    return result;
+    return workbook.stream;
   }
 }

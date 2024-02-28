@@ -1,4 +1,4 @@
-import Excel from "exceljs";
+import { stream } from "exceljs";
 
 import { type Brand, type Category, type Product } from "../types";
 import {
@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { PassThrough, type Readable } from "stream";
+import { type Stream } from "stream";
 
 export class ExcelFormatter implements FormatterAbstract {
   public formatterName = "Excel";
@@ -18,11 +18,9 @@ export class ExcelFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Readable> {
+  ): Promise<Stream> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
-    const result = new PassThrough();
-
     const columns = new Set<string>([
       "url",
       "productId",
@@ -55,7 +53,7 @@ export class ExcelFormatter implements FormatterAbstract {
       });
     });
 
-    const workbook = new Excel.stream.xlsx.WorkbookWriter({});
+    const workbook = new stream.xlsx.WorkbookWriter({});
     const worksheet = workbook.addWorksheet("products");
     worksheet.columns = Array.from(columns).map((column) => ({
       key: column,
@@ -87,7 +85,6 @@ export class ExcelFormatter implements FormatterAbstract {
     worksheet.commit();
     await workbook.commit();
     // @ts-ignore
-    workbook.stream.pipe(result);
-    return result;
+    return workbook.stream;
   }
 }

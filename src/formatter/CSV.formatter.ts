@@ -6,7 +6,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Readable } from "stream";
+import { type Stream } from "stream";
 
 export class CSVFormatter implements FormatterAbstract {
   public formatterName = "CSV";
@@ -17,7 +17,7 @@ export class CSVFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Readable> {
+  ): Promise<Stream> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
 

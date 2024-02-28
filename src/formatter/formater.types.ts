@@ -1,6 +1,6 @@
 import { type Brand, type Category, type Product } from "../types";
 
-import { type Readable } from "stream";
+import { type Stream } from "stream";
 
 export abstract class FormatterAbstract {
   public abstract formatterName: string;
@@ -11,7 +11,7 @@ export abstract class FormatterAbstract {
     categories?: Category[],
     brands?: Brand[],
     option?: FormatterOptions,
-  ): Promise<Readable>;
+  ): Promise<Stream>;
 }
 
 export interface FormatterOptions {

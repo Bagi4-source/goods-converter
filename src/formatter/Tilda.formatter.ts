@@ -6,7 +6,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Readable } from "stream";
+import { type Stream } from "stream";
 
 export class TildaFormatter implements FormatterAbstract {
   public formatterName = "Tilda";
@@ -17,7 +17,7 @@ export class TildaFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Readable> {
+  ): Promise<Stream> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
 

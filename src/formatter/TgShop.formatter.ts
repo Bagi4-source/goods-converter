@@ -1,4 +1,4 @@
-import Excel from "exceljs";
+import { stream } from "exceljs";
 
 import { type Brand, type Category, type IParam, type Product } from "../types";
 import {
@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { PassThrough, type Readable } from "stream";
+import { type Stream } from "stream";
 
 export class TgShopFormatter implements FormatterAbstract {
   public formatterName = "TgShop";
@@ -18,7 +18,7 @@ export class TgShopFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Readable> {
+  ): Promise<Stream> {
     const getParameter = (product: Product, key: string): IParam | undefined =>
       product.params?.find((value) => value.key === key);
 
@@ -38,9 +38,7 @@ export class TgShopFormatter implements FormatterAbstract {
       size: getParameter(product, "size")?.value,
       priority: undefined,
     });
-    const result = new PassThrough();
-
-    const workbook = new Excel.stream.xlsx.WorkbookWriter({});
+    const workbook = new stream.xlsx.WorkbookWriter({});
     const categoryWorksheet = workbook.addWorksheet("categories");
     const productsWorksheet = workbook.addWorksheet("offers");
     categoryWorksheet.columns = [
@@ -91,7 +89,6 @@ export class TgShopFormatter implements FormatterAbstract {
 
     await workbook.commit();
     // @ts-ignore
-    workbook.stream.pipe(result);
-    return result;
+    return workbook.stream;
   }
 }

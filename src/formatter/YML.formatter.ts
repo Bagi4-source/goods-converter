@@ -8,7 +8,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { PassThrough, type Readable } from "stream";
+import { PassThrough, type Stream } from "stream";
 
 export class YMLFormatter implements FormatterAbstract {
   public formatterName = "YMl";
@@ -19,7 +19,7 @@ export class YMLFormatter implements FormatterAbstract {
     categories?: Category[],
     brands?: Brand[],
     options?: FormatterOptions,
-  ): Promise<Readable> {
+  ): Promise<Stream> {
     const result = new PassThrough();
 
     const builder = new XMLBuilder({

@@ -15,4 +15,5 @@ describe("YML formatter", () => {
 
     expect(result).toMatchSnapshot();
   });
+  vi.useFakeTimers().useRealTimers();
 });

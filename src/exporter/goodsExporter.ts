@@ -6,10 +6,10 @@ import {
 import { type Brand, type Category, type Product } from "../types";
 import { type Exporter, type Transformer } from "./exporter.types";
 
-import * as fs from "fs";
+import fs from "fs";
 
 export class GoodsExporter {
-  private formatter: FormatterAbstract = new Formatters.InsalesFormatter();
+  private formatter: FormatterAbstract = new Formatters.YMLFormatter();
   private exporter: Exporter = () => {
     return fs.createWriteStream(
       `${this.formatter.formatterName}.output.${this.formatter.fileExtension}`,
