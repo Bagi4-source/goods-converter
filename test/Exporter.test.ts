@@ -10,11 +10,14 @@ describe("GoodsExporter", () => {
 
   it("check export", async () => {
     const data = await exporter.export(products, categories);
-
-    exporter.setFormatter(new Formatters.InsalesFormatter());
-    await exporter.export(products, categories);
-
     expect(data.toString("utf-8")).toMatchSnapshot();
+  });
+
+  it("check export with formatter", async () => {
+    exporter.setFormatter(new Formatters.InsalesFormatter());
+    const data = await exporter.export(products, categories);
+
+    expect(data).toMatchSnapshot();
   });
 
   it("check export with transformers", async () => {
@@ -36,6 +39,7 @@ describe("GoodsExporter", () => {
 
     expect(data.toString("utf-8")).toMatchSnapshot();
   });
+
   it("check export without transformers", async () => {
     exporter.setFormatter(new Formatters.ExcelFormatter());
 

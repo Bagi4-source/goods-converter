@@ -1,13 +1,13 @@
-import xlsx from "xlsx";
+import Excel from "exceljs";
 
 import { type Brand, type Category, type Product } from "../types";
-import { UTILS } from "../util/formatter.util";
 import {
   Extension,
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
-const { writeXLSX, utils } = xlsx;
+
+import { PassThrough, type Readable } from "stream";
 
 export class ExcelFormatter implements FormatterAbstract {
   public formatterName = "Excel";
@@ -17,32 +17,77 @@ export class ExcelFormatter implements FormatterAbstract {
     products: Product[],
     categories?: Category[],
     _?: Brand[],
-    options?: FormatterOptions,
-  ): Promise<Buffer> {
+    __?: FormatterOptions,
+  ): Promise<Readable> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
+    const result = new PassThrough();
 
-    const data = products.map((product) => ({
-      ...product,
-      category: mappedCategories[product.categoryId],
-      images: product.images?.join(","),
-      videos: product.videos?.join(","),
-      tags: product.tags?.join(","),
-      keywords: product.keywords?.join(","),
-      relatedProducts: product.relatedProducts?.join(","),
-      codesTN: product.codesTN?.join(", "),
-      params: product.params
-        ?.map(({ key, value }) => `${key}=${value}`)
-        .join(","),
-      sizes: undefined,
-      ...UTILS.getParams(product, options),
-      ...UTILS.getProperties(product, options),
-      ...UTILS.getSizes(product, options),
+    const columns = new Set<string>([
+      "url",
+      "productId",
+      "parentId",
+      "variantId",
+      "title",
+      "description",
+      "vendor",
+      "vendorCode",
+      "category",
+      "images",
+      "videos",
+      "price",
+      "oldPrice",
+      "purchasePrice",
+      "currency",
+      "saleDate",
+      "countryOfOrigin",
+      "tags",
+      "codesTN",
+      "params",
+      "properties",
+      "sizes",
+      "keywords",
+      "relatedProducts",
+    ]);
+    products.forEach((product) => {
+      Object.entries(product).forEach(([key, value]) => {
+        if (value) columns.add(key);
+      });
+    });
+
+    const workbook = new Excel.stream.xlsx.WorkbookWriter({});
+    const worksheet = workbook.addWorksheet("products");
+    worksheet.columns = Array.from(columns).map((column) => ({
+      key: column,
+      header: column,
     }));
-    const workBook = utils.book_new();
-    const productsWorkSheet = utils.json_to_sheet(data);
 
-    utils.book_append_sheet(workBook, productsWorkSheet, "products");
-    return writeXLSX(workBook, { type: "buffer" });
+    products.forEach((product) => {
+      const row = {
+        ...product,
+        category: mappedCategories[product.categoryId],
+        images: product.images?.join(","),
+        videos: product.videos?.join(","),
+        tags: product.tags?.join(","),
+        keywords: product.keywords?.join(","),
+        relatedProducts: product.relatedProducts?.join(","),
+        codesTN: product.codesTN?.join(", "),
+        params: product.params
+          ?.map(({ key, value }) => `${key}=${value}`)
+          .join(", "),
+        properties: product.properties
+          ?.map(({ key, value }) => `${key}=${value}`)
+          .join(", "),
+        sizes: product.sizes
+          ?.map(({ name, value }) => `${name}=${value}`)
+          .join(", "),
+      };
+      worksheet.addRow(row).commit();
+    });
+    worksheet.commit();
+    await workbook.commit();
+    // @ts-ignore
+    workbook.stream.pipe(result);
+    return result;
   }
 }

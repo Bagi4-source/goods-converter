@@ -1,4 +1,5 @@
 import { XMLBuilder } from "fast-xml-parser";
+import xml from "xml";
 
 import { type Product, type Category, type Brand } from "../types";
 import {
@@ -7,62 +8,76 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
+import { PassThrough, type Readable } from "stream";
+
 export class YMLFormatter implements FormatterAbstract {
   public formatterName = "YMl";
   public fileExtension = Extension.YML;
-  private readonly builder = new XMLBuilder({
-    ignoreAttributes: false,
-    processEntities: false,
-    format: true,
-    cdataPropName: "__cdata",
-  });
 
   public async format(
     products: Product[],
     categories?: Category[],
     brands?: Brand[],
     options?: FormatterOptions,
-  ): Promise<string> {
-    const offers = { offer: products.map(this.getOffers) };
-    const result = {
-      "?xml": {
-        "@_version": "1.0",
-        "@_encoding": "UTF-8",
-        "@_standalone": "yes",
-      },
-      yml_catalog: {
-        "@_date": new Date().toISOString().replace(/.\d+Z/, ""),
-        shop: {
-          name: options?.shopName,
-          company: options?.companyName,
-          categories: this.getCategories(categories),
-          brands: this.getBrands(brands),
-          offers,
-        },
-      },
-    };
+  ): Promise<Readable> {
+    const result = new PassThrough();
 
-    return this.builder.build(result);
+    const builder = new XMLBuilder({
+      ignoreAttributes: false,
+      cdataPropName: "__cdata",
+    });
+
+    const ymlCatalog = xml.element({
+      _attr: { date: new Date().toISOString().replace(/.\d+Z/, "") },
+    });
+    const stream = xml(
+      { yml_catalog: ymlCatalog },
+      {
+        stream: true,
+        declaration: { standalone: "yes", encoding: "UTF-8" },
+      },
+    );
+
+    const shop = xml.element();
+    const streamShop = xml({ shop }, { stream: true });
+    shop.push({ name: options?.shopName });
+    shop.push({ company: options?.companyName });
+    shop.push({ categories: this.getCategories(categories) });
+    shop.push({ brands: this.getBrands(brands) });
+    streamShop.pipe(result, { end: false });
+
+    const offers = xml.element();
+    const streamOffers = xml({ offers }, { stream: true });
+    streamOffers.pipe(result, { end: false });
+
+    products.forEach((product) => {
+      result.write(builder.build({ offer: this.getOffers(product) }));
+    });
+
+    stream.pipe(result, { end: false });
+
+    offers.close();
+    shop.close();
+    ymlCatalog.close();
+    return result;
   }
 
   private getBrands(brands?: Brand[]) {
-    return {
-      brand: brands?.map((brand) => ({
-        "@_id": brand.id,
-        "@_url": brand.coverURL,
-        "#text": brand.name,
-      })),
-    };
+    return brands?.map((brand) => ({
+      brand: [
+        { _attr: { id: brand.id, url: brand.coverURL ?? "" } },
+        brand.name,
+      ],
+    }));
   }
 
   private getCategories(categories?: Category[]) {
-    return {
-      category: categories?.map((cat) => ({
-        "@_id": cat.id,
-        "@_parentId": cat.parentId,
-        "#text": cat.name,
-      })),
-    };
+    return categories?.map((cat) => ({
+      category: [
+        { _attr: { id: cat.id, parentId: cat.parentId ?? "" } },
+        cat.name,
+      ],
+    }));
   }
 
   private getOffers(product: Product): any {

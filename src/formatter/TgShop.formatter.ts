@@ -1,4 +1,4 @@
-import xlsx from "xlsx";
+import Excel from "exceljs";
 
 import { type Brand, type Category, type IParam, type Product } from "../types";
 import {
@@ -6,6 +6,8 @@ import {
   type FormatterAbstract,
   type FormatterOptions,
 } from "./formater.types";
+
+import { PassThrough, type Readable } from "stream";
 
 export class TgShopFormatter implements FormatterAbstract {
   public formatterName = "TgShop";
@@ -16,10 +18,11 @@ export class TgShopFormatter implements FormatterAbstract {
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Buffer> {
+  ): Promise<Readable> {
     const getParameter = (product: Product, key: string): IParam | undefined =>
       product.params?.find((value) => value.key === key);
-    const productsData = products.map((product) => ({
+
+    const convertProduct = (product: Product) => ({
       "category id": product.categoryId,
       "group id": product.parentId,
       "id product": product.variantId,
@@ -29,20 +32,66 @@ export class TgShopFormatter implements FormatterAbstract {
       vendorCode: product.vendorCode,
       oldprice: product.oldPrice,
       description: product.description,
-      shortDescription: product.description,
+      shortDescription: "",
       quantityInStock: product.count,
       color: getParameter(product, "color")?.value,
       size: getParameter(product, "size")?.value,
       priority: undefined,
+    });
+    const result = new PassThrough();
+
+    const workbook = new Excel.stream.xlsx.WorkbookWriter({});
+    const categoryWorksheet = workbook.addWorksheet("categories");
+    const productsWorksheet = workbook.addWorksheet("offers");
+    categoryWorksheet.columns = [
+      {
+        header: "id",
+        key: "id",
+      },
+      {
+        header: "parentId",
+        key: "parentId",
+      },
+      {
+        header: "name",
+        key: "name",
+      },
+    ];
+    const columns = [
+      "category id",
+      "group id",
+      "id product",
+      "name product",
+      "price",
+      "picture",
+      "vendorCode",
+      "oldprice",
+      "description",
+      "shortDescription",
+      "quantityInStock",
+      "color",
+      "size",
+      "priority",
+    ];
+
+    productsWorksheet.columns = columns.map((column) => ({
+      header: column,
+      key: column,
     }));
 
-    const workBook = xlsx.utils.book_new();
-    const productsWorkSheet = xlsx.utils.json_to_sheet(productsData);
-    const categoriesWorkSheet = xlsx.utils.json_to_sheet(categories ?? []);
+    categories?.forEach((category) => {
+      categoryWorksheet.addRow(category).commit();
+    });
 
-    xlsx.utils.book_append_sheet(workBook, categoriesWorkSheet, "categories");
-    xlsx.utils.book_append_sheet(workBook, productsWorkSheet, "offers");
+    products.forEach((product) => {
+      productsWorksheet.addRow(convertProduct(product)).commit();
+    });
+    categoryWorksheet.commit();
+    productsWorksheet.commit();
 
-    return xlsx.write(workBook, { bookType: "xlsx", type: "buffer" });
+    await workbook.commit();
+    // @ts-ignore
+    workbook.stream.pipe(result);
+    return result;
   }
 }
