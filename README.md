@@ -17,6 +17,7 @@ export tasks with ease.
 - Easily integrate into your JavaScript projects.
 - Compatible with Node.js version 16 and above.
 - Comprehensive TypeScript type definitions included.
+- Supports streams.
 
 ## Supported formats
 
@@ -41,7 +42,8 @@ yarn add goods-exporter
 ## Quick start
 
 ```typescript
-import { GoodsExporter, Product, Category, Formatters } from '../src'
+import { GoodsExporter, Product, Category, Formatters } from '../src';
+import { PassThrough } from "stream";
 
 // Create an instance of the GoodsExporter class.
 const exporter = new GoodsExporter()
@@ -50,7 +52,19 @@ const products: Product[] = [] // Put your products;
 const categories: Category[] = [{ id: 1, name: 'Обувь' }]
 
 // Call the data export method.
-exporter.export(products, categories)
+const stream = new PassThrough();
+exporter.setExporter(() => stream);
+exporter.setFormatter(new Formatters.YMLFormatter());
+exporter.setTransformers([
+  (products) => {
+    return products.map((product) => ({
+      ...product,
+      price: product.price + 10000,
+      images: product.images?.map((image) => image.replace("image", "pic")),
+    }));
+  },
+]);
+await exporter.export(products, categories);
 ```
 
 ## Example
@@ -80,16 +94,8 @@ exporter.setFormatter(new Formatters.YMLFormatter()) // or your own Formatter;
 exporter.setTransformers(transformers);
 
 // Set an exporter that saves the data to the "output.yml" file.
-exporter.setExporter((data: Buffer) => {
-    fs.writeFileSync("output.yml", data); // Write data to the "output.yml" file.
-    return data; // Return the data (you can return any type).
-});
-
-// Call the data export method specifying the data type (Buffer) and expect the result as a promise.
-exporter.export<Buffer>(products, categories)
-    .then(data => {
-        // Here, you can add additional handling for the export result if needed.
-    });
+exporter.setExporter(fs.createWriteStream("output.yml"));
+await exporter.export(products, categories);
 ```
 
 # Supported by [PoizonAPI](https://t.me/PoizonAPI) 

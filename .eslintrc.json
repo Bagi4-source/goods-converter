@@ -24,7 +24,12 @@
         "sourceType": "module"
     },
     "rules": {
-        "prettier/prettier": "error",
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
         "arrow-body-style": "off",
         "no-inline-comments": "off",
         "@typescript-eslint/prefer-ts-expect-error": "off",
