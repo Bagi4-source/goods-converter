@@ -1,4 +1,4 @@
-import { stream } from "exceljs";
+import pkg from "exceljs";
 
 import { type Brand, type Category, type Product } from "../types";
 import {
@@ -8,6 +8,7 @@ import {
 } from "./formater.types";
 
 import { type Stream } from "stream";
+const { stream } = pkg;
 
 export class InsalesFormatter implements FormatterAbstract {
   public formatterName = "Insales";
