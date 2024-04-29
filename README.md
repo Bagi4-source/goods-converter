@@ -23,6 +23,7 @@ export tasks with ease.
 
 - YML (Yandex Market Language)
 - JSON
+- SimpleJSON (grouped)
 - CSV
 - Excel
 - TgShop

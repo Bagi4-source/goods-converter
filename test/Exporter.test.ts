@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { Formatters, GoodsExporter } from "../src";
-import { categories, products } from "./constants";
+import { brands, categories, products } from "./constants";
 
 import { PassThrough } from "stream";
 
@@ -10,7 +10,7 @@ describe("GoodsExporter", () => {
   const exporter = new GoodsExporter();
 
   it("check export", async () => {
-    await exporter.export(products, categories);
+    await exporter.export(products, categories, brands);
   });
 
   it("check export with formatter", async () => {

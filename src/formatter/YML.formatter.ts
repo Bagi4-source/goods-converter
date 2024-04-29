@@ -37,6 +37,7 @@ export class YMLFormatter implements FormatterAbstract {
         declaration: { standalone: "yes", encoding: "UTF-8" },
       },
     );
+    stream.pipe(result, { end: false });
 
     const shop = xml.element();
     const streamShop = xml({ shop }, { stream: true });
@@ -47,14 +48,15 @@ export class YMLFormatter implements FormatterAbstract {
     streamShop.pipe(result, { end: false });
 
     const offers = xml.element();
-    const streamOffers = xml({ offers }, { stream: true });
-    streamOffers.pipe(result, { end: false });
+    const streamOffersTag = xml({ offers }, { stream: true });
+    streamOffersTag.pipe(result, { end: false });
+
+    const streamOffers = new PassThrough();
 
     products.forEach((product) => {
-      result.write(builder.build({ offer: this.getOffers(product) }));
+      streamOffers.write(builder.build({ offer: this.getOffer(product) }));
     });
-
-    stream.pipe(result, { end: false });
+    streamOffers.pipe(result, { end: false });
 
     offers.close();
     shop.close();
@@ -80,7 +82,7 @@ export class YMLFormatter implements FormatterAbstract {
     }));
   }
 
-  private getOffers(product: Product): any {
+  private getOffer(product: Product): any {
     const result = {
       "@_id": product.variantId,
       name: product.title,
@@ -91,6 +93,7 @@ export class YMLFormatter implements FormatterAbstract {
       cofinance_price: product.cofinancePrice,
       currencyId: product.currency,
       categoryId: product.categoryId,
+      vendorId: product.vendorId,
       vendor: product.vendor,
       vendorCode: product.vendorCode,
       picture: product.images,
