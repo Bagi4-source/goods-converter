@@ -93,6 +93,7 @@ export class YMLFormatter implements FormatterAbstract {
       cofinance_price: product.cofinancePrice,
       currencyId: product.currency,
       categoryId: product.categoryId,
+      vendorId: product.vendorId,
       vendor: product.vendor,
       vendorCode: product.vendorCode,
       picture: product.images,
