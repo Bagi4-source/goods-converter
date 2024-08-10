@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Stream } from "stream";
+import { PassThrough, type Stream } from "stream";
 const { stream } = pkg;
 
 export class InsalesFormatter implements FormatterAbstract {
@@ -68,7 +68,10 @@ export class InsalesFormatter implements FormatterAbstract {
 
       return categories;
     };
-    const workbook = new stream.xlsx.WorkbookWriter({});
+    const passThroughStream = new PassThrough();
+    const workbook = new stream.xlsx.WorkbookWriter({
+      stream: passThroughStream,
+    });
     const worksheet = workbook.addWorksheet("products");
     const columns = new Set<string>([
       "Внешний ID",
@@ -158,7 +161,7 @@ export class InsalesFormatter implements FormatterAbstract {
     });
     worksheet.commit();
     await workbook.commit();
-    // @ts-ignore
-    return workbook.stream;
+    passThroughStream.end();
+    return passThroughStream;
   }
 }

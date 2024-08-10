@@ -1,19 +1,30 @@
 import { expect, describe, it, vi } from "vitest";
 
 import { Formatters } from "../src";
+import { streamToBuffer } from "../src/utils/streamToBuffer";
 import { brands, categories, products } from "./constants";
+
+import { afterEach } from "node:test";
 
 describe("YML formatter", () => {
   const formatter = new Formatters.YMLFormatter();
-  vi.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
+  afterEach(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
 
   it("should export YML data", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+
     const result = await formatter.format(products, categories, brands, {
       shopName: "Bagi4",
       companyName: "Bagi4",
     });
 
-    expect(result).toMatchSnapshot();
+    const resultString = await streamToBuffer(result);
+
+    expect(resultString.toString()).toMatchSnapshot();
   });
-  vi.useFakeTimers().useRealTimers();
 });
