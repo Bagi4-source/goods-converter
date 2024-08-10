@@ -1,12 +1,24 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Formatters, GoodsExporter } from "../src";
 import { brands, categories, products } from "./constants";
 
 import { PassThrough } from "stream";
+import { streamToBuffer } from "../src/utils/streamToBuffer";
 
 describe("GoodsExporter", () => {
-  vi.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  // vi.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
+  beforeEach(() => {
+    // tell vitest we use mocked time
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+  });
+
+  afterEach(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
   const exporter = new GoodsExporter();
 
   it("check export", async () => {
@@ -18,7 +30,9 @@ describe("GoodsExporter", () => {
     exporter.setExporter(() => stream);
     exporter.setFormatter(new Formatters.CSVFormatter());
     await exporter.export(products, categories);
-    expect(stream).toMatchSnapshot();
+    const resultString = await streamToBuffer(stream);
+
+    expect(resultString.toString()).toMatchSnapshot();
   });
 
   it("check export with transformers", async () => {
@@ -35,7 +49,9 @@ describe("GoodsExporter", () => {
       },
     ]);
     await exporter.export(products, categories);
-    expect(stream).toMatchSnapshot();
+    const resultString = await streamToBuffer(stream);
+
+    expect(resultString.toString()).toMatchSnapshot();
   });
 
   it("check export without transformers", async () => {
@@ -43,7 +59,9 @@ describe("GoodsExporter", () => {
     exporter.setExporter(() => stream);
     exporter.setFormatter(new Formatters.CSVFormatter());
     await exporter.export(products, categories);
-    expect(stream).toMatchSnapshot();
+    const resultString = await streamToBuffer(stream);
+
+    expect(resultString.toString()).toMatchSnapshot();
   });
 
   vi.useFakeTimers().useRealTimers();

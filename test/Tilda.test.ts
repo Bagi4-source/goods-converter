@@ -1,6 +1,7 @@
 import { expect, describe, it } from "vitest";
 
 import { Formatters } from "../src";
+import { streamToBuffer } from "../src/utils/streamToBuffer";
 import { categories, products } from "./constants";
 
 describe("Tilda formatter", () => {
@@ -8,6 +9,8 @@ describe("Tilda formatter", () => {
 
   it("should export Tilda csv data", async () => {
     const result = await formatter.format(products, categories);
-    expect(result).toMatchSnapshot();
+    const resultString = await streamToBuffer(result);
+
+    expect(resultString.toString()).toMatchSnapshot();
   });
 });

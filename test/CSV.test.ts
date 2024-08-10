@@ -1,3 +1,4 @@
+import { streamToBuffer } from "../src/utils/streamToBuffer";
 import { expect, describe, it } from "vitest";
 
 import { Formatters } from "../src";
@@ -8,6 +9,8 @@ describe("CSV formatter", () => {
 
   it("should export CSV data", async () => {
     const result = await formatter.format(products, categories, undefined);
-    expect(result).toMatchSnapshot();
+    const resultString = await streamToBuffer(result);
+
+    expect(resultString.toString()).toMatchSnapshot();
   });
 });

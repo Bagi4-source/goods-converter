@@ -1,3 +1,4 @@
+import { streamToBuffer } from "../src/utils/streamToBuffer";
 import { expect, describe, it } from "vitest";
 
 import { Formatters } from "../src";
@@ -9,6 +10,8 @@ describe("JSON formatter", () => {
   it("should export JSON data", async () => {
     const result = await formatter.format(products, categories, brands);
 
-    expect(result).toMatchSnapshot();
+    const resultString = await streamToBuffer(result);
+
+    expect(resultString.toString()).toMatchSnapshot();
   });
 });

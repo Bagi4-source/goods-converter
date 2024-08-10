@@ -2,6 +2,7 @@ node_modules
 .idea
 dist
 .rollup.cache
-coverage
+coverage/*
+!coverage/coverage-summary.json
 update-readme-version.js
 output.yml

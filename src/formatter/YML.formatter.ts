@@ -1,5 +1,4 @@
 import { XMLBuilder } from "fast-xml-parser";
-import xml from "xml";
 
 import { type Product, type Category, type Brand } from "../types";
 import {
@@ -25,60 +24,98 @@ export class YMLFormatter implements FormatterAbstract {
     const builder = new XMLBuilder({
       ignoreAttributes: false,
       cdataPropName: "__cdata",
+      format: true,
+      indentBy: "  ",
     });
 
-    const ymlCatalog = xml.element({
-      _attr: { date: new Date().toISOString().replace(/.\d+Z/, "") },
-    });
-    const stream = xml(
-      { yml_catalog: ymlCatalog },
-      {
-        stream: true,
-        declaration: { standalone: "yes", encoding: "UTF-8" },
-      },
-    );
-    stream.pipe(result, { end: false });
+    const date = new Date().toISOString().replace(/.\d+Z/, "");
 
-    const shop = xml.element();
-    const streamShop = xml({ shop }, { stream: true });
-    shop.push({ name: options?.shopName });
-    shop.push({ company: options?.companyName });
-    shop.push({ categories: this.getCategories(categories) });
-    shop.push({ brands: this.getBrands(brands) });
-    streamShop.pipe(result, { end: false });
+    // Начинаем формирование XML
+    result.write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n');
+    result.write('<yml_catalog date="' + date + '">\n');
 
-    const offers = xml.element();
-    const streamOffersTag = xml({ offers }, { stream: true });
-    streamOffersTag.pipe(result, { end: false });
+    // Открываем тег <shop>
+    result.write("<shop>\n");
 
-    const streamOffers = new PassThrough();
+    // Добавляем информацию о магазине
+    if (options?.shopName) {
+      result.write(builder.build({ name: options.shopName }));
+      result.write("\n");
+    }
+    if (options?.companyName) {
+      result.write(builder.build({ company: options.companyName }));
+      result.write("\n");
+    }
 
+    // Добавляем категории и бренды
+    if (categories) {
+      result.write(
+        builder.build({
+          // tagname: "categories",
+          categories: { category: this.getCategories(categories) },
+        }),
+      );
+      result.write("\n");
+    }
+    if (brands) {
+      result.write(
+        builder.build({ brands: { brand: this.getBrands(brands) } }),
+      );
+      result.write("\n");
+    }
+
+    // Открываем секцию <offers>
+    result.write("<offers>\n");
+
+    // Создаем поток для обработки offer элементов
+    const offerStream = new PassThrough();
+
+    // Пайпим поток offer элементов в основной итоговый поток
+    offerStream.pipe(result, { end: false });
+
+    // Записываем каждый продукт в поток
     products.forEach((product) => {
-      streamOffers.write(builder.build({ offer: this.getOffer(product) }));
+      const offer = builder.build({ offer: this.getOffer(product) });
+      offerStream.write(offer + "\n");
     });
-    streamOffers.pipe(result, { end: false });
 
-    offers.close();
-    shop.close();
-    ymlCatalog.close();
+    // Завершаем поток offer
+    offerStream.end();
+
+    offerStream.on("end", () => {
+      // Закрываем секцию <offers>
+      result.write("</offers>\n");
+
+      // Закрываем тег <shop>
+      result.write("</shop>\n");
+
+      // Закрываем тег <yml_catalog>
+      result.write("</yml_catalog>\n");
+
+      // Завершаем итоговый поток
+      result.end();
+    });
+
     return result;
   }
 
   private getBrands(brands?: Brand[]) {
-    return brands?.map((brand) => ({
-      brand: [
-        { _attr: { id: brand.id, url: brand.coverURL ?? "" } },
-        brand.name,
-      ],
+    if (!brands) return [];
+
+    return brands.map((brand) => ({
+      "@_id": brand.id,
+      "@_url": brand.coverURL ?? "",
+      "#text": brand.name,
     }));
   }
 
   private getCategories(categories?: Category[]) {
-    return categories?.map((cat) => ({
-      category: [
-        { _attr: { id: cat.id, parentId: cat.parentId ?? "" } },
-        cat.name,
-      ],
+    if (!categories) return [];
+
+    return categories.map((cat) => ({
+      "@_id": cat.id,
+      "@_parentId": cat.parentId ?? "",
+      "#text": cat.name,
     }));
   }
 

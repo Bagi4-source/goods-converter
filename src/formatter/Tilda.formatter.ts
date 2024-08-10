@@ -16,7 +16,7 @@ export class TildaFormatter implements FormatterAbstract {
     products: Product[],
     categories?: Category[],
     _?: Brand[],
-    __?: FormatterOptions,
+    __?: FormatterOptions
   ): Promise<Stream> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
@@ -60,6 +60,8 @@ export class TildaFormatter implements FormatterAbstract {
       };
       csvStream.addRow(row);
     });
+
+    csvStream.getWritableStream().end();
     return csvStream.getWritableStream();
   }
 }

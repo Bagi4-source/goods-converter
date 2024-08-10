@@ -80,6 +80,10 @@ export class CSVFormatter implements FormatterAbstract {
       };
       csvStream.addRow(row);
     });
+
+    // Закрываем поток
+    csvStream.getWritableStream().end();
+
     return csvStream.getWritableStream();
   }
 }

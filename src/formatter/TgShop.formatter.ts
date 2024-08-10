@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Stream } from "stream";
+import { PassThrough, type Stream } from "stream";
 const { stream } = pkg;
 
 export class TgShopFormatter implements FormatterAbstract {
@@ -39,7 +39,10 @@ export class TgShopFormatter implements FormatterAbstract {
       size: getParameter(product, "size")?.value,
       priority: undefined,
     });
-    const workbook = new stream.xlsx.WorkbookWriter({});
+    const passThroughStream = new PassThrough();
+    const workbook = new stream.xlsx.WorkbookWriter({
+      stream: passThroughStream,
+    });
     const categoryWorksheet = workbook.addWorksheet("categories");
     const productsWorksheet = workbook.addWorksheet("offers");
     categoryWorksheet.columns = [
@@ -89,7 +92,7 @@ export class TgShopFormatter implements FormatterAbstract {
     productsWorksheet.commit();
 
     await workbook.commit();
-    // @ts-ignore
-    return workbook.stream;
+
+    return passThroughStream;
   }
 }
