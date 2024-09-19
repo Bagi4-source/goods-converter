@@ -18,7 +18,7 @@ jobs:
       - name: 'Install Node'
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '18.x'
 
       - name: Install ESLint
         run: npm i @microsoft/eslint-formatter-sarif@3.0.0
