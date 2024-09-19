@@ -1,7 +1,7 @@
+import { Formatters } from "src";
+import { streamToBuffer } from "src/utils/streamToBuffer";
 import { expect, describe, it, vi } from "vitest";
 
-import { Formatters } from "../src";
-import { streamToBuffer } from "../src/utils/streamToBuffer";
 import { brands, categories, products } from "./constants";
 
 import { afterEach } from "node:test";

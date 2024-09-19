@@ -1,4 +1,4 @@
-import { type Brand, type Category, Currency, type Product, Vat } from "../src";
+import { type Brand, type Category, Currency, type Product, Vat } from "src";
 
 export const products: Product[] = [
   {

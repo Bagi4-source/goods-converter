@@ -1,8 +1,8 @@
+import { Formatters } from "src";
+import { streamToBuffer } from "src/utils/streamToBuffer";
 import { expect, describe, it } from "vitest";
 
-import { Formatters } from "../src";
 import { categories, products } from "./constants";
-import { streamToBuffer } from "../src/utils/streamToBuffer";
 
 describe.skip("Insales formatter", () => {
   const formatter = new Formatters.InsalesFormatter();

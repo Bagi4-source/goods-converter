@@ -1,7 +1,7 @@
+import { Formatters } from "src";
+import { streamToBuffer } from "src/utils/streamToBuffer";
 import { expect, describe, it } from "vitest";
 
-import { Formatters } from "../src";
-import { streamToBuffer } from "../src/utils/streamToBuffer";
 import { categories, products } from "./constants";
 
 describe.skip("Excel formatter", () => {

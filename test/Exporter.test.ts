@@ -1,10 +1,10 @@
+import { Formatters, GoodsExporter } from "src";
+import { streamToBuffer } from "src/utils/streamToBuffer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Formatters, GoodsExporter } from "../src";
 import { brands, categories, products } from "./constants";
 
 import { PassThrough } from "stream";
-import { streamToBuffer } from "../src/utils/streamToBuffer";
 
 describe("GoodsExporter", () => {
   // vi.useFakeTimers().setSystemTime(new Date("2020-01-01"));
