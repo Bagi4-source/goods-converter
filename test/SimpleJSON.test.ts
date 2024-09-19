@@ -1,8 +1,8 @@
 import { Formatters } from "src";
-import { streamToBuffer } from "src/utils/streamToBuffer";
 import { expect, describe, it } from "vitest";
 
 import { brands, categories, products } from "./constants";
+import { streamToBuffer } from "./utils/streamToBuffer";
 
 describe("Simple JSON formatter", () => {
   const formatter = new Formatters.SimpleJSONFormatter();

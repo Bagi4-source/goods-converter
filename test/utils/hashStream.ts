@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import { type Stream } from "stream";
+import type { Stream } from "stream";
 
 export const hashStream = async (stream: Stream) => {
   return await new Promise((resolve, reject) => {

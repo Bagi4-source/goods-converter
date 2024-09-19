@@ -1,8 +1,8 @@
-import { streamToBuffer } from "src/utils/streamToBuffer";
+import { Formatters, GoodsExporter } from "src";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Formatters, GoodsExporter } from "src";
 import { brands, categories, products } from "./constants";
+import { streamToBuffer } from "./utils/streamToBuffer";
 
 import { PassThrough } from "stream";
 
