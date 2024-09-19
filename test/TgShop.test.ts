@@ -1,10 +1,20 @@
 import { Formatters } from "src";
 import { streamToBuffer } from "src/utils/streamToBuffer";
-import { expect, describe, it } from "vitest";
+import { expect, describe, it, beforeEach, vi, afterEach } from "vitest";
 
 import { categories, products } from "./constants";
 
-describe.skip("TgShop formatter", () => {
+describe("TgShop formatter", () => {
+  beforeEach(() => {
+    // tell vitest we use mocked time
+    vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+  });
+
+  afterEach(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
+
   const formatter = new Formatters.TgShopFormatter();
 
   it("should export TgShop data", async () => {
