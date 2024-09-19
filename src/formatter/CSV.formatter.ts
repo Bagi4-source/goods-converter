@@ -6,18 +6,19 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Stream } from "stream";
+import { type Writable } from "stream";
 
 export class CSVFormatter implements FormatterAbstract {
   public formatterName = "CSV";
   public fileExtension = Extension.CSV;
 
   public async format(
+    writableStream: Writable,
     products: Product[],
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Stream> {
+  ): Promise<void> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
 
@@ -26,6 +27,7 @@ export class CSVFormatter implements FormatterAbstract {
       emptyFieldValue: "",
       lineSeparator: "\n",
     });
+    csvStream.getWritableStream().pipe(writableStream);
     const columns = new Set<string>([
       "url",
       "productId",
@@ -83,7 +85,5 @@ export class CSVFormatter implements FormatterAbstract {
 
     // Закрываем поток
     csvStream.getWritableStream().end();
-
-    return csvStream.getWritableStream();
   }
 }

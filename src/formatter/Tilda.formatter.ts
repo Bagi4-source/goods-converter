@@ -6,18 +6,19 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Stream } from "stream";
+import { type Writable } from "stream";
 
 export class TildaFormatter implements FormatterAbstract {
   public formatterName = "Tilda";
   public fileExtension = Extension.CSV;
 
   public async format(
+    writableStream: Writable,
     products: Product[],
     categories?: Category[],
     _?: Brand[],
-    __?: FormatterOptions
-  ): Promise<Stream> {
+    __?: FormatterOptions,
+  ): Promise<void> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
 
@@ -26,6 +27,7 @@ export class TildaFormatter implements FormatterAbstract {
       emptyFieldValue: "",
       lineSeparator: "\n",
     });
+    csvStream.getWritableStream().pipe(writableStream);
     const columns = new Set<string>([
       "SKU",
       "Brand",
@@ -62,6 +64,5 @@ export class TildaFormatter implements FormatterAbstract {
     });
 
     csvStream.getWritableStream().end();
-    return csvStream.getWritableStream();
   }
 }

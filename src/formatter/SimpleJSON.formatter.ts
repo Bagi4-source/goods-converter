@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Stream } from "stream";
+import { type Writable } from "stream";
 
 interface SimpleProduct extends Product {
   children: Product[];
@@ -18,11 +18,12 @@ export class SimpleJSONFormatter implements FormatterAbstract {
   public fileExtension = Extension.JSON;
 
   public async format(
+    writableStream: Writable,
     products: Product[],
     categories?: Category[],
     brands?: Brand[],
     _?: FormatterOptions,
-  ): Promise<Stream> {
+  ): Promise<void> {
     const groupedProduct = new Map<number, SimpleProduct>();
     products.forEach((product) => {
       if (product.parentId !== undefined) return;
@@ -37,10 +38,11 @@ export class SimpleJSONFormatter implements FormatterAbstract {
       if (!parent) return;
       parent.children.push(product);
     });
-    return new JsonStreamStringify({
+    const stream = new JsonStreamStringify({
       categories,
       brands,
       products: Array.from(groupedProduct.values()),
     });
+    stream.pipe(writableStream);
   }
 }

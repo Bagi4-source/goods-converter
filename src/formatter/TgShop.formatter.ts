@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { PassThrough, type Stream } from "stream";
+import { type Writable } from "stream";
 const { stream } = pkg;
 
 export class TgShopFormatter implements FormatterAbstract {
@@ -15,11 +15,12 @@ export class TgShopFormatter implements FormatterAbstract {
   public fileExtension = Extension.XLSX;
 
   public async format(
+    writableStream: Writable,
     products: Product[],
     categories?: Category[],
     _?: Brand[],
     __?: FormatterOptions,
-  ): Promise<Stream> {
+  ): Promise<void> {
     const getParameter = (product: Product, key: string): IParam | undefined =>
       product.params?.find((value) => value.key === key);
 
@@ -39,9 +40,8 @@ export class TgShopFormatter implements FormatterAbstract {
       size: getParameter(product, "size")?.value,
       priority: undefined,
     });
-    const passThroughStream = new PassThrough();
     const workbook = new stream.xlsx.WorkbookWriter({
-      stream: passThroughStream,
+      stream: writableStream,
     });
     const categoryWorksheet = workbook.addWorksheet("categories");
     const productsWorksheet = workbook.addWorksheet("offers");
@@ -92,7 +92,5 @@ export class TgShopFormatter implements FormatterAbstract {
     productsWorksheet.commit();
 
     await workbook.commit();
-
-    return passThroughStream;
   }
 }

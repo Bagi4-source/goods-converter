@@ -7,19 +7,21 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { PassThrough, type Stream } from "stream";
+import { PassThrough, type Writable } from "stream";
 
 export class YMLFormatter implements FormatterAbstract {
   public formatterName = "YMl";
   public fileExtension = Extension.YML;
 
   public async format(
+    writableStream: Writable,
     products: Product[],
     categories?: Category[],
     brands?: Brand[],
     options?: FormatterOptions,
-  ): Promise<Stream> {
+  ): Promise<void> {
     const result = new PassThrough();
+    result.pipe(writableStream);
 
     const builder = new XMLBuilder({
       ignoreAttributes: false,
@@ -95,8 +97,6 @@ export class YMLFormatter implements FormatterAbstract {
       // Завершаем итоговый поток
       result.end();
     });
-
-    return result;
   }
 
   private getBrands(brands?: Brand[]) {

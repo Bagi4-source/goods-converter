@@ -7,7 +7,7 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { PassThrough, type Stream } from "stream";
+import { type Writable } from "stream";
 const { stream } = pkg;
 
 export class ExcelFormatter implements FormatterAbstract {
@@ -15,11 +15,12 @@ export class ExcelFormatter implements FormatterAbstract {
   public fileExtension = Extension.XLSX;
 
   public async format(
+    writableStream: Writable,
     products: Product[],
     categories?: Category[],
     _?: Brand[],
-    __?: FormatterOptions
-  ): Promise<Stream> {
+    __?: FormatterOptions,
+  ): Promise<void> {
     const mappedCategories: Record<number, string> = {};
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
     const columns = new Set<string>([
@@ -54,10 +55,8 @@ export class ExcelFormatter implements FormatterAbstract {
       });
     });
 
-    const passThroughStream = new PassThrough();
-
     const workbook = new stream.xlsx.WorkbookWriter({
-      stream: passThroughStream,
+      stream: writableStream,
     });
     const worksheet = workbook.addWorksheet("products");
     worksheet.columns = Array.from(columns).map((column) => ({
@@ -89,7 +88,5 @@ export class ExcelFormatter implements FormatterAbstract {
     });
     worksheet.commit();
     await workbook.commit();
-    passThroughStream.end();
-    return passThroughStream;
   }
 }

@@ -1,5 +1,5 @@
 import { Formatters, GoodsExporter } from "src";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { brands, categories, products } from "./constants";
 import { streamToBuffer } from "./utils/streamToBuffer";
@@ -7,18 +7,11 @@ import { streamToBuffer } from "./utils/streamToBuffer";
 import { PassThrough } from "stream";
 
 describe("GoodsExporter", () => {
-  // vi.useFakeTimers().setSystemTime(new Date("2020-01-01"));
-
   beforeEach(() => {
     // tell vitest we use mocked time
-    vi.useFakeTimers();
     vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
   });
 
-  afterEach(() => {
-    // restoring date after each test run
-    vi.useRealTimers();
-  });
   const exporter = new GoodsExporter();
 
   it("check export", async () => {

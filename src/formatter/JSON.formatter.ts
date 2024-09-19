@@ -7,22 +7,24 @@ import {
   type FormatterOptions,
 } from "./formater.types";
 
-import { type Stream } from "stream";
+import { type Writable } from "stream";
 
 export class JSONFormatter implements FormatterAbstract {
   public formatterName = "JSON";
   public fileExtension = Extension.JSON;
 
   public async format(
+    writableStream: Writable,
     products: Product[],
     categories?: Category[],
     brands?: Brand[],
     _?: FormatterOptions,
-  ): Promise<Stream> {
-    return new JsonStreamStringify({
+  ): Promise<void> {
+    const stream = new JsonStreamStringify({
       categories,
       brands,
       products,
     });
+    stream.pipe(writableStream);
   }
 }

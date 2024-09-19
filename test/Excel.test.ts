@@ -1,8 +1,10 @@
 import { Formatters, GoodsExporter } from "src";
-import { expect, describe, it, vi, afterEach, beforeEach } from "vitest";
+import { expect, describe, it, vi, beforeEach } from "vitest";
 
 import { categories, products } from "./constants";
 import { streamToBuffer } from "./utils/streamToBuffer";
+
+import { PassThrough } from "stream";
 
 describe("Excel formatter", () => {
   beforeEach(() => {
@@ -10,16 +12,12 @@ describe("Excel formatter", () => {
     vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
   });
 
-  afterEach(() => {
-    // restoring date after each test run
-    vi.useRealTimers();
-  });
-
   const formatter = new Formatters.ExcelFormatter();
 
   it("should export Excel data", async () => {
-    const result = await formatter.format(products, categories);
-    const resultString = await streamToBuffer(result);
+    const stream = new PassThrough();
+    await formatter.format(stream, products, categories);
+    const resultString = await streamToBuffer(stream);
 
     expect(resultString.toString()).toMatchSnapshot();
   });
@@ -28,5 +26,5 @@ describe("Excel formatter", () => {
     const exporter = new GoodsExporter();
     exporter.setFormatter(formatter);
     await exporter.export(products, categories);
-  }, 500000);
+  });
 });

@@ -41,12 +41,14 @@ export class GoodsExporter {
     for (const transformer of this.transformers)
       transformedProducts = await transformer(transformedProducts);
 
-    const stream = await this.formatter.format(
+    const writableStream = this.exporter();
+
+    await this.formatter.format(
+      writableStream,
       transformedProducts,
       categories,
       brands,
       option,
     );
-    stream.pipe(this.exporter());
   }
 }
