@@ -26,6 +26,7 @@ export interface FormatterOptions {
 export enum Extension {
   CSV = "csv",
   YML = "yml",
+  XML = "xml",
   XLSX = "xlsx",
   JSON = "json",
 }
