@@ -8,9 +8,82 @@ import {
 
 import { type Writable } from "stream";
 
-export class WooCommerceFormater implements FormatterAbstract {
+export class WooCommerceFormatter implements FormatterAbstract {
   public formatterName = "CSV";
   public fileExtension = Extension.CSV;
+  private readonly DEFAULT_COLUMN = [
+    "url",
+    "productId",
+    "parentId",
+    "variantId",
+    "title",
+    "description",
+    "vendor",
+    "vendorCode",
+    "category",
+    "images",
+    "videos",
+    "price",
+    "oldPrice",
+    "purchasePrice",
+    "currency",
+    "saleDate",
+    "countryOfOrigin",
+    "tags",
+    "codesTN",
+    "sizes",
+    "keywords",
+    "relatedProducts",
+  ];
+
+  private getAttributes(
+    products: Product[],
+  ): Map<number, Record<string, string | number>> {
+    const attributes = new Map<number, Record<string, string | number>>();
+    const uniqAttributes = new Map<string, number>();
+
+    products.forEach((product) => {
+      product.params?.forEach(({ key }) => {
+        uniqAttributes.has(key)
+          ? uniqAttributes.get(key)
+          : uniqAttributes.set(key, uniqAttributes.size);
+      });
+
+      product.properties?.forEach(({ key }) => {
+        uniqAttributes.has(key)
+          ? uniqAttributes.get(key)
+          : uniqAttributes.set(key, uniqAttributes.size);
+      });
+    });
+
+    products.forEach((product) => {
+      const attribute = attributes.get(product.productId) ?? {};
+
+      product.params?.forEach(({ key, value }, index) => {
+        const keyIndex = uniqAttributes.get(key) ?? 0;
+
+        if (index === 0) {
+          attribute[`Attribute ${keyIndex} default`] = key;
+        }
+
+        attribute[`Attribute ${keyIndex} name`] = key;
+        attribute[`Attribute ${keyIndex} value(s)`] = value;
+        attribute[`Attribute ${keyIndex} visible`] = 1;
+      });
+
+      product.properties?.forEach(({ key, value }) => {
+        const keyIndex = uniqAttributes.get(key) ?? 0;
+
+        attribute[`Attribute ${keyIndex} name`] = key;
+        attribute[`Attribute ${keyIndex} value(s)`] = value;
+        attribute[`Attribute ${keyIndex} global`] = 1;
+      });
+
+      attributes.set(product.productId, attribute);
+    });
+
+    return attributes;
+  }
 
   public async format(
     writableStream: Writable,
@@ -28,54 +101,21 @@ export class WooCommerceFormater implements FormatterAbstract {
       lineSeparator: "\n",
     });
     csvStream.getWritableStream().pipe(writableStream);
-    const columns = new Set<string>([
-      "url",
-      "productId",
-      "parentId",
-      "variantId",
-      "title",
-      "description",
-      "vendor",
-      "vendorCode",
-      "category",
-      "images",
-      "videos",
-      "price",
-      "oldPrice",
-      "purchasePrice",
-      "currency",
-      "saleDate",
-      "countryOfOrigin",
-      "tags",
-      "codesTN",
-      "params",
-      "properties",
-      "sizes",
-      "keywords",
-      "relatedProducts",
-    ]);
+    const columns = new Set<string>(this.DEFAULT_COLUMN);
 
-    const properties = new Map();
-
-    products.forEach((product) => {
-      product.params?.forEach((param) => {
-        if (param.value) {
-          properties.set(param.key, properties.size + 1);
-        }
-      });
-    });
+    const attributes = this.getAttributes(products);
 
     const mappedProducts = products.map((product) => {
-      const row: Record<string, unknown> = {
+      let row: Record<string, string | number | undefined | boolean> = {
         ...product,
+        params: undefined,
+        properties: undefined,
         category: mappedCategories[product.categoryId],
         images: product.images?.join("|"),
         videos: product.videos?.join("|"),
         tags: product.tags?.join(","),
         codesTN: product.codesTN?.join(", "),
-        properties: product.properties
-          ?.map(({ key, value }) => `${key}=${value}`)
-          .join(", "),
+        age: product.age?.value,
         sizes: product.sizes
           ?.map(({ name, value }) => `${name}=${value}`)
           .join(", "),
@@ -83,20 +123,13 @@ export class WooCommerceFormater implements FormatterAbstract {
         relatedProducts: product.relatedProducts?.join(","),
       };
 
-      product.params?.forEach(({ key, value }) => {
-        const index = properties.get(key);
+      const productAttributes = attributes.get(product.productId) ?? {};
 
-        row[`Attribute ${index} name`] = key;
-        row[`Attribute ${index} value`] = value;
-      });
+      Object.keys(productAttributes).forEach((item) => columns.add(item));
+
+      row = { ...row, ...productAttributes };
 
       return row;
-    });
-
-    mappedProducts.forEach((product) => {
-      Object.entries(product).forEach(([key, value]) => {
-        if (value) columns.add(key);
-      });
     });
 
     csvStream.setColumns(columns);
