@@ -5,6 +5,7 @@ import { JSONFormatter } from "./JSON.formatter";
 import { SimpleJSONFormatter } from "./SimpleJSON.formatter";
 import { TgShopFormatter } from "./TgShop.formatter";
 import { TildaFormatter } from "./Tilda.formatter";
+import { WooCommerceFormater } from "./Woocommerce.formatter";
 import { XMLFormatter } from "./XML.formatter";
 import { YMLFormatter } from "./YML.formatter";
 
@@ -20,4 +21,5 @@ export const Formatters = {
   JSONFormatter,
   SimpleJSONFormatter,
   XMLFormatter,
+  WooCommerceFormater,
 };
