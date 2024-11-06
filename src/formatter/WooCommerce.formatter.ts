@@ -12,28 +12,18 @@ export class WooCommerceFormatter implements FormatterAbstract {
   public formatterName = "CSV";
   public fileExtension = Extension.CSV;
   private readonly DEFAULT_COLUMN = [
-    "url",
-    "productId",
-    "parentId",
-    "variantId",
-    "title",
-    "description",
-    "vendor",
-    "vendorCode",
-    "category",
-    "images",
-    "videos",
-    "price",
-    "oldPrice",
-    "purchasePrice",
-    "currency",
-    "saleDate",
-    "countryOfOrigin",
-    "tags",
-    "codesTN",
-    "sizes",
-    "keywords",
-    "relatedProducts",
+    "ID",
+    "Type",
+    "SKU",
+    "Name",
+    "Parent",
+    "Short description",
+    "Description",
+    "Stock",
+    "Regular price",
+    "Categories",
+    "Tags",
+    "Images",
   ];
 
   private getAttributes(
@@ -57,18 +47,16 @@ export class WooCommerceFormatter implements FormatterAbstract {
     });
 
     products.forEach((product) => {
-      const attribute = attributes.get(product.productId) ?? {};
+      const attribute = attributes.get(product.variantId) ?? {};
 
-      product.params?.forEach(({ key, value }, index) => {
+      product.params?.forEach(({ key, value }) => {
         const keyIndex = uniqAttributes.get(key) ?? 0;
 
-        if (index === 0) {
-          attribute[`Attribute ${keyIndex} default`] = key;
-        }
-
+        attribute[`Attribute ${keyIndex} default`] = value;
         attribute[`Attribute ${keyIndex} name`] = key;
         attribute[`Attribute ${keyIndex} value(s)`] = value;
         attribute[`Attribute ${keyIndex} visible`] = 1;
+        attribute[`Attribute ${keyIndex} global`] = 1;
       });
 
       product.properties?.forEach(({ key, value }) => {
@@ -76,10 +64,9 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
         attribute[`Attribute ${keyIndex} name`] = key;
         attribute[`Attribute ${keyIndex} value(s)`] = value;
-        attribute[`Attribute ${keyIndex} global`] = 1;
       });
 
-      attributes.set(product.productId, attribute);
+      attributes.set(product.variantId, attribute);
     });
 
     return attributes;
@@ -106,24 +93,22 @@ export class WooCommerceFormatter implements FormatterAbstract {
     const attributes = this.getAttributes(products);
 
     const mappedProducts = products.map((product) => {
-      let row: Record<string, string | number | undefined | boolean> = {
-        ...product,
-        params: undefined,
-        properties: undefined,
-        category: mappedCategories[product.categoryId],
-        images: product.images?.join("|"),
-        videos: product.videos?.join("|"),
-        tags: product.tags?.join(","),
-        codesTN: product.codesTN?.join(", "),
-        age: product.age?.value,
-        sizes: product.sizes
-          ?.map(({ name, value }) => `${name}=${value}`)
-          .join(", "),
-        keywords: product.keywords?.join(","),
-        relatedProducts: product.relatedProducts?.join(","),
+      let row = {
+        ID: "",
+        Type: "variation",
+        SKU: product.variantId,
+        Name: product.title,
+        Parent: product.parentId,
+        "Short description": "",
+        Description: product.description,
+        Stock: product.count,
+        "Regular price": product.price,
+        Categories: mappedCategories[product.categoryId],
+        Tags: product.keywords,
+        Images: product.images?.join(","),
       };
 
-      const productAttributes = attributes.get(product.productId) ?? {};
+      const productAttributes = attributes.get(product.variantId) ?? {};
 
       Object.keys(productAttributes).forEach((item) => columns.add(item));
 
@@ -132,9 +117,30 @@ export class WooCommerceFormatter implements FormatterAbstract {
       return row;
     });
 
+    const parents: Array<Record<string, unknown>> = [];
+    const parentsIds: number[] = [];
+
+    mappedProducts.forEach((product) => {
+      if (!product.Parent) return;
+      if (parentsIds.includes(product.Parent)) return;
+      parentsIds.push(product.Parent);
+
+      const row = {
+        ...product,
+        Type: "variable",
+        SKU: product.Parent,
+        "Regular price": "",
+      };
+
+      parents.push(row);
+    });
+
     csvStream.setColumns(columns);
 
     mappedProducts.forEach((product) => {
+      csvStream.addRow(product);
+    });
+    parents.forEach((product) => {
       csvStream.addRow(product);
     });
     // Закрываем поток
