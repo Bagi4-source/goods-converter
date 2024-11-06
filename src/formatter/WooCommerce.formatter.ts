@@ -53,7 +53,8 @@ export class WooCommerceFormatter implements FormatterAbstract {
         const keyIndex = uniqAttributes.get(key) ?? 0;
 
         attribute[`Attribute ${keyIndex} default`] = value;
-        attribute[`Attribute ${keyIndex} name`] = key;
+        attribute[`Attribute ${keyIndex} name`] =
+          key.length >= 28 ? key.slice(0, 24) + "..." : key;
         attribute[`Attribute ${keyIndex} value(s)`] = value;
         attribute[`Attribute ${keyIndex} visible`] = 1;
         attribute[`Attribute ${keyIndex} global`] = 1;
@@ -62,7 +63,8 @@ export class WooCommerceFormatter implements FormatterAbstract {
       product.properties?.forEach(({ key, value }) => {
         const keyIndex = uniqAttributes.get(key) ?? 0;
 
-        attribute[`Attribute ${keyIndex} name`] = key;
+        attribute[`Attribute ${keyIndex} name`] =
+          key.length >= 28 ? key.slice(0, 24) + "..." : key;
         attribute[`Attribute ${keyIndex} value(s)`] = value;
       });
 
@@ -120,17 +122,58 @@ export class WooCommerceFormatter implements FormatterAbstract {
     const parents: Array<Record<string, unknown>> = [];
     const parentsIds: number[] = [];
 
+    const productToVariants = new Map<number, number[]>();
+
+    products.forEach((product) => {
+      const current = productToVariants.get(product.productId);
+
+      if (current) {
+        productToVariants.set(product.productId, [
+          ...current,
+          product.variantId,
+        ]);
+      } else {
+        productToVariants.set(product.productId, [product.variantId]);
+      }
+    });
+
     mappedProducts.forEach((product) => {
       if (!product.Parent) return;
       if (parentsIds.includes(product.Parent)) return;
       parentsIds.push(product.Parent);
 
-      const row = {
+      const variantsId = productToVariants.get(product.Parent) ?? [];
+
+      const productAttributes: Record<string, Array<string | number>> = {};
+
+      variantsId.forEach((variant) => {
+        const currentAattributes = attributes.get(variant) ?? {};
+
+        const attributeValue = Object.entries(currentAattributes).find(
+          ([key]) => key.includes("value(s)"),
+        );
+
+        if (!attributeValue) return undefined;
+
+        const [key, value] = attributeValue;
+
+        if (productAttributes[key] && Array.isArray(productAttributes[key])) {
+          productAttributes[key].push(value);
+        } else {
+          productAttributes[key] = [value];
+        }
+      });
+
+      const row: Record<string, unknown> = {
         ...product,
         Type: "variable",
         SKU: product.Parent,
         "Regular price": "",
       };
+
+      for (const key in productAttributes) {
+        row[key] = productAttributes[key].join(",");
+      }
 
       parents.push(row);
     });
