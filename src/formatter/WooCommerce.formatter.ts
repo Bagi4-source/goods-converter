@@ -1,7 +1,6 @@
-import { buildCategoryPaths } from "src/utils";
-
 import { CSVStream } from "../streams/CSVStream";
 import { type IParam, type Brand, type Category, type Product } from "../types";
+import { buildCategoryPaths } from "../utils";
 import {
   Extension,
   type FormatterAbstract,

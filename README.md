@@ -5,7 +5,6 @@
 ![GitHub issues](https://img.shields.io/github/issues/Bagi4-source/goods-converter)
 [![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/Bagi4-source/goods-converter/blob/main/LICENSE)
 
-
 A versatile JavaScript library for exporting goods data to various formats such as YML, CSV, and Excel. Simplify data
 export tasks with ease.
 
@@ -29,6 +28,7 @@ export tasks with ease.
 - TgShop
 - Insales
 - Tilda
+- WooCommerce
 
 ## Installation
 
@@ -43,14 +43,14 @@ yarn add goods-exporter
 ## Quick start
 
 ```typescript
-import { GoodsExporter, Product, Category, Formatters } from '../src';
+import { GoodsExporter, Product, Category, Formatters } from "../src";
 import { PassThrough } from "stream";
 
 // Create an instance of the GoodsExporter class.
-const exporter = new GoodsExporter()
+const exporter = new GoodsExporter();
 
-const products: Product[] = [] // Put your products;
-const categories: Category[] = [{ id: 1, name: 'Обувь' }]
+const products: Product[] = []; // Put your products;
+const categories: Category[] = [{ id: 1, name: "Обувь" }];
 
 // Call the data export method.
 const stream = new PassThrough();
@@ -74,22 +74,24 @@ await exporter.export(products, categories);
 import fs from "fs"; // Import the 'fs' module for file writing.
 
 // Create an instance of the GoodsExporter class.
-const exporter = new GoodsExporter()
+const exporter = new GoodsExporter();
 
 // Define an object 'transformers' that contains data transformation functions.
 const transformers: Transformer[] = [
-    (products) => products.map(product => ({
-        ...product,
-        price: product.price + 10000
+  (products) =>
+    products.map((product) => ({
+      ...product,
+      price: product.price + 10000,
     })),
-    (products) => products.map(product => ({
-        ...product,
-        images: product.images?.map(image => image.replace("image", "pic"))
-    }))
-]
+  (products) =>
+    products.map((product) => ({
+      ...product,
+      images: product.images?.map((image) => image.replace("image", "pic")),
+    })),
+];
 
 // Set the formatter for exporting data to YML.
-exporter.setFormatter(new Formatters.YMLFormatter()) // or your own Formatter;
+exporter.setFormatter(new Formatters.YMLFormatter()); // or your own Formatter;
 
 // Set transformers based on the specified keys.
 exporter.setTransformers(transformers);
@@ -99,5 +101,6 @@ exporter.setExporter(fs.createWriteStream("output.yml"));
 await exporter.export(products, categories);
 ```
 
-# Supported by [PoizonAPI](https://t.me/PoizonAPI) 
+# Supported by [PoizonAPI](https://t.me/PoizonAPI)
+
 [![PoizonAPI](https://i.ibb.co/HBbTpp0/Group-1.png)](https://t.me/PoizonAPI)
