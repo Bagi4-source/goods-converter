@@ -81,7 +81,12 @@ export class WooCommerceFormatter implements FormatterAbstract {
       const propertyAttributes = propertiesMap.get(product.variantId) ?? {};
 
       product.params?.forEach(({ key, value }) => {
-        const index = uniqueAttributes.get(key) ?? 0;
+        const index = uniqueAttributes.get(key);
+
+        if (index === undefined) {
+          console.error(`Не нашлось уникального ключа для параметра - ${key}`);
+          return;
+        }
 
         paramAttributes[`Attribute ${index} name`] = key;
         paramAttributes[`Attribute ${index} value(s)`] = value;
@@ -90,7 +95,17 @@ export class WooCommerceFormatter implements FormatterAbstract {
       });
 
       product.properties?.forEach(({ key, value }) => {
-        const index = uniqueAttributes.get(key) ?? 0;
+        const index = uniqueAttributes.get(key);
+
+        if (index === undefined) {
+          console.error(`Не нашлось уникального ключа для параметра - ${key}`);
+          return;
+        }
+
+        if (paramAttributes[`Attribute ${index} name`]) {
+          console.warn(`Данное свойство уже существует в параметрах - ${key}`);
+          return;
+        }
 
         propertyAttributes[`Attribute ${index} name`] = key;
         propertyAttributes[`Attribute ${index} value(s)`] = value;
@@ -102,6 +117,36 @@ export class WooCommerceFormatter implements FormatterAbstract {
     });
 
     return { params: paramsMap, properties: propertiesMap };
+  }
+
+  private buildCategoryPaths(categories: Category[]): Map<number, Category[]> {
+    const idToCategory = new Map<number, Category>();
+
+    categories.forEach((category) => {
+      idToCategory.set(category.id, category);
+    });
+
+    const categoryPaths = new Map<number, Category[]>();
+
+    categories.forEach((category) => {
+      const path: Category[] = [];
+
+      let currentCategory: Category | undefined = category;
+
+      while (currentCategory) {
+        path.unshift(currentCategory);
+
+        if (currentCategory.parentId !== undefined) {
+          currentCategory = idToCategory.get(currentCategory.parentId);
+        } else {
+          currentCategory = undefined;
+        }
+      }
+
+      categoryPaths.set(category.id, path);
+    });
+
+    return categoryPaths;
   }
 
   public async format(
@@ -116,6 +161,8 @@ export class WooCommerceFormatter implements FormatterAbstract {
       categoryMap[id] = name;
     });
 
+    const categoriePaths = this.buildCategoryPaths(categories ?? []);
+
     const csvStream = new CSVStream({
       delimiter: ";",
       emptyFieldValue: "",
@@ -127,6 +174,10 @@ export class WooCommerceFormatter implements FormatterAbstract {
     const attributes = this.extractAttributes(products);
 
     const variations = products.map((product, index) => {
+      const pathsArray = categoriePaths
+        .get(product.categoryId)
+        ?.map((category) => categoryMap[category.id]);
+
       let row = {
         ID: product.variantId,
         Type: "variation",
@@ -138,7 +189,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         Stock: product.count ?? 0,
         "Regular price": product.price,
         Position: index + 1,
-        Categories: categoryMap[product.categoryId],
+        Categories: pathsArray?.join(" > "),
         Tags: product.keywords?.join(","),
         Images: product.images?.join(","),
       };
