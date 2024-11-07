@@ -1,5 +1,7 @@
+import { buildCategoryPaths } from "src/utils";
+
 import { CSVStream } from "../streams/CSVStream";
-import { type Brand, type Category, type Product } from "../types";
+import { type IParam, type Brand, type Category, type Product } from "../types";
 import {
   Extension,
   type FormatterAbstract,
@@ -7,6 +9,14 @@ import {
 } from "./formater.types";
 
 import { type Writable } from "stream";
+
+export interface CreateAttributeProps {
+  name?: string;
+  id?: number;
+  values?: string | number;
+  visible?: number;
+  global?: number;
+}
 
 export class WooCommerceFormatter implements FormatterAbstract {
   public formatterName = "WooCommerce";
@@ -29,9 +39,13 @@ export class WooCommerceFormatter implements FormatterAbstract {
   ];
 
   private formatKeyAttribute(key: string) {
-    return key.length >= 28
-      ? key.slice(0, 24).replaceAll(",", "").replaceAll(";", "") + "..."
-      : key.replaceAll(",", "").replaceAll(";", "");
+    const keyWithoutInvalidCharacters = key
+      .replaceAll(",", "")
+      .replaceAll(";", "");
+
+    return keyWithoutInvalidCharacters.length >= 28
+      ? keyWithoutInvalidCharacters.slice(0, 24) + "..."
+      : keyWithoutInvalidCharacters;
   }
 
   private formatValueAttribute(value: string) {
@@ -39,21 +53,38 @@ export class WooCommerceFormatter implements FormatterAbstract {
   }
 
   private formatProducts(products: Product[]) {
+    const formatParams = (params: IParam[] | undefined) => {
+      return params?.map(({ key, value }) => {
+        const formatedKey = this.formatKeyAttribute(key);
+        const formatedValue = this.formatValueAttribute(value);
+        return { key: formatedKey, value: formatedValue };
+      });
+    };
+
     return products.map((product) => {
-      const params = product.params?.map(({ key, value }) => {
-        const formatedKey = this.formatKeyAttribute(key);
-        const formatedValue = this.formatValueAttribute(value);
-        return { key: formatedKey, value: formatedValue };
-      });
-
-      const properties = product.properties?.map(({ key, value }) => {
-        const formatedKey = this.formatKeyAttribute(key);
-        const formatedValue = this.formatValueAttribute(value);
-        return { key: formatedKey, value: formatedValue };
-      });
-
+      const params = formatParams(product.params);
+      const properties = formatParams(product.properties);
       return { ...product, params, properties };
     });
+  }
+
+  private createAttribute(data: CreateAttributeProps) {
+    if (!data?.name || data.id === undefined) return;
+
+    const attributeStartName = "Attribute";
+
+    const attribute: Record<string, string | number> = {};
+
+    attribute[`${attributeStartName} ${data.id} name`] = data.name;
+
+    if (data.values !== undefined)
+      attribute[`${attributeStartName} ${data.id} value(s)`] = data.values;
+    if (data.visible !== undefined)
+      attribute[`${attributeStartName} ${data.id} visible`] = data.visible;
+    if (data.global !== undefined)
+      attribute[`${attributeStartName} ${data.id} global`] = data.global;
+
+    return attribute;
   }
 
   private extractAttributes(products: Product[]) {
@@ -88,10 +119,19 @@ export class WooCommerceFormatter implements FormatterAbstract {
           return;
         }
 
-        paramAttributes[`Attribute ${index} name`] = key;
-        paramAttributes[`Attribute ${index} value(s)`] = value;
-        paramAttributes[`Attribute ${index} visible`] = 0;
-        paramAttributes[`Attribute ${index} global`] = 0;
+        const attribute = this.createAttribute({
+          name: key,
+          id: index,
+          values: value,
+          visible: 0,
+          global: 0,
+        });
+
+        if (!attribute) return;
+
+        Object.entries(attribute).forEach(
+          ([key, value]) => (paramAttributes[key] = value),
+        );
       });
 
       product.properties?.forEach(({ key, value }) => {
@@ -107,9 +147,18 @@ export class WooCommerceFormatter implements FormatterAbstract {
           return;
         }
 
-        propertyAttributes[`Attribute ${index} name`] = key;
-        propertyAttributes[`Attribute ${index} value(s)`] = value;
-        propertyAttributes[`Attribute ${index} global`] = 0;
+        const attribute = this.createAttribute({
+          name: key,
+          id: index,
+          values: value,
+          global: 0,
+        });
+
+        if (!attribute) return;
+
+        Object.entries(attribute).forEach(
+          ([key, value]) => (propertyAttributes[key] = value),
+        );
       });
 
       paramsMap.set(product.variantId, paramAttributes);
@@ -119,34 +168,10 @@ export class WooCommerceFormatter implements FormatterAbstract {
     return { params: paramsMap, properties: propertiesMap };
   }
 
-  private buildCategoryPaths(categories: Category[]): Map<number, Category[]> {
-    const idToCategory = new Map<number, Category>();
-
-    categories.forEach((category) => {
-      idToCategory.set(category.id, category);
+  private removeVisibleFromAttributes(params: Record<string, string | number>) {
+    Object.entries(params).forEach(([key]) => {
+      if (key.includes("visible")) params[key] = "";
     });
-
-    const categoryPaths = new Map<number, Category[]>();
-
-    categories.forEach((category) => {
-      const path: Category[] = [];
-
-      let currentCategory: Category | undefined = category;
-
-      while (currentCategory) {
-        path.unshift(currentCategory);
-
-        if (currentCategory.parentId !== undefined) {
-          currentCategory = idToCategory.get(currentCategory.parentId);
-        } else {
-          currentCategory = undefined;
-        }
-      }
-
-      categoryPaths.set(category.id, path);
-    });
-
-    return categoryPaths;
   }
 
   public async format(
@@ -156,12 +181,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
     _?: Brand[],
     __?: FormatterOptions,
   ): Promise<void> {
-    const categoryMap: Record<number, string> = {};
-    categories?.forEach(({ id, name }) => {
-      categoryMap[id] = name;
-    });
-
-    const categoriePaths = this.buildCategoryPaths(categories ?? []);
+    const categoriePaths = buildCategoryPaths(categories ?? []);
 
     const csvStream = new CSVStream({
       delimiter: ";",
@@ -176,7 +196,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
     const variations = products.map((product, index) => {
       const pathsArray = categoriePaths
         .get(product.categoryId)
-        ?.map((category) => categoryMap[category.id]);
+        ?.map((category) => category.name);
 
       let row = {
         ID: product.variantId,
@@ -196,9 +216,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
       const productParams = attributes.params.get(product.variantId) ?? {};
 
-      Object.entries(productParams).forEach(([key]) => {
-        if (key.includes("visible")) productParams[key] = "";
-      });
+      this.removeVisibleFromAttributes(productParams);
 
       row = { ...row, ...productParams };
 
@@ -220,8 +238,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         "Regular price": "",
       };
 
-      if (currentParent?.Stock)
-        row.Stock = (currentParent?.Stock || 0) + (product?.Stock || 0);
+      row.Stock = (currentParent?.Stock || 0) + (product?.Stock || 0);
 
       const productParams = attributes.params.get(product.SKU) ?? {};
       const productProperties = attributes.properties.get(product.SKU) ?? {};
