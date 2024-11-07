@@ -7,7 +7,7 @@ import { streamToBuffer } from "./utils/streamToBuffer";
 import { PassThrough } from "stream";
 
 describe("WooCommerce formatter", () => {
-  const formatter = new Formatters.WooCommerceFormater();
+  const formatter = new Formatters.WooCommerceFormatter();
 
   it("should export WooCommerce data", async () => {
     const stream = new PassThrough();

@@ -9,9 +9,10 @@ import {
 import { type Writable } from "stream";
 
 export class WooCommerceFormatter implements FormatterAbstract {
-  public formatterName = "CSV";
+  public formatterName = "WooCommerce";
   public fileExtension = Extension.CSV;
-  private readonly DEFAULT_COLUMN = [
+
+  private readonly DEFAULT_COLUMNS = [
     "ID",
     "Type",
     "SKU",
@@ -21,57 +22,86 @@ export class WooCommerceFormatter implements FormatterAbstract {
     "Description",
     "Stock",
     "Regular price",
+    "Position",
     "Categories",
     "Tags",
     "Images",
   ];
 
-  private getAttributes(
-    products: Product[],
-  ): Map<number, Record<string, string | number>> {
-    const attributes = new Map<number, Record<string, string | number>>();
-    const uniqAttributes = new Map<string, number>();
+  private formatKeyAttribute(key: string) {
+    return key.length >= 28
+      ? key.slice(0, 24).replaceAll(",", "").replaceAll(";", "") + "..."
+      : key.replaceAll(",", "").replaceAll(";", "");
+  }
 
-    products.forEach((product) => {
+  private formatValueAttribute(value: string) {
+    return value.replaceAll(",", "").replaceAll(";", "");
+  }
+
+  private formatProducts(products: Product[]) {
+    return products.map((product) => {
+      const params = product.params?.map(({ key, value }) => {
+        const formatedKey = this.formatKeyAttribute(key);
+        const formatedValue = this.formatValueAttribute(value);
+        return { key: formatedKey, value: formatedValue };
+      });
+
+      const properties = product.properties?.map(({ key, value }) => {
+        const formatedKey = this.formatKeyAttribute(key);
+        const formatedValue = this.formatValueAttribute(value);
+        return { key: formatedKey, value: formatedValue };
+      });
+
+      return { ...product, params, properties };
+    });
+  }
+
+  private extractAttributes(products: Product[]) {
+    const formatedProducts = this.formatProducts(products);
+    const paramsMap = new Map<number, Record<string, string | number>>();
+    const propertiesMap = new Map<number, Record<string, string | number>>();
+    const uniqueAttributes = new Map<string, number>();
+
+    formatedProducts.forEach((product) => {
       product.params?.forEach(({ key }) => {
-        uniqAttributes.has(key)
-          ? uniqAttributes.get(key)
-          : uniqAttributes.set(key, uniqAttributes.size);
+        if (!uniqueAttributes.has(key)) {
+          uniqueAttributes.set(key, uniqueAttributes.size);
+        }
       });
 
       product.properties?.forEach(({ key }) => {
-        uniqAttributes.has(key)
-          ? uniqAttributes.get(key)
-          : uniqAttributes.set(key, uniqAttributes.size);
+        if (!uniqueAttributes.has(key)) {
+          uniqueAttributes.set(key, uniqueAttributes.size);
+        }
       });
     });
 
-    products.forEach((product) => {
-      const attribute = attributes.get(product.variantId) ?? {};
+    formatedProducts.forEach((product) => {
+      const paramAttributes = paramsMap.get(product.variantId) ?? {};
+      const propertyAttributes = propertiesMap.get(product.variantId) ?? {};
 
       product.params?.forEach(({ key, value }) => {
-        const keyIndex = uniqAttributes.get(key) ?? 0;
+        const index = uniqueAttributes.get(key) ?? 0;
 
-        attribute[`Attribute ${keyIndex} default`] = value;
-        attribute[`Attribute ${keyIndex} name`] =
-          key.length >= 28 ? key.slice(0, 24) + "..." : key;
-        attribute[`Attribute ${keyIndex} value(s)`] = value;
-        attribute[`Attribute ${keyIndex} visible`] = 1;
-        attribute[`Attribute ${keyIndex} global`] = 1;
+        paramAttributes[`Attribute ${index} name`] = key;
+        paramAttributes[`Attribute ${index} value(s)`] = value;
+        paramAttributes[`Attribute ${index} visible`] = 0;
+        paramAttributes[`Attribute ${index} global`] = 0;
       });
 
       product.properties?.forEach(({ key, value }) => {
-        const keyIndex = uniqAttributes.get(key) ?? 0;
+        const index = uniqueAttributes.get(key) ?? 0;
 
-        attribute[`Attribute ${keyIndex} name`] =
-          key.length >= 28 ? key.slice(0, 24) + "..." : key;
-        attribute[`Attribute ${keyIndex} value(s)`] = value;
+        propertyAttributes[`Attribute ${index} name`] = key;
+        propertyAttributes[`Attribute ${index} value(s)`] = value;
+        propertyAttributes[`Attribute ${index} global`] = 0;
       });
 
-      attributes.set(product.variantId, attribute);
+      paramsMap.set(product.variantId, paramAttributes);
+      propertiesMap.set(product.variantId, propertyAttributes);
     });
 
-    return attributes;
+    return { params: paramsMap, properties: propertiesMap };
   }
 
   public async format(
@@ -81,8 +111,10 @@ export class WooCommerceFormatter implements FormatterAbstract {
     _?: Brand[],
     __?: FormatterOptions,
   ): Promise<void> {
-    const mappedCategories: Record<number, string> = {};
-    categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
+    const categoryMap: Record<number, string> = {};
+    categories?.forEach(({ id, name }) => {
+      categoryMap[id] = name;
+    });
 
     const csvStream = new CSVStream({
       delimiter: ";",
@@ -90,103 +122,87 @@ export class WooCommerceFormatter implements FormatterAbstract {
       lineSeparator: "\n",
     });
     csvStream.getWritableStream().pipe(writableStream);
-    const columns = new Set<string>(this.DEFAULT_COLUMN);
+    const columns = new Set<string>(this.DEFAULT_COLUMNS);
 
-    const attributes = this.getAttributes(products);
+    const attributes = this.extractAttributes(products);
 
-    const mappedProducts = products.map((product) => {
+    const variations = products.map((product, index) => {
       let row = {
-        ID: "",
+        ID: product.variantId,
         Type: "variation",
         SKU: product.variantId,
         Name: product.title,
-        Parent: product.parentId,
+        Parent: product.parentId ?? 0,
         "Short description": "",
         Description: product.description,
-        Stock: product.count,
+        Stock: product.count ?? 0,
         "Regular price": product.price,
-        Categories: mappedCategories[product.categoryId],
-        Tags: product.keywords,
+        Position: index + 1,
+        Categories: categoryMap[product.categoryId],
+        Tags: product.keywords?.join(","),
         Images: product.images?.join(","),
       };
 
-      const productAttributes = attributes.get(product.variantId) ?? {};
+      const productParams = attributes.params.get(product.variantId) ?? {};
 
-      Object.keys(productAttributes).forEach((item) => columns.add(item));
+      Object.entries(productParams).forEach(([key]) => {
+        if (key.includes("visible")) productParams[key] = "";
+      });
 
-      row = { ...row, ...productAttributes };
+      row = { ...row, ...productParams };
 
       return row;
     });
 
-    const parents: Array<Record<string, unknown>> = [];
-    const parentsIds: number[] = [];
+    const parentProducts = new Map<number, any>();
 
-    const productToVariants = new Map<number, number[]>();
+    variations.forEach((product) => {
+      const currentParent = parentProducts.get(product.Parent);
 
-    products.forEach((product) => {
-      const current = productToVariants.get(product.productId);
-
-      if (current) {
-        productToVariants.set(product.productId, [
-          ...current,
-          product.variantId,
-        ]);
-      } else {
-        productToVariants.set(product.productId, [product.variantId]);
-      }
-    });
-
-    mappedProducts.forEach((product) => {
-      if (!product.Parent) return;
-      if (parentsIds.includes(product.Parent)) return;
-      parentsIds.push(product.Parent);
-
-      const variantsId = productToVariants.get(product.Parent) ?? [];
-
-      const productAttributes: Record<string, Array<string | number>> = {};
-
-      variantsId.forEach((variant) => {
-        const currentAattributes = attributes.get(variant) ?? {};
-
-        const attributeValue = Object.entries(currentAattributes).find(
-          ([key]) => key.includes("value(s)"),
-        );
-
-        if (!attributeValue) return undefined;
-
-        const [key, value] = attributeValue;
-
-        if (productAttributes[key] && Array.isArray(productAttributes[key])) {
-          productAttributes[key].push(value);
-        } else {
-          productAttributes[key] = [value];
-        }
-      });
-
-      const row: Record<string, unknown> = {
+      let row = {
         ...product,
         Type: "variable",
+        ID: product.Parent,
         SKU: product.Parent,
+        Position: 0,
+        Parent: "",
         "Regular price": "",
       };
 
-      for (const key in productAttributes) {
-        row[key] = productAttributes[key].join(",");
+      if (currentParent?.Stock)
+        row.Stock = (currentParent?.Stock || 0) + (product?.Stock || 0);
+
+      const productParams = attributes.params.get(product.SKU) ?? {};
+      const productProperties = attributes.properties.get(product.SKU) ?? {};
+
+      Object.entries(productParams).forEach(([key]) => {
+        if (key.includes("visible")) productParams[key] = 0;
+      });
+
+      if (currentParent) {
+        Object.entries(productParams).forEach(([key, value]) => {
+          if (key.includes("value(s)")) {
+            productParams[key] = currentParent[key] + `, ${value}`;
+          }
+        });
       }
 
-      parents.push(row);
+      Object.keys({ ...row, ...productParams, ...productProperties }).forEach(
+        (item) => columns.add(item),
+      );
+
+      row = { ...row, ...productParams, ...productProperties };
+
+      parentProducts.set(product.Parent, row);
     });
+
+    const variableProducts = Array.from(parentProducts.values());
 
     csvStream.setColumns(columns);
+    [...variableProducts, ...variations].forEach((product) => {
+      csvStream.addRow(product);
+    });
 
-    mappedProducts.forEach((product) => {
-      csvStream.addRow(product);
-    });
-    parents.forEach((product) => {
-      csvStream.addRow(product);
-    });
-    // Закрываем поток
     csvStream.getWritableStream().end();
   }
 }
