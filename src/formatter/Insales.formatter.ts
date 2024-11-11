@@ -120,8 +120,9 @@ export class InsalesFormatter implements FormatterAbstract {
       key: column,
     }));
     products.forEach((product) => {
+      const externalId = `${product.productId}-${product.variantId}`;
       const row = {
-        "Внешний ID": product.productId,
+        "Внешний ID": externalId,
         "Ссылка на товар": product.url,
         Артикул: product.vendorCode,
         "Название товара или услуги": product.title,
