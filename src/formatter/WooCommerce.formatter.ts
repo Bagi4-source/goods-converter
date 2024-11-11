@@ -92,12 +92,16 @@ export class WooCommerceFormatter implements FormatterAbstract {
     const propertiesMap = new Map<number, Record<string, string | number>>();
     const uniqueAttributes = new Map<string, number>();
 
+    const genderTitle = "Пол";
+
     formatedProducts.forEach((product) => {
       product.params?.forEach(({ key }) => {
         if (!uniqueAttributes.has(key)) {
           uniqueAttributes.set(key, uniqueAttributes.size);
         }
       });
+
+      uniqueAttributes.set(genderTitle, uniqueAttributes.size);
 
       product.properties?.forEach(({ key }) => {
         if (!uniqueAttributes.has(key)) {
@@ -132,6 +136,21 @@ export class WooCommerceFormatter implements FormatterAbstract {
           ([key, value]) => (paramAttributes[key] = value),
         );
       });
+
+      const genderIndex = uniqueAttributes.get(genderTitle);
+
+      const genderAttribute = this.createAttribute({
+        name: genderTitle,
+        id: genderIndex,
+        values: product.gender,
+        global: 0,
+      });
+
+      if (genderAttribute) {
+        Object.entries(genderAttribute).forEach(
+          ([key, value]) => (propertyAttributes[key] = value),
+        );
+      }
 
       product.properties?.forEach(({ key, value }) => {
         const index = uniqueAttributes.get(key);
@@ -210,7 +229,9 @@ export class WooCommerceFormatter implements FormatterAbstract {
         Position: index + 1,
         Categories: pathsArray?.join(" > "),
         Tags: product.keywords?.join(","),
-        Images: product.images?.join(","),
+        Images: product.images
+          ?.map((image) => image.replaceAll(",", "%2С"))
+          .join(","),
       };
 
       const productParams = attributes.params.get(product.variantId) ?? {};
