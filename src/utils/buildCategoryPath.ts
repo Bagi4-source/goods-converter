@@ -1,4 +1,4 @@
-import { type Category } from "dist/bundle";
+import { type Category } from "src/types";
 
 export const buildCategoryPaths = (
   categories: Category[],
