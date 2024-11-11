@@ -1,6 +1,6 @@
 import { CSVStream } from "../streams/CSVStream";
 import { type IParam, type Brand, type Category, type Product } from "../types";
-import { buildCategoryPaths } from "../utils";
+import { buildCategoryPaths, urlQueryEncode } from "../utils";
 import {
   Extension,
   type FormatterAbstract,
@@ -229,9 +229,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         Position: index + 1,
         Categories: pathsArray?.join(" > "),
         Tags: product.keywords?.join(","),
-        Images: product.images
-          ?.map((image) => image.replaceAll(",", "%2С"))
-          .join(","),
+        Images: product.images?.map(urlQueryEncode).join(","),
       };
 
       const productParams = attributes.params.get(product.variantId) ?? {};
