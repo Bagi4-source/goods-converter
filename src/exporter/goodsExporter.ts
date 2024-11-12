@@ -9,9 +9,13 @@ import { type Exporter, type Transformer } from "./exporter.types";
 import fs from "fs";
 
 export class GoodsExporter<Context extends object = object> {
-  private readonly _context: Context;
+  private _context: Context;
   constructor(readonly context?: Context) {
     this._context = context ?? ({} as unknown as Context);
+  }
+
+  public setContext(context: Context): void {
+    this._context = context;
   }
 
   private formatter: FormatterAbstract = new Formatters.YMLFormatter();
