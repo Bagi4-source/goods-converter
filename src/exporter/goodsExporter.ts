@@ -8,7 +8,17 @@ import { type Exporter, type Transformer } from "./exporter.types";
 
 import fs from "fs";
 
-export class GoodsExporter {
+export class GoodsExporter<Context extends object | undefined> {
+  private _context: Context;
+
+  constructor(readonly context: Context) {
+    this._context = context;
+  }
+
+  public setContext(context: Context): void {
+    this._context = context;
+  }
+
   private formatter: FormatterAbstract = new Formatters.YMLFormatter();
   private exporter: Exporter = () => {
     return fs.createWriteStream(
@@ -16,9 +26,9 @@ export class GoodsExporter {
     );
   };
 
-  private transformers = new Array<Transformer>();
+  private transformers = new Array<Transformer<Context>>();
 
-  public setTransformers(transformers: Transformer[]): void {
+  public setTransformers(transformers: Array<Transformer<Context>>): void {
     this.transformers = transformers;
   }
 
@@ -39,7 +49,10 @@ export class GoodsExporter {
     let transformedProducts: Product[] = products;
 
     for (const transformer of this.transformers)
-      transformedProducts = await transformer(transformedProducts);
+      transformedProducts = await transformer(
+        transformedProducts,
+        this._context,
+      );
 
     const writableStream = this.exporter();
 
