@@ -8,10 +8,12 @@ import { type Exporter, type Transformer } from "./exporter.types";
 
 import fs from "fs";
 
-export class GoodsExporter<Context extends object = object> {
+export class GoodsExporter<
+  Context extends object | undefined = object | undefined,
+> {
   private _context: Context;
-  constructor(readonly context?: Context) {
-    this._context = context ?? ({} as unknown as Context);
+  constructor(readonly context: Context) {
+    this._context = context;
   }
 
   public setContext(context: Context): void {
