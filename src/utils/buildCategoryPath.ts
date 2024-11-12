@@ -1,4 +1,4 @@
-import { type Category } from "src/types";
+import { type Category } from "../types";
 
 export const buildCategoryPaths = (
   categories: Category[],
