@@ -2,7 +2,7 @@ import { type Product } from "../types";
 
 import { type Writable } from "stream";
 
-export type Transformer<Context = object | undefined> = (
+export type Transformer<Context> = (
   products: Product[],
   context: Context,
 ) => Product[] | Promise<Product[]>;

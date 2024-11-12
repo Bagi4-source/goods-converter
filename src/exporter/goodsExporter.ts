@@ -8,10 +8,9 @@ import { type Exporter, type Transformer } from "./exporter.types";
 
 import fs from "fs";
 
-export class GoodsExporter<
-  Context extends object | undefined = object | undefined,
-> {
+export class GoodsExporter<Context extends object | undefined> {
   private _context: Context;
+
   constructor(readonly context: Context) {
     this._context = context;
   }
@@ -27,11 +26,9 @@ export class GoodsExporter<
     );
   };
 
-  private transformers = new Array<Transformer<Context> | Transformer>();
+  private transformers = new Array<Transformer<Context>>();
 
-  public setTransformers(
-    transformers: Array<Transformer<Context> | Transformer>,
-  ): void {
+  public setTransformers(transformers: Array<Transformer<Context>>): void {
     this.transformers = transformers;
   }
 
