@@ -284,9 +284,16 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
     const variableProducts = Array.from(parentProducts.values());
 
+    const getVariationsByParentId = (parentId: number) => {
+      return variations.filter((variation) => variation.Parent === parentId);
+    };
+
     csvStream.setColumns(columns);
-    [...variableProducts, ...variations].forEach((product) => {
-      csvStream.addRow(product);
+    variableProducts.forEach((parentProduct) => {
+      csvStream.addRow(parentProduct);
+      getVariationsByParentId(parentProduct.ID).forEach((variationProduct) =>
+        csvStream.addRow(variationProduct),
+      );
     });
 
     csvStream.getWritableStream().end();
