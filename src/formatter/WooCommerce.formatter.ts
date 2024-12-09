@@ -211,7 +211,10 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
     const attributes = this.extractAttributes(products);
 
-    const variationsByParentId = new Map<number, {}[]>();
+    const variationsByParentId = new Map<
+      number,
+      Record<string, string | number | undefined>[]
+    >();
 
     const variations = products.map((product, index) => {
       const pathsArray = categoriePaths
