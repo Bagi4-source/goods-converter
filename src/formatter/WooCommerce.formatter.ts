@@ -211,6 +211,8 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
     const attributes = this.extractAttributes(products);
 
+    const variationsByParentId = new Map<number, {}[]>();
+
     const variations = products.map((product, index) => {
       const pathsArray = categoriePaths
         .get(product.categoryId)
@@ -237,6 +239,12 @@ export class WooCommerceFormatter implements FormatterAbstract {
       this.removeVisibleFromAttributes(productParams);
 
       row = { ...row, ...productParams };
+
+      if (variationsByParentId.has(row.Parent)) {
+        variationsByParentId.get(row.Parent)?.push(row);
+      } else {
+        variationsByParentId.set(row.Parent, [row]);
+      }
 
       return row;
     });
@@ -284,16 +292,13 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
     const variableProducts = Array.from(parentProducts.values());
 
-    const getVariationsByParentId = (parentId: number) => {
-      return variations.filter((variation) => variation.Parent === parentId);
-    };
-
     csvStream.setColumns(columns);
     variableProducts.forEach((parentProduct) => {
       csvStream.addRow(parentProduct);
-      getVariationsByParentId(parentProduct.ID).forEach((variationProduct) =>
-        csvStream.addRow(variationProduct),
-      );
+
+      variationsByParentId
+        .get(parentProduct.ID)
+        ?.forEach((variationProduct) => csvStream.addRow(variationProduct));
     });
 
     csvStream.getWritableStream().end();
