@@ -81,7 +81,8 @@ export class InsalesFormatter implements FormatterAbstract {
       "Подкатегория 1",
       "Подкатегория 2",
       "Название товара или услуги",
-      "Время доставки",
+      "Время доставки: Минимальное",
+      "Время доставки: Максимальное",
       "Старая цена",
       "Цена продажи",
       "Cебестоимость",
@@ -127,9 +128,8 @@ export class InsalesFormatter implements FormatterAbstract {
         "Ссылка на товар": product.url,
         Артикул: product.vendorCode,
         "Название товара или услуги": product.title,
-        "Время доставки": product.timeDelivery
-          ? `${product.timeDelivery.min}-${product.timeDelivery.max}`
-          : undefined,
+        "Время доставки: Минимальное": product.timeDelivery?.min,
+        "Время доставки: Максимальное": product.timeDelivery?.max,
         "Старая цена": product.oldPrice,
         "Цена продажи": product.price,
         Cебестоимость: product.purchasePrice,
