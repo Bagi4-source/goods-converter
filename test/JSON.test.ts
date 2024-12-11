@@ -3,7 +3,8 @@ import { expect, describe, it } from "vitest";
 
 import { brands, categories, products } from "./constants";
 import { streamToBuffer } from "./utils/streamToBuffer";
-import {PassThrough} from "stream";
+
+import { PassThrough } from "stream";
 
 describe("JSON formatter", () => {
   const formatter = new Formatters.JSONFormatter();

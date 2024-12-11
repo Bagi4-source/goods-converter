@@ -23,7 +23,7 @@ describe("Excel formatter", () => {
   });
 
   it("should export Excel file", async () => {
-    const exporter = new GoodsExporter();
+    const exporter = new GoodsExporter({});
     exporter.setFormatter(formatter);
     await exporter.export(products, categories);
   });

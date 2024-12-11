@@ -12,7 +12,7 @@ describe("GoodsExporter", () => {
     vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
   });
 
-  const exporter = new GoodsExporter();
+  const exporter = new GoodsExporter({});
 
   it("check export", async () => {
     await exporter.export(products, categories, brands);
