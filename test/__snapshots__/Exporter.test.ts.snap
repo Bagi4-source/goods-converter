@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`GoodsExporter > check export with formatter 1`] = `
-"url;productId;parentId;variantId;title;description;vendor;vendorCode;category;images;videos;price;oldPrice;purchasePrice;currency;saleDate;countryOfOrigin;tags;codesTN;params;properties;sizes;keywords;relatedProducts;vendorId;categoryId;additionalExpenses;minQuantity;stepQuantity;available;barcode;weight;boxCount;dimensions;vat;count;age;manufacturerWarranty;certificate;seriesName;gender
-http://localhost:8080/?param1=value1&param2=value2;1;;1111;Title;Description;Nike;NIKE-1111;Обувь;image1,image2;;19000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;param1=v1, param2=v2;prop1=v1, prop2=v2;UK=36,37,38,39;Обувь,Кроссовки;1234;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;Мужское
-;1;1111;1112;Title;Description;Nike;NIKE-1111;Обувь;image1,image2;;19000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;size=44, color=white;seasons=spring, summer;;;;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;
+"url;productId;parentId;variantId;title;description;vendor;vendorCode;category;images;videos;timeDeliveryMin;timeDeliveryMax;price;oldPrice;purchasePrice;currency;saleDate;countryOfOrigin;tags;codesTN;params;properties;sizes;keywords;relatedProducts;vendorId;categoryId;additionalExpenses;minQuantity;stepQuantity;available;barcode;weight;boxCount;dimensions;vat;count;age;manufacturerWarranty;certificate;seriesName;gender
+http://localhost:8080/?param1=value1&param2=value2;1;;1111;Title;Description;Nike;NIKE-1111;Обувь;image1,image2;;;;19000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;param1=v1, param2=v2;prop1=v1, prop2=v2;UK=36,37,38,39;Обувь,Кроссовки;1234;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;Мужское
+;1;1111;1112;Title;Description;Nike;NIKE-1111;Обувь;image1,image2;;;;19000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;size=44, color=white;seasons=spring, summer;;;;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;
 "
 `;
 
@@ -132,8 +132,8 @@ exports[`GoodsExporter > check export with transformers 1`] = `
 `;
 
 exports[`GoodsExporter > check export without transformers 1`] = `
-"url;productId;parentId;variantId;title;description;vendor;vendorCode;category;images;videos;price;oldPrice;purchasePrice;currency;saleDate;countryOfOrigin;tags;codesTN;params;properties;sizes;keywords;relatedProducts;vendorId;categoryId;additionalExpenses;minQuantity;stepQuantity;available;barcode;weight;boxCount;dimensions;vat;count;age;manufacturerWarranty;certificate;seriesName;gender
-http://localhost:8080/?param1=value1&param2=value2;1;;1111;Title;Description;Nike;NIKE-1111;Обувь;pic1,pic2;;29000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;param1=v1, param2=v2;prop1=v1, prop2=v2;UK=36,37,38,39;Обувь,Кроссовки;1234;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;Мужское
-;1;1111;1112;Title;Description;Nike;NIKE-1111;Обувь;pic1,pic2;;29000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;size=44, color=white;seasons=spring, summer;;;;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;
+"url;productId;parentId;variantId;title;description;vendor;vendorCode;category;images;videos;timeDeliveryMin;timeDeliveryMax;price;oldPrice;purchasePrice;currency;saleDate;countryOfOrigin;tags;codesTN;params;properties;sizes;keywords;relatedProducts;vendorId;categoryId;additionalExpenses;minQuantity;stepQuantity;available;barcode;weight;boxCount;dimensions;vat;count;age;manufacturerWarranty;certificate;seriesName;gender
+http://localhost:8080/?param1=value1&param2=value2;1;;1111;Title;Description;Nike;NIKE-1111;Обувь;pic1,pic2;;;;29000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;param1=v1, param2=v2;prop1=v1, prop2=v2;UK=36,37,38,39;Обувь,Кроссовки;1234;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;Мужское
+;1;1111;1112;Title;Description;Nike;NIKE-1111;Обувь;pic1,pic2;;;;29000;20000;15000;RUR;01.01.2020;Китай;Nike,Кроссовки;code;size=44, color=white;seasons=spring, summer;;;;2;1;1000;1;1;true;567890567893;0.15;1;12/32/43;VAT_20;24;[object Object];true;111;Jordan 4;
 "
 `;

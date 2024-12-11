@@ -213,7 +213,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
     const variationsByParentId = new Map<
       number,
-      Record<string, string | number | undefined>[]
+      Array<Record<string, string | number | undefined>>
     >();
 
     const variations = products.map((product, index) => {
@@ -301,7 +301,9 @@ export class WooCommerceFormatter implements FormatterAbstract {
 
       variationsByParentId
         .get(parentProduct.ID)
-        ?.forEach((variationProduct) => csvStream.addRow(variationProduct));
+        ?.forEach((variationProduct) => {
+          csvStream.addRow(variationProduct);
+        });
     });
 
     csvStream.getWritableStream().end();

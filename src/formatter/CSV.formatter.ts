@@ -40,6 +40,8 @@ export class CSVFormatter implements FormatterAbstract {
       "category",
       "images",
       "videos",
+      "timeDeliveryMin",
+      "timeDeliveryMax",
       "price",
       "oldPrice",
       "purchasePrice",
@@ -79,6 +81,8 @@ export class CSVFormatter implements FormatterAbstract {
           .join(", "),
         keywords: product.keywords?.join(","),
         relatedProducts: product.relatedProducts?.join(","),
+        timeDeliveryMin: product.timeDelivery?.min,
+        timeDeliveryMax: product.timeDelivery?.max,
       };
       csvStream.addRow(row);
     });
