@@ -35,6 +35,7 @@ export class ExcelFormatter implements FormatterAbstract {
       "category",
       "images",
       "videos",
+      "timeDelivery",
       "price",
       "oldPrice",
       "purchasePrice",
@@ -83,6 +84,9 @@ export class ExcelFormatter implements FormatterAbstract {
         sizes: product.sizes
           ?.map(({ name, value }) => `${name}=${value}`)
           .join(", "),
+        timeDelivery: product.timeDelivery
+          ? `${product.timeDelivery.min}-${product.timeDelivery.max}`
+          : undefined,
       };
       worksheet.addRow(row).commit();
     });

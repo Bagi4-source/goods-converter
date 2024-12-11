@@ -136,6 +136,13 @@ export class YMLFormatter implements FormatterAbstract {
       picture: product.images,
       video: product.videos,
       available: product.available,
+      "time-delivery": product.timeDelivery
+        ? {
+            "@_min": product.timeDelivery.min,
+            "@_max": product.timeDelivery.max,
+            "#text": `${product.timeDelivery.min}-${product.timeDelivery.max}`,
+          }
+        : undefined,
       series: product.seriesName,
       "min-quantity": product.minQuantity,
       "step-quantity": product.stepQuantity,
