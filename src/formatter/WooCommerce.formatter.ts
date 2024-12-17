@@ -35,6 +35,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
     "Categories",
     "Tags",
     "Images",
+    "SizeGrid",
   ];
 
   private formatKeyAttribute(key: string) {
@@ -217,6 +218,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
     >();
 
     const imagesByParentId = new Map<number, string | undefined>();
+    const sizesByParentId = new Map<number, string | undefined>();
 
     const variations = products.map((product, index) => {
       const pathsArray = categoriePaths
@@ -239,6 +241,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         Categories: pathsArray?.join(" > "),
         Tags: product.keywords?.join(","),
         Images: "",
+        SizeGrid: "",
       };
 
       const productParams = attributes.params.get(product.variantId) ?? {};
@@ -246,6 +249,13 @@ export class WooCommerceFormatter implements FormatterAbstract {
       if (!imagesByParentId.has(row.Parent)) {
         const images = product.images?.map(urlQueryEncode).join(",");
         imagesByParentId.set(row.Parent, images);
+      }
+
+      if (!sizesByParentId.has(row.Parent)) {
+        sizesByParentId.set(
+          row.Parent,
+          product.sizes ? JSON.stringify(product.sizes) : "",
+        );
       }
 
       this.removeVisibleFromAttributes(productParams);
@@ -275,6 +285,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         Parent: "",
         "Regular price": "",
         Images: imagesByParentId.get(product.Parent) ?? "",
+        SizeGrid: sizesByParentId.get(product.Parent) ?? "",
       };
 
       row.Stock = (currentParent?.Stock || 0) + (product?.Stock || 0);
