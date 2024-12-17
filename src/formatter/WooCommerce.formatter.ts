@@ -223,6 +223,8 @@ export class WooCommerceFormatter implements FormatterAbstract {
         .get(product.categoryId)
         ?.map((category) => category.name);
 
+      const price = product.count ? product.price : "";
+
       let row = {
         ID: product.variantId,
         Type: "variation",
@@ -232,7 +234,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         "Short description": "",
         Description: product.description,
         Stock: product.count ?? 0,
-        "Regular price": product.price,
+        "Regular price": price,
         Position: index + 1,
         Categories: pathsArray?.join(" > "),
         Tags: product.keywords?.join(","),
