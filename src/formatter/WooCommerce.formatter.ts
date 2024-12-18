@@ -225,7 +225,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         .get(product.categoryId)
         ?.map((category) => category.name);
 
-      const price = product.count ? product.price : "";
+      const price = product.price ? product.price : "";
 
       let row = {
         ID: product.variantId,
