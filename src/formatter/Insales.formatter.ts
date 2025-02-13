@@ -38,19 +38,7 @@ export class InsalesFormatter implements FormatterAbstract {
     const getProperties = (product: Product): Record<string, string> => {
       const properties: Record<string, string> = {};
 
-      const customPropetries = [
-        { key: "Артикул", value: product.vendorCode ?? "" },
-        { key: "Бренд", value: product.vendor ?? "" },
-        { key: "Коллекция", value: product.seriesName ?? "" },
-        { key: "Пол", value: product.gender ?? "" },
-        { key: "Дата выхода", value: product.saleDate ?? "" },
-      ];
-
       product.properties?.forEach(
-        (p) => (properties[`Параметр: ${p.key}`] = p.value),
-      );
-
-      customPropetries.forEach(
         (p) => (properties[`Параметр: ${p.key}`] = p.value),
       );
 
@@ -113,11 +101,6 @@ export class InsalesFormatter implements FormatterAbstract {
       "Ссылка на видео",
       "Параметры",
       "Свойства",
-      "Параметр: Артикул",
-      "Параметр: Бренд",
-      "Параметр: Коллекция",
-      "Параметр: Пол",
-      "Параметр: Дата выхода",
       "Размерная сетка",
       "Связанные товары",
       "Ключевые слова",
@@ -139,7 +122,7 @@ export class InsalesFormatter implements FormatterAbstract {
       const row = {
         "Внешний ID": externalId,
         "Ссылка на товар": product.url,
-        Артикул: externalId,
+        Артикул: product.vendorCode,
         "Название товара или услуги": product.title,
         "Время доставки: Минимальное": product.timeDelivery?.min,
         "Время доставки: Максимальное": product.timeDelivery?.max,
