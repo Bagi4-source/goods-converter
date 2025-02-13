@@ -32,6 +32,7 @@ export const products: Product[] = [
     dimensions: "12/32/43",
     vat: Vat.VAT_20,
     count: 24,
+    favoriteCount: 314,
     params: [
       {
         key: "param1",
@@ -111,6 +112,7 @@ export const products: Product[] = [
     dimensions: "12/32/43",
     vat: Vat.VAT_20,
     count: 24,
+    favoriteCount: 900,
     params: [
       {
         key: "size",
