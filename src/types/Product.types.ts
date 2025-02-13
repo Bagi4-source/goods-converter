@@ -510,6 +510,12 @@ export interface Product {
    * Пример: Дети, Женское, Унисекс
    */
   gender?: string;
+  /**
+   * **Кол-во клиентов, которым понравился товар**
+   *
+   * Пример: 982134
+   */
+  favoriteCount?: number;
 }
 
 export enum Vat {
