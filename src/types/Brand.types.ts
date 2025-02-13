@@ -10,7 +10,11 @@ export interface Brand {
    */
   name: string;
   /**
-   * **Ссылка на изображение**
+   * **Ссылка на изображение логотипа**
+   */
+  logoUrl?: string;
+  /**
+   * **Ссылка на изображение баннера**
    */
   coverURL?: string;
 }
