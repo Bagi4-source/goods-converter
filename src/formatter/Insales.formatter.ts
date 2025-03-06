@@ -8,6 +8,7 @@ import {
 } from "./formater.types";
 
 import { type Writable } from "stream";
+
 const { stream } = pkg;
 
 export class InsalesFormatter implements FormatterAbstract {
@@ -113,11 +114,13 @@ export class InsalesFormatter implements FormatterAbstract {
         columns.add(key);
       });
     });
+
     worksheet.columns = Array.from(columns).map((column) => ({
       header: column,
       key: column,
     }));
-    products.forEach((product) => {
+
+    for (const product of products) {
       const externalId = `${product.productId}-${product.variantId}`;
       const row = {
         "Внешний ID": externalId,
@@ -137,7 +140,7 @@ export class InsalesFormatter implements FormatterAbstract {
         "Габариты варианта": product.dimensions,
         Вес: product.weight,
         "Размещение на сайте": product.available,
-        НДС: product.vat.toString(),
+        НДС: product.vat?.toString(),
         "Валюта склада": product.currency.toString(),
         "Изображения варианта":
           product.parentId === undefined
@@ -154,8 +157,10 @@ export class InsalesFormatter implements FormatterAbstract {
         "Связанные товары": product.relatedProducts?.join(","),
         "Ключевые слова": product.keywords?.join(","),
       };
+      // todo(delay)
       worksheet.addRow(row).commit();
-    });
+    }
+
     worksheet.commit();
     await workbook.commit();
   }

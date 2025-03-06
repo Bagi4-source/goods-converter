@@ -27,7 +27,7 @@ export class CSVFormatter implements FormatterAbstract {
       emptyFieldValue: "",
       lineSeparator: "\n",
     });
-    csvStream.getWritableStream().pipe(writableStream);
+    csvStream.writableStream.pipe(writableStream);
     const columns = new Set<string>([
       "url",
       "productId",
@@ -62,7 +62,7 @@ export class CSVFormatter implements FormatterAbstract {
       });
     });
     csvStream.setColumns(columns);
-    products.forEach((product) => {
+    for (const product of products) {
       const row: Record<string, any> = {
         ...product,
         category: mappedCategories[product.categoryId],
@@ -84,10 +84,10 @@ export class CSVFormatter implements FormatterAbstract {
         timeDeliveryMin: product.timeDelivery?.min,
         timeDeliveryMax: product.timeDelivery?.max,
       };
-      csvStream.addRow(row);
-    });
+      await csvStream.addRow(row);
+    }
 
     // Закрываем поток
-    csvStream.getWritableStream().end();
+    csvStream.writableStream.end();
   }
 }
