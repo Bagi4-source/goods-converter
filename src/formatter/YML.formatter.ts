@@ -1,7 +1,7 @@
 import { XMLBuilder } from "fast-xml-parser";
-import { writeWithDrain } from "src/utils";
 
 import { type Product, type Category, type Brand } from "../types";
+import { writeWithDrain } from "../utils";
 import {
   Extension,
   type FormatterAbstract,

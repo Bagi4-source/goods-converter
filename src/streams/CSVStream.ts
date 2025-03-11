@@ -1,4 +1,4 @@
-import { writeWithDrain } from "src/utils";
+import { writeWithDrain } from "../utils";
 
 import { PassThrough } from "stream";
 
