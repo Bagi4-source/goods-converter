@@ -1,4 +1,5 @@
 import { XMLBuilder } from "fast-xml-parser";
+import { writeWithDrain } from "src/utils";
 
 import { type Product, type Category, type Brand } from "../types";
 import {
@@ -39,47 +40,49 @@ export class YMLFormatter implements FormatterAbstract {
     // Открываем тег <shop>
     result.write("<shop>\n");
 
+    const resultWriter = writeWithDrain(result);
     // Добавляем информацию о магазине
     if (options?.shopName) {
-      result.write(builder.build({ name: options.shopName }));
-      result.write("\n");
+      await resultWriter(builder.build({ name: options.shopName }));
+      await resultWriter("\n");
     }
     if (options?.companyName) {
-      result.write(builder.build({ company: options.companyName }));
-      result.write("\n");
+      await resultWriter(builder.build({ company: options.companyName }));
+      await resultWriter("\n");
     }
 
     // Добавляем категории и бренды
     if (categories) {
-      result.write(
+      await resultWriter(
         builder.build({
           // tagname: "categories",
           categories: { category: this.getCategories(categories) },
         }),
       );
-      result.write("\n");
+      await resultWriter("\n");
     }
     if (brands) {
-      result.write(
+      await resultWriter(
         builder.build({ brands: { brand: this.getBrands(brands) } }),
       );
-      result.write("\n");
+      await resultWriter("\n");
     }
 
     // Открываем секцию <offers>
-    result.write("<offers>\n");
+    await resultWriter("<offers>\n");
 
     // Создаем поток для обработки offer элементов
     const offerStream = new PassThrough();
+    const offerWriter = writeWithDrain(offerStream);
 
     // Пайпим поток offer элементов в основной итоговый поток
     offerStream.pipe(result, { end: false });
 
     // Записываем каждый продукт в поток
-    products.forEach((product) => {
+    for (const product of products) {
       const offer = builder.build({ offer: this.getOffer(product) });
-      offerStream.write(offer + "\n");
-    });
+      await offerWriter(offer + "\n");
+    }
 
     // Завершаем поток offer
     offerStream.end();

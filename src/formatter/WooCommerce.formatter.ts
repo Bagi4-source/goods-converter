@@ -200,14 +200,14 @@ export class WooCommerceFormatter implements FormatterAbstract {
     _?: Brand[],
     __?: FormatterOptions,
   ): Promise<void> {
-    const categoriePaths = buildCategoryPaths(categories ?? []);
+    const categoryPaths = buildCategoryPaths(categories ?? []);
 
     const csvStream = new CSVStream({
       delimiter: ";",
       emptyFieldValue: "",
       lineSeparator: "\n",
     });
-    csvStream.getWritableStream().pipe(writableStream);
+    csvStream.writableStream.pipe(writableStream);
     const columns = new Set<string>(this.DEFAULT_COLUMNS);
 
     const attributes = this.extractAttributes(products);
@@ -221,7 +221,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
     const sizesByParentId = new Map<number, string | undefined>();
 
     const variations = products.map((product, index) => {
-      const pathsArray = categoriePaths
+      const pathsArray = categoryPaths
         .get(product.categoryId)
         ?.map((category) => category.name);
 
@@ -317,16 +317,16 @@ export class WooCommerceFormatter implements FormatterAbstract {
     const variableProducts = Array.from(parentProducts.values());
 
     csvStream.setColumns(columns);
-    variableProducts.forEach((parentProduct) => {
-      csvStream.addRow(parentProduct);
+    for (const parentProduct of variableProducts) {
+      await csvStream.addRow(parentProduct);
 
-      variationsByParentId
-        .get(parentProduct.ID)
-        ?.forEach((variationProduct) => {
-          csvStream.addRow(variationProduct);
-        });
-    });
+      for (const variationProduct of variationsByParentId.get(
+        parentProduct.ID,
+      ) ?? []) {
+        await csvStream.addRow(variationProduct);
+      }
+    }
 
-    csvStream.getWritableStream().end();
+    csvStream.writableStream.end();
   }
 }

@@ -1,3 +1,5 @@
+import { writeWithDrain } from "src/utils";
+
 import { PassThrough } from "stream";
 
 export interface CSVStreamOptions {
@@ -12,6 +14,7 @@ export class CSVStream {
   private readonly lineSeparator: string = "\n";
   private readonly emptyFieldValue: string = "";
   private columns = new Set<string>();
+  private readonly writer = writeWithDrain(this.stream);
 
   constructor({ delimiter, lineSeparator, emptyFieldValue }: CSVStreamOptions) {
     if (delimiter !== undefined) this.delimiter = delimiter;
@@ -19,7 +22,7 @@ export class CSVStream {
     if (emptyFieldValue !== undefined) this.emptyFieldValue = emptyFieldValue;
   }
 
-  getWritableStream() {
+  public get writableStream() {
     return this.stream;
   }
 
@@ -30,13 +33,14 @@ export class CSVStream {
     );
   }
 
-  addRow(items: Record<string, any>) {
-    this.stream.write(
+  async addRow(items: Record<string, any>) {
+    const data =
       Array.from(this.columns)
         .map((key) =>
           items[key] === undefined ? this.emptyFieldValue : items[key] + "",
         )
-        .join(this.delimiter) + this.lineSeparator,
-    );
+        .join(this.delimiter) + this.lineSeparator;
+
+    await this.writer(data);
   }
 }

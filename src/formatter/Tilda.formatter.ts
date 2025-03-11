@@ -27,7 +27,7 @@ export class TildaFormatter implements FormatterAbstract {
       emptyFieldValue: "",
       lineSeparator: "\n",
     });
-    csvStream.getWritableStream().pipe(writableStream);
+    csvStream.writableStream.pipe(writableStream);
     const columns = new Set<string>([
       "SKU",
       "Brand",
@@ -43,7 +43,7 @@ export class TildaFormatter implements FormatterAbstract {
       "Parent UID",
     ]);
     csvStream.setColumns(columns);
-    products.forEach((product) => {
+    for (const product of products) {
       const row: Record<string, string | number | undefined> = {
         SKU: product.vendorCode,
         Brand: product.vendor,
@@ -60,9 +60,9 @@ export class TildaFormatter implements FormatterAbstract {
         "External ID": product.variantId,
         "Parent UID": product.parentId,
       };
-      csvStream.addRow(row);
-    });
+      await csvStream.addRow(row);
+    }
 
-    csvStream.getWritableStream().end();
+    csvStream.writableStream.end();
   }
 }
