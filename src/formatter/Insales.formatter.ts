@@ -125,7 +125,7 @@ export class InsalesFormatter implements FormatterAbstract {
       const row = {
         "Внешний ID": externalId,
         "Ссылка на товар": product.url,
-        Артикул: product.vendorCode,
+        Артикул: externalId, // TODO: product.vendorCode,
         "Название товара или услуги": product.title,
         "Время доставки: Минимальное": product.timeDelivery?.min,
         "Время доставки: Максимальное": product.timeDelivery?.max,
@@ -151,6 +151,7 @@ export class InsalesFormatter implements FormatterAbstract {
             ? undefined
             : product.images?.join(" "),
         "Ссылка на видео": product.videos ? product.videos[0] : undefined,
+        "Параметр: Артикул": product.vendorCode, // TODO: брать из обычных параметров
         ...getParams(product),
         ...getProperties(product),
         "Размерная сетка": JSON.stringify(product.sizes),
