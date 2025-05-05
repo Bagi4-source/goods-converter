@@ -6,3 +6,4 @@ coverage/*
 !coverage/coverage-summary.json
 update-readme-version.js
 output.yml
+.qodo
