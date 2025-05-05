@@ -226,6 +226,7 @@ export class WooCommerceFormatter implements FormatterAbstract {
         ?.map((category) => category.name);
 
       const price = product.price ? product.price : "";
+      const images = product.images?.map(urlQueryEncode).join(",");
 
       let row = {
         ID: product.variantId,
@@ -240,14 +241,13 @@ export class WooCommerceFormatter implements FormatterAbstract {
         Position: index + 1,
         Categories: pathsArray?.join(" > "),
         Tags: product.keywords?.join(","),
-        Images: "",
+        Images: images,
         SizeGrid: "",
       };
 
       const productParams = attributes.params.get(product.variantId) ?? {};
 
       if (!imagesByParentId.has(row.Parent)) {
-        const images = product.images?.map(urlQueryEncode).join(",");
         imagesByParentId.set(row.Parent, images);
       }
 
