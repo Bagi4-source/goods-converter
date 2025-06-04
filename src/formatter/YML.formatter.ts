@@ -1,7 +1,7 @@
 import { XMLBuilder } from "fast-xml-parser";
 
 import { type Product, type Category, type Brand } from "../types";
-import { writeWithDrain } from "../utils";
+import { getRFC3339Date, writeWithDrain } from "../utils";
 import {
   Extension,
   type FormatterAbstract,
@@ -31,7 +31,7 @@ export class YMLFormatter implements FormatterAbstract {
       indentBy: "  ",
     });
 
-    const date = new Date().toISOString().replace(/.\d+Z/, "");
+    const date = getRFC3339Date(new Date());
 
     // Начинаем формирование XML
     result.write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n');
@@ -80,6 +80,7 @@ export class YMLFormatter implements FormatterAbstract {
 
     // Записываем каждый продукт в поток
     for (const product of products) {
+      if (product.price === 0) continue;
       const offer = builder.build({ offer: this.getOffer(product) });
       await offerWriter(offer + "\n");
     }
@@ -118,7 +119,7 @@ export class YMLFormatter implements FormatterAbstract {
     return categories.map((cat) => ({
       "@_id": cat.id,
       "@_parentId": cat.parentId ?? "",
-      "#text": cat.name,
+      "#text": cat.name || `Категория #${cat.id}`,
     }));
   }
 
@@ -187,13 +188,17 @@ export class YMLFormatter implements FormatterAbstract {
       dimensions: product.dimensions,
       boxCount: product.boxCount,
       disabled: product.disabled,
-      age: product.age != null && {
-        "@_unit": product.age.unit,
-        "#text": product.age.value,
-      },
-      "tn-ved-codes": product.codesTN?.length != null && {
-        "tn-ved-code": product.codesTN,
-      },
+      age: product.age
+        ? {
+            "@_unit": product.age.unit,
+            "#text": product.age.value,
+          }
+        : undefined,
+      "tn-ved-codes": product.codesTN?.length
+        ? {
+            "tn-ved-code": product.codesTN,
+          }
+        : undefined,
       relatedProduct: product.relatedProducts,
       gender: product.gender,
     };

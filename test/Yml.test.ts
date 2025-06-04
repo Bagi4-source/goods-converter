@@ -15,16 +15,10 @@ describe("YML formatter", () => {
 
   it("should export YML data", async () => {
     const stream = new PassThrough();
-    const result = await formatter.format(
-      stream,
-      products,
-      categories,
-      brands,
-      {
-        shopName: "Bagi4",
-        companyName: "Bagi4",
-      },
-    );
+    await formatter.format(stream, products, categories, brands, {
+      shopName: "Bagi4",
+      companyName: "Bagi4",
+    });
 
     const resultString = await streamToBuffer(stream);
 
