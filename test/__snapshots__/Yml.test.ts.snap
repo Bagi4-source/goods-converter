@@ -2,7 +2,7 @@
 
 exports[`YML formatter > should export YML data 1`] = `
 "<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<yml_catalog date="2023-01-01T03:00+03:00">
+<yml_catalog date="2023-01-01T03:00+00:00">
 <shop>
 <name>Bagi4</name>
 

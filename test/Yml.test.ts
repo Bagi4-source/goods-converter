@@ -1,5 +1,5 @@
 import { Formatters } from "src";
-import { expect, describe, it, vi, beforeEach } from "vitest";
+import { expect, describe, it, vi, beforeEach, afterEach } from "vitest";
 
 import { brands, categories, products } from "./constants";
 import { streamToBuffer } from "./utils/streamToBuffer";
@@ -11,6 +11,11 @@ describe("YML formatter", () => {
 
   beforeEach(() => {
     vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+    vi.spyOn(Date.prototype, "getTimezoneOffset").mockReturnValue(0);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("should export YML data", async () => {

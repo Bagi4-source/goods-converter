@@ -1,5 +1,5 @@
 import { Formatters, GoodsExporter } from "src";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { brands, categories, products } from "./constants";
 import { streamToBuffer } from "./utils/streamToBuffer";
@@ -8,8 +8,12 @@ import { PassThrough } from "stream";
 
 describe("GoodsExporter", () => {
   beforeEach(() => {
-    // tell vitest we use mocked time
     vi.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+    vi.spyOn(Date.prototype, "getTimezoneOffset").mockReturnValue(0);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   const exporter = new GoodsExporter({});

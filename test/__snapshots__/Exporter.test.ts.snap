@@ -9,7 +9,7 @@ http://localhost:8080/?param1=value1&param2=value2;1;;1111;Title;Description;Nik
 
 exports[`GoodsExporter > check export with transformers 1`] = `
 "<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<yml_catalog date="2023-01-01T03:00+03:00">
+<yml_catalog date="2023-01-01T03:00+00:00">
 <shop>
 <categories>
   <category id="1" parentId="2">Обувь</category>
