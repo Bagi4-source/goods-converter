@@ -2,7 +2,7 @@
 
 exports[`Tilda formatter > should export Tilda csv data 1`] = `
 "SKU	Brand	Category	Title	Text	Photo	Price	Price Old	Quantity	Editions	External ID	Parent UID	Characteristics:prop1	Characteristics:prop2	Characteristics:seasons
-NIKE-1111	Nike	Обувь	Title	Description	,	19000	20000	24	param1:v1;param2:v2	1111		v1	v2	
+NIKE-1111	Nike	Обувь	Title	Description	https://cdn.poizon.com/image1.png,https://cdn.poizon.com/image2.png	19000	20000	24	param1:v1;param2:v2	1111		v1	v2	
 NIKE-1111	Nike	Обувь	Title	Description	,	19000	20000	24	size:44;color:white	1112	1111			spring, summer
 "
 `;

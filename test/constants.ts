@@ -12,7 +12,10 @@ export const products: Product[] = [
     saleDate: "01.01.2020",
     categoryId: 1,
     countryOfOrigin: "Китай",
-    images: ["image1", "image2"],
+    images: [
+      "https://cdn.poizon.com/image1.png",
+      "https://cdn.poizon.com/image2.png",
+    ],
     videos: [],
     price: 19000,
     oldPrice: 20000,
