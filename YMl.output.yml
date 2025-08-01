@@ -26,8 +26,8 @@
   <vendorId>2</vendorId>
   <vendor>Nike</vendor>
   <vendorCode>NIKE-1111</vendorCode>
-  <picture>image1</picture>
-  <picture>image2</picture>
+  <picture>https://cdn.poizon.com/image1.png</picture>
+  <picture>https://cdn.poizon.com/image2.png</picture>
   <available>true</available>
   <series>Jordan 4</series>
   <min-quantity>1</min-quantity>
