@@ -1,5 +1,6 @@
 import { CSVStream } from "../streams/CSVStream";
 import { type Brand, type Category, type Product } from "../types";
+import { urlQueryEncode } from "../utils";
 import {
   Extension,
   type FormatterAbstract,
@@ -23,7 +24,7 @@ export class TildaFormatter implements FormatterAbstract {
     categories?.forEach(({ id, name }) => (mappedCategories[id] = name));
 
     const csvStream = new CSVStream({
-      delimiter: ";",
+      delimiter: "\t",
       emptyFieldValue: "",
       lineSeparator: "\n",
     });
@@ -42,6 +43,19 @@ export class TildaFormatter implements FormatterAbstract {
       "External ID",
       "Parent UID",
     ]);
+
+    const characteristics = new Set<string>();
+
+    products.forEach((product) => {
+      product.properties?.forEach(({ key }) => {
+        characteristics.add(key);
+      });
+    });
+
+    characteristics.forEach((charKey) => {
+      columns.add(`Characteristics:${charKey}`);
+    });
+
     csvStream.setColumns(columns);
     for (const product of products) {
       const row: Record<string, string | number | undefined> = {
@@ -50,7 +64,7 @@ export class TildaFormatter implements FormatterAbstract {
         Category: mappedCategories[product.categoryId],
         Title: product.title,
         Text: product.description,
-        Photo: product.images?.join(";"),
+        Photo: product.images?.map(urlQueryEncode).join(","),
         Price: product.price,
         "Price Old": product.oldPrice,
         Quantity: product.count,
@@ -60,6 +74,11 @@ export class TildaFormatter implements FormatterAbstract {
         "External ID": product.variantId,
         "Parent UID": product.parentId,
       };
+
+      product.properties?.forEach(({ key, value }) => {
+        row[`Characteristics:${key}`] = value;
+      });
+
       await csvStream.addRow(row);
     }
 
