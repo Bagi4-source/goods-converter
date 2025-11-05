@@ -403,4 +403,184 @@ describe("Price formatter", () => {
     expect(typeof result[0].skus[0].skuId).toBe("string");
     expect(result[0].skus[0].skuId).toBe("12345");
   });
+
+  it("should include params in SKU when provided", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Размер",
+            value: "36,37,38,39",
+          },
+        ],
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].skus[0].params).toEqual([
+      {
+        key: "Размер",
+        value: "36,37,38,39",
+      },
+    ]);
+  });
+
+  it("should include multiple params in SKU", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Размер UK",
+            value: "36,37,38",
+          },
+          {
+            key: "Размер EU",
+            value: "42,44,46",
+          },
+        ],
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].skus[0].params).toEqual([
+      {
+        key: "Размер UK",
+        value: "36,37,38",
+      },
+      {
+        key: "Размер EU",
+        value: "42,44,46",
+      },
+    ]);
+  });
+
+  it("should not include params when not provided", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].skus[0].params).toBeUndefined();
+  });
+
+  it("should include empty params array when params array is empty", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [],
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].skus[0].params).toEqual([]);
+  });
+
+  it("should include params in each SKU when grouping by productId", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Размер",
+            value: "36,37",
+          },
+        ],
+      },
+      {
+        productId: 1,
+        variantId: 112,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1200,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Цвет",
+            value: "Красный",
+          },
+        ],
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].skus).toHaveLength(2);
+    expect(result[0].skus[0].params).toEqual([
+      {
+        key: "Размер",
+        value: "36,37",
+      },
+    ]);
+    expect(result[0].skus[1].params).toEqual([
+      {
+        key: "Цвет",
+        value: "Красный",
+      },
+    ]);
+  });
 });
