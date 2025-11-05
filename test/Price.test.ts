@@ -404,7 +404,7 @@ describe("Price formatter", () => {
     expect(result[0].skus[0].skuId).toBe("12345");
   });
 
-  it("should include salesProperties with params when provided", async () => {
+  it("should include params in SKU when provided", async () => {
     const products: Product[] = [
       {
         productId: 1,
@@ -430,16 +430,15 @@ describe("Price formatter", () => {
     const resultString = await streamToBuffer(stream);
     const result = JSON.parse(resultString.toString());
 
-    expect(result[0].salesProperties).toEqual([
+    expect(result[0].skus[0].params).toEqual([
       {
-        name: "Размер",
-        delimiter: ",",
+        key: "Размер",
         value: "36,37,38,39",
       },
     ]);
   });
 
-  it("should include multiple salesProperties", async () => {
+  it("should include multiple params in SKU", async () => {
     const products: Product[] = [
       {
         productId: 1,
@@ -469,21 +468,19 @@ describe("Price formatter", () => {
     const resultString = await streamToBuffer(stream);
     const result = JSON.parse(resultString.toString());
 
-    expect(result[0].salesProperties).toEqual([
+    expect(result[0].skus[0].params).toEqual([
       {
-        name: "Размер UK",
-        delimiter: ",",
+        key: "Размер UK",
         value: "36,37,38",
       },
       {
-        name: "Размер EU",
-        delimiter: ",",
+        key: "Размер EU",
         value: "42,44,46",
       },
     ]);
   });
 
-  it("should not include salesProperties when params are not provided", async () => {
+  it("should not include params when not provided", async () => {
     const products: Product[] = [
       {
         productId: 1,
@@ -503,10 +500,10 @@ describe("Price formatter", () => {
     const resultString = await streamToBuffer(stream);
     const result = JSON.parse(resultString.toString());
 
-    expect(result[0].salesProperties).toBeUndefined();
+    expect(result[0].skus[0].params).toBeUndefined();
   });
 
-  it("should not include salesProperties when params array is empty", async () => {
+  it("should include empty params array when params array is empty", async () => {
     const products: Product[] = [
       {
         productId: 1,
@@ -527,10 +524,10 @@ describe("Price formatter", () => {
     const resultString = await streamToBuffer(stream);
     const result = JSON.parse(resultString.toString());
 
-    expect(result[0].salesProperties).toBeUndefined();
+    expect(result[0].skus[0].params).toEqual([]);
   });
 
-  it("should include salesProperties only for first product when grouping by productId", async () => {
+  it("should include params in each SKU when grouping by productId", async () => {
     const products: Product[] = [
       {
         productId: 1,
@@ -557,6 +554,12 @@ describe("Price formatter", () => {
         price: 1200,
         currency: Currency.RUR,
         vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Цвет",
+            value: "Красный",
+          },
+        ],
       },
     ];
 
@@ -566,13 +569,18 @@ describe("Price formatter", () => {
     const resultString = await streamToBuffer(stream);
     const result = JSON.parse(resultString.toString());
 
-    expect(result[0].salesProperties).toEqual([
+    expect(result[0].skus).toHaveLength(2);
+    expect(result[0].skus[0].params).toEqual([
       {
-        name: "Размер",
-        delimiter: ",",
+        key: "Размер",
         value: "36,37",
       },
     ]);
-    expect(result[0].skus).toHaveLength(2);
+    expect(result[0].skus[1].params).toEqual([
+      {
+        key: "Цвет",
+        value: "Красный",
+      },
+    ]);
   });
 });
