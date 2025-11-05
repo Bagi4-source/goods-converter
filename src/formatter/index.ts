@@ -2,6 +2,7 @@ import { CSVFormatter } from "./CSV.formatter";
 import { ExcelFormatter } from "./Excel.formatter";
 import { InsalesFormatter } from "./Insales.formatter";
 import { JSONFormatter } from "./JSON.formatter";
+import { PriceFormatter } from "./Price.formatter";
 import { SimpleJSONFormatter } from "./SimpleJSON.formatter";
 import { TgShopFormatter } from "./TgShop.formatter";
 import { TildaFormatter } from "./Tilda.formatter";
@@ -22,4 +23,5 @@ export const Formatters = {
   SimpleJSONFormatter,
   XMLFormatter,
   WooCommerceFormatter,
+  PriceFormatter,
 };
