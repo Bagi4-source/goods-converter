@@ -1,6 +1,6 @@
 import { JsonStreamStringify } from "json-stream-stringify";
 
-import type { Brand, Category, Currency, Product } from "../types";
+import type { Brand, Category, Currency, IParam, Product } from "../types";
 import {
   Extension,
   type FormatterAbstract,
@@ -17,6 +17,7 @@ interface PriceSku {
     min: number;
     max: number;
   };
+  params?: IParam[];
 }
 
 interface PriceProduct {
@@ -43,6 +44,7 @@ export class PriceFormatter implements FormatterAbstract {
         skuId: String(product.variantId),
         price: product.price,
         currency: product.currency,
+        params: product.params,
       };
 
       if (

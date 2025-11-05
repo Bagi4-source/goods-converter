@@ -403,4 +403,176 @@ describe("Price formatter", () => {
     expect(typeof result[0].skus[0].skuId).toBe("string");
     expect(result[0].skus[0].skuId).toBe("12345");
   });
+
+  it("should include salesProperties with params when provided", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Размер",
+            value: "36,37,38,39",
+          },
+        ],
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].salesProperties).toEqual([
+      {
+        name: "Размер",
+        delimiter: ",",
+        value: "36,37,38,39",
+      },
+    ]);
+  });
+
+  it("should include multiple salesProperties", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Размер UK",
+            value: "36,37,38",
+          },
+          {
+            key: "Размер EU",
+            value: "42,44,46",
+          },
+        ],
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].salesProperties).toEqual([
+      {
+        name: "Размер UK",
+        delimiter: ",",
+        value: "36,37,38",
+      },
+      {
+        name: "Размер EU",
+        delimiter: ",",
+        value: "42,44,46",
+      },
+    ]);
+  });
+
+  it("should not include salesProperties when params are not provided", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].salesProperties).toBeUndefined();
+  });
+
+  it("should not include salesProperties when params array is empty", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [],
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].salesProperties).toBeUndefined();
+  });
+
+  it("should include salesProperties only for first product when grouping by productId", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+        params: [
+          {
+            key: "Размер",
+            value: "36,37",
+          },
+        ],
+      },
+      {
+        productId: 1,
+        variantId: 112,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1200,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result[0].salesProperties).toEqual([
+      {
+        name: "Размер",
+        delimiter: ",",
+        value: "36,37",
+      },
+    ]);
+    expect(result[0].skus).toHaveLength(2);
+  });
 });
