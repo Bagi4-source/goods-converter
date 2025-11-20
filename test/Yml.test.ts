@@ -109,7 +109,7 @@ describe("YML formatter", () => {
     expect(result).toContain("<name>Title</name>");
     expect(result).toContain("<price>19000</price>");
     expect(result).toContain("<oldprice>20000</oldprice>");
-    expect(result).toContain("<currencyId>RUR</currencyId>");
+    expect(result).toContain("<currencyId>RUB</currencyId>");
     expect(result).toContain("<categoryId>1</categoryId>");
   });
 
@@ -161,7 +161,7 @@ describe("YML formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 0,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -171,7 +171,7 @@ describe("YML formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -196,7 +196,7 @@ describe("YML formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         timeDelivery: {
           min: 3,
@@ -225,7 +225,7 @@ describe("YML formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -236,7 +236,7 @@ describe("YML formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1200,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];

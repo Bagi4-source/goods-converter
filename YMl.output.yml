@@ -21,7 +21,7 @@
   <purchase_price>15000</purchase_price>
   <additional_expenses>1000</additional_expenses>
   <cofinance_price>0</cofinance_price>
-  <currencyId>RUR</currencyId>
+  <currencyId>RUB</currencyId>
   <categoryId>1</categoryId>
   <vendorId>2</vendorId>
   <vendor>Nike</vendor>
@@ -78,7 +78,7 @@
   <purchase_price>15000</purchase_price>
   <additional_expenses>1000</additional_expenses>
   <cofinance_price>0</cofinance_price>
-  <currencyId>RUR</currencyId>
+  <currencyId>RUB</currencyId>
   <categoryId>1</categoryId>
   <vendorId>2</vendorId>
   <vendor>Nike</vendor>

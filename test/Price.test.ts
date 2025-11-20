@@ -28,7 +28,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -46,7 +46,7 @@ describe("Price formatter", () => {
           {
             skuId: "111",
             price: 1000,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
           },
         ],
       },
@@ -62,7 +62,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -72,7 +72,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1200,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -90,12 +90,12 @@ describe("Price formatter", () => {
           {
             skuId: "111",
             price: 1000,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
           },
           {
             skuId: "112",
             price: 1200,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
           },
         ],
       },
@@ -111,7 +111,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         timeDelivery: {
           min: 3,
@@ -133,7 +133,7 @@ describe("Price formatter", () => {
           {
             skuId: "111",
             price: 1000,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
             timeDelivery: {
               min: 3,
               max: 7,
@@ -153,7 +153,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         timeDelivery: {
           min: 5,
@@ -174,7 +174,7 @@ describe("Price formatter", () => {
           {
             skuId: "111",
             price: 1000,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
             timeDelivery: {
               min: 5,
               max: 0,
@@ -194,7 +194,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         timeDelivery: {
           max: 10,
@@ -215,7 +215,7 @@ describe("Price formatter", () => {
           {
             skuId: "111",
             price: 1000,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
             timeDelivery: {
               min: 0,
               max: 10,
@@ -289,7 +289,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -299,7 +299,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1100,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         timeDelivery: {
           min: 2,
@@ -331,12 +331,12 @@ describe("Price formatter", () => {
           {
             skuId: "111",
             price: 1000,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
           },
           {
             skuId: "112",
             price: 1100,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
             timeDelivery: {
               min: 2,
               max: 5,
@@ -366,7 +366,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -389,7 +389,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -413,7 +413,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         params: [
           {
@@ -447,7 +447,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         params: [
           {
@@ -489,7 +489,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -512,7 +512,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         params: [],
       },
@@ -536,7 +536,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         params: [
           {
@@ -552,7 +552,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1200,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
         params: [
           {
