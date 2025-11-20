@@ -526,11 +526,11 @@ export enum Vat {
 }
 
 export enum Currency {
-  RUR = "RUR",
+  RUB = "RUB",
   BYN = "BYN",
   EUR = "EUR",
   USD = "USD",
-  UAN = "UAN",
+  CNY = "CNY",
   KZT = "KZT",
 }
 
