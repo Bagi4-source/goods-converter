@@ -593,7 +593,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 0,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -603,7 +603,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -613,7 +613,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 0,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -635,7 +635,7 @@ describe("Price formatter", () => {
           {
             skuId: "222",
             price: 1000,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
           },
         ],
       },
@@ -655,7 +655,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1000,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -665,7 +665,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1200,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
       {
@@ -675,7 +675,7 @@ describe("Price formatter", () => {
         description: "Test",
         categoryId: 1,
         price: 1300,
-        currency: Currency.RUR,
+        currency: Currency.RUB,
         vat: Vat.VAT_20,
       },
     ];
@@ -693,12 +693,12 @@ describe("Price formatter", () => {
           {
             skuId: "111",
             price: 1200,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
           },
           {
             skuId: "112",
             price: 1300,
-            currency: Currency.RUR,
+            currency: Currency.RUB,
           },
         ],
       },
