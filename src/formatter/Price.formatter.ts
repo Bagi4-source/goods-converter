@@ -39,7 +39,31 @@ export class PriceFormatter implements FormatterAbstract {
     const priceMap = new Map<number, PriceProduct>();
 
     products.forEach((product) => {
-      const existing = priceMap.get(product.productId);
+      if (!priceMap.has(product.productId)) {
+        priceMap.set(product.productId, {
+          productId: product.productId,
+          skus: [],
+        });
+      }
+
+      const productPrice = priceMap.get(product.productId);
+
+      if (!productPrice) {
+        console.error(`Product ${product.productId} not found in price map`);
+
+        return;
+      }
+
+      if (!product.price) {
+        // NOTE: Если у продукта нет цены, то пропускаем его
+        return;
+      }
+
+      if (product.variantId === productPrice.productId) {
+        // NOTE: Если это родитель, то он не является SKU
+        return;
+      }
+
       const sku: PriceSku = {
         skuId: String(product.variantId),
         price: product.price,
@@ -57,14 +81,7 @@ export class PriceFormatter implements FormatterAbstract {
         };
       }
 
-      if (existing) {
-        existing.skus.push(sku);
-      } else {
-        priceMap.set(product.productId, {
-          productId: product.productId,
-          skus: [sku],
-        });
-      }
+      productPrice.skus.push(sku);
     });
 
     const result: PriceProduct[] = Array.from(priceMap.values());

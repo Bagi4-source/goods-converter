@@ -583,4 +583,125 @@ describe("Price formatter", () => {
       },
     ]);
   });
+
+  it("should skip products without price", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 0,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+      {
+        productId: 2,
+        variantId: 222,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+      {
+        productId: 3,
+        variantId: 333,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 0,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result).toEqual([
+      {
+        productId: 1,
+        skus: [],
+      },
+      {
+        productId: 2,
+        skus: [
+          {
+            skuId: "222",
+            price: 1000,
+            currency: Currency.RUR,
+          },
+        ],
+      },
+      {
+        productId: 3,
+        skus: [],
+      },
+    ]);
+  });
+
+  it("should skip parent products where variantId equals productId", async () => {
+    const products: Product[] = [
+      {
+        productId: 1,
+        variantId: 1,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1000,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+      {
+        productId: 1,
+        variantId: 111,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1200,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+      {
+        productId: 1,
+        variantId: 112,
+        title: "Test",
+        description: "Test",
+        categoryId: 1,
+        price: 1300,
+        currency: Currency.RUR,
+        vat: Vat.VAT_20,
+      },
+    ];
+
+    const stream = new PassThrough();
+    await formatter.format(stream, products);
+
+    const resultString = await streamToBuffer(stream);
+    const result = JSON.parse(resultString.toString());
+
+    expect(result).toEqual([
+      {
+        productId: 1,
+        skus: [
+          {
+            skuId: "111",
+            price: 1200,
+            currency: Currency.RUR,
+          },
+          {
+            skuId: "112",
+            price: 1300,
+            currency: Currency.RUR,
+          },
+        ],
+      },
+    ]);
+  });
 });
