@@ -25,8 +25,8 @@ importers:
         specifier: ^11.1.5
         version: https://registry.npmjs.org/@rollup/plugin-typescript/-/plugin-typescript-11.1.6.tgz(rollup@https://registry.npmjs.org/rollup/-/rollup-4.20.0.tgz)(tslib@2.6.3)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz)
       '@types/node':
-        specifier: ^20.8.7
-        version: https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz
+        specifier: ^24.0.0
+        version: 24.12.0
       '@types/xml':
         specifier: ^1.0.11
         version: https://registry.npmjs.org/@types/xml/-/xml-1.0.11.tgz
@@ -35,7 +35,7 @@ importers:
         version: https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-6.21.0.tgz(@typescript-eslint/parser@6.21.0(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz))(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz)
       '@vitest/coverage-v8':
         specifier: ^2.0.5
-        version: https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-2.0.5.tgz(vitest@https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz))
+        version: https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-2.0.5.tgz(vitest@https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@24.12.0))
       eslint:
         specifier: ^8.53.0
         version: https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz
@@ -44,7 +44,7 @@ importers:
         version: https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-9.1.0.tgz(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)
       eslint-config-standard-with-typescript:
         specifier: ^39.1.1
-        version: https://registry.npmjs.org/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-39.1.1.tgz(a3s3rbe5igdmww6yaoaq3dpy3y)
+        version: https://registry.npmjs.org/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-39.1.1.tgz(4ee953a29c853e0e4a7eb5dc285f8fe3)
       eslint-plugin-import:
         specifier: ^2.29.0
         version: https://registry.npmjs.org/eslint-plugin-import/-/eslint-plugin-import-2.29.1.tgz(@typescript-eslint/parser@6.21.0(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz))(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)
@@ -77,7 +77,7 @@ importers:
         version: https://registry.npmjs.org/rollup-plugin-esbuild/-/rollup-plugin-esbuild-6.1.1.tgz(esbuild@0.23.0)(rollup@https://registry.npmjs.org/rollup/-/rollup-4.20.0.tgz)
       ts-node:
         specifier: ^10.9.1
-        version: https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz)
+        version: https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz(@types/node@24.12.0)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz)
       tsconfig-paths:
         specifier: ^4.2.0
         version: https://registry.npmjs.org/tsconfig-paths/-/tsconfig-paths-4.2.0.tgz
@@ -86,7 +86,7 @@ importers:
         version: https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz
       vitest:
         specifier: ^2.0.5
-        version: https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz)
+        version: https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@24.12.0)
 
 packages:
 
@@ -603,46 +603,55 @@ packages:
     resolution: {integrity: sha512-jMYvxZwGmoHFBTbr12Xc6wOdc2xA5tF5F2q6t7Rcfab68TT0n+r7dgawD4qhPEvasDsVpQi+MgDzj2faOLsZjA==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-arm-gnueabihf/-/rollup-linux-arm-gnueabihf-4.20.0.tgz}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.20.0':
     resolution: {integrity: sha512-1asSTl4HKuIHIB1GcdFHNNZhxAYEdqML/MW4QmPS4G0ivbEcBr1JKlFLKsIRqjSwOBkdItn3/ZDlyvZ/N6KPlw==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-arm-musleabihf/-/rollup-linux-arm-musleabihf-4.20.0.tgz}
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.20.0':
     resolution: {integrity: sha512-COBb8Bkx56KldOYJfMf6wKeYJrtJ9vEgBRAOkfw6Ens0tnmzPqvlpjZiLgkhg6cA3DGzCmLmmd319pmHvKWWlQ==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.20.0.tgz}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.20.0':
     resolution: {integrity: sha512-+it+mBSyMslVQa8wSPvBx53fYuZK/oLTu5RJoXogjk6x7Q7sz1GNRsXWjn6SwyJm8E/oMjNVwPhmNdIjwP135Q==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-arm64-musl/-/rollup-linux-arm64-musl-4.20.0.tgz}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-powerpc64le-gnu@4.20.0':
     resolution: {integrity: sha512-yAMvqhPfGKsAxHN8I4+jE0CpLWD8cv4z7CK7BMmhjDuz606Q2tFKkWRY8bHR9JQXYcoLfopo5TTqzxgPUjUMfw==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-powerpc64le-gnu/-/rollup-linux-powerpc64le-gnu-4.20.0.tgz}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-gnu@4.20.0':
     resolution: {integrity: sha512-qmuxFpfmi/2SUkAw95TtNq/w/I7Gpjurx609OOOV7U4vhvUhBcftcmXwl3rqAek+ADBwSjIC4IVNLiszoj3dPA==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-riscv64-gnu/-/rollup-linux-riscv64-gnu-4.20.0.tgz}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-s390x-gnu@4.20.0':
     resolution: {integrity: sha512-I0BtGXddHSHjV1mqTNkgUZLnS3WtsqebAXv11D5BZE/gfw5KoyXSAXVqyJximQXNvNzUo4GKlCK/dIwXlz+jlg==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-s390x-gnu/-/rollup-linux-s390x-gnu-4.20.0.tgz}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.20.0':
     resolution: {integrity: sha512-y+eoL2I3iphUg9tN9GB6ku1FA8kOfmF4oUEWhztDJ4KXJy1agk/9+pejOuZkNFhRwHAOxMsBPLbXPd6mJiCwew==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.20.0.tgz}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.20.0':
     resolution: {integrity: sha512-hM3nhW40kBNYUkZb/r9k2FKK+/MnKglX7UYd4ZUy5DJs8/sMsIbqWK2piZtVGE3kcXVNj3B2IrUYROJMMCikNg==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.20.0.tgz}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-win32-arm64-msvc@4.20.0':
     resolution: {integrity: sha512-psegMvP+Ik/Bg7QRJbv8w8PAytPA7Uo8fpFjXyCRHWm6Nt42L+JtoqH8eDQ5hRP7/XW2UiIriy1Z46jf0Oa1kA==, tarball: https://registry.npmjs.org/@rollup/rollup-win32-arm64-msvc/-/rollup-win32-arm64-msvc-4.20.0.tgz}
@@ -687,13 +696,11 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==, tarball: https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz}
     version: 0.0.29
 
-  '@types/node@https://registry.npmjs.org/@types/node/-/node-14.18.63.tgz':
+  '@types/node@14.18.63':
     resolution: {integrity: sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==, tarball: https://registry.npmjs.org/@types/node/-/node-14.18.63.tgz}
-    version: 14.18.63
 
-  '@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz':
-    resolution: {integrity: sha512-Fz1xDMCF/B00/tYSVMlmK7hVeLh7jE5f3B7X1/hmV0MJBwE27KlS7EvD/Yp+z1lm8mVhwV5w+n8jOZG8AfTlKw==, tarball: https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz}
-    version: 20.14.15
+  '@types/node@24.12.0':
+    resolution: {integrity: sha512-GYDxsZi3ChgmckRT9HPU0WEhKLP08ev/Yfcq2AstjrDASOYCSXeyjDsHg4v5t4jOj7cyDX3vmprafKlWIG9MXQ==, tarball: https://registry.npmjs.org/@types/node/-/node-24.12.0.tgz}
 
   '@types/semver@https://registry.npmjs.org/@types/semver/-/semver-7.5.8.tgz':
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==, tarball: https://registry.npmjs.org/@types/semver/-/semver-7.5.8.tgz}
@@ -2753,9 +2760,8 @@ packages:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==, tarball: https://registry.npmjs.org/unbox-primitive/-/unbox-primitive-1.0.2.tgz}
     version: 1.0.2
 
-  undici-types@https://registry.npmjs.org/undici-types/-/undici-types-5.26.5.tgz:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==, tarball: https://registry.npmjs.org/undici-types/-/undici-types-5.26.5.tgz}
-    version: 5.26.5
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==, tarball: https://registry.npmjs.org/undici-types/-/undici-types-7.16.0.tgz}
 
   unzipper@https://registry.npmjs.org/unzipper/-/unzipper-0.10.14.tgz:
     resolution: {integrity: sha512-ti4wZj+0bQTiX2KmKWuwj7lhV+2n//uXEotUmGuQqrbVZSEGFMbI68+c6JCQ8aAmUWYvtHEz2A8K6wXvueR/6g==, tarball: https://registry.npmjs.org/unzipper/-/unzipper-0.10.14.tgz}
@@ -3107,7 +3113,7 @@ snapshots:
 
   '@fast-csv/format@https://registry.npmjs.org/@fast-csv/format/-/format-4.3.5.tgz':
     dependencies:
-      '@types/node': https://registry.npmjs.org/@types/node/-/node-14.18.63.tgz
+      '@types/node': 14.18.63
       lodash.escaperegexp: https://registry.npmjs.org/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz
       lodash.isboolean: https://registry.npmjs.org/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz
       lodash.isequal: https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz
@@ -3116,7 +3122,7 @@ snapshots:
 
   '@fast-csv/parse@https://registry.npmjs.org/@fast-csv/parse/-/parse-4.3.6.tgz':
     dependencies:
-      '@types/node': https://registry.npmjs.org/@types/node/-/node-14.18.63.tgz
+      '@types/node': 14.18.63
       lodash.escaperegexp: https://registry.npmjs.org/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz
       lodash.groupby: https://registry.npmjs.org/lodash.groupby/-/lodash.groupby-4.6.0.tgz
       lodash.isfunction: https://registry.npmjs.org/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz
@@ -3288,17 +3294,17 @@ snapshots:
 
   '@types/json5@https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz': {}
 
-  '@types/node@https://registry.npmjs.org/@types/node/-/node-14.18.63.tgz': {}
+  '@types/node@14.18.63': {}
 
-  '@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz':
+  '@types/node@24.12.0':
     dependencies:
-      undici-types: https://registry.npmjs.org/undici-types/-/undici-types-5.26.5.tgz
+      undici-types: 7.16.0
 
   '@types/semver@https://registry.npmjs.org/@types/semver/-/semver-7.5.8.tgz': {}
 
   '@types/xml@https://registry.npmjs.org/@types/xml/-/xml-1.0.11.tgz':
     dependencies:
-      '@types/node': https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz
+      '@types/node': 24.12.0
 
   '@typescript-eslint/eslint-plugin@https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-6.21.0.tgz(@typescript-eslint/parser@6.21.0(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz))(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz)':
     dependencies:
@@ -3428,7 +3434,7 @@ snapshots:
 
   '@ungap/structured-clone@https://registry.npmjs.org/@ungap/structured-clone/-/structured-clone-1.2.0.tgz': {}
 
-  '@vitest/coverage-v8@https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-2.0.5.tgz(vitest@https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz))':
+  '@vitest/coverage-v8@https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-2.0.5.tgz(vitest@https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@24.12.0))':
     dependencies:
       '@ampproject/remapping': https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz
       '@bcoe/v8-coverage': https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz
@@ -3442,7 +3448,7 @@ snapshots:
       std-env: https://registry.npmjs.org/std-env/-/std-env-3.7.0.tgz
       test-exclude: https://registry.npmjs.org/test-exclude/-/test-exclude-7.0.1.tgz
       tinyrainbow: https://registry.npmjs.org/tinyrainbow/-/tinyrainbow-1.2.0.tgz
-      vitest: https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz)
+      vitest: https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@24.12.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -3984,7 +3990,7 @@ snapshots:
     dependencies:
       eslint: https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz
 
-  eslint-config-standard-with-typescript@https://registry.npmjs.org/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-39.1.1.tgz(a3s3rbe5igdmww6yaoaq3dpy3y):
+  eslint-config-standard-with-typescript@https://registry.npmjs.org/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-39.1.1.tgz(4ee953a29c853e0e4a7eb5dc285f8fe3):
     dependencies:
       '@typescript-eslint/eslint-plugin': https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-6.21.0.tgz(@typescript-eslint/parser@6.21.0(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz))(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz)
       '@typescript-eslint/parser': https://registry.npmjs.org/@typescript-eslint/parser/-/parser-6.21.0.tgz(eslint@https://registry.npmjs.org/eslint/-/eslint-8.57.0.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz)
@@ -5130,14 +5136,14 @@ snapshots:
     dependencies:
       typescript: https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz
 
-  ts-node@https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz):
+  ts-node@https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz(@types/node@24.12.0)(typescript@https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz):
     dependencies:
       '@cspotcode/source-map-support': https://registry.npmjs.org/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz
       '@tsconfig/node10': https://registry.npmjs.org/@tsconfig/node10/-/node10-1.0.11.tgz
       '@tsconfig/node12': https://registry.npmjs.org/@tsconfig/node12/-/node12-1.0.11.tgz
       '@tsconfig/node14': https://registry.npmjs.org/@tsconfig/node14/-/node14-1.0.3.tgz
       '@tsconfig/node16': https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.4.tgz
-      '@types/node': https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz
+      '@types/node': 24.12.0
       acorn: https://registry.npmjs.org/acorn/-/acorn-8.12.1.tgz
       acorn-walk: https://registry.npmjs.org/acorn-walk/-/acorn-walk-8.3.3.tgz
       arg: https://registry.npmjs.org/arg/-/arg-4.1.3.tgz
@@ -5213,7 +5219,7 @@ snapshots:
       has-symbols: https://registry.npmjs.org/has-symbols/-/has-symbols-1.0.3.tgz
       which-boxed-primitive: https://registry.npmjs.org/which-boxed-primitive/-/which-boxed-primitive-1.0.2.tgz
 
-  undici-types@https://registry.npmjs.org/undici-types/-/undici-types-5.26.5.tgz: {}
+  undici-types@7.16.0: {}
 
   unzipper@https://registry.npmjs.org/unzipper/-/unzipper-0.10.14.tgz:
     dependencies:
@@ -5238,13 +5244,13 @@ snapshots:
 
   v8-compile-cache-lib@https://registry.npmjs.org/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz: {}
 
-  vite-node@https://registry.npmjs.org/vite-node/-/vite-node-2.0.5.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz):
+  vite-node@https://registry.npmjs.org/vite-node/-/vite-node-2.0.5.tgz(@types/node@24.12.0):
     dependencies:
       cac: https://registry.npmjs.org/cac/-/cac-6.7.14.tgz
       debug: https://registry.npmjs.org/debug/-/debug-4.3.6.tgz
       pathe: https://registry.npmjs.org/pathe/-/pathe-1.1.2.tgz
       tinyrainbow: https://registry.npmjs.org/tinyrainbow/-/tinyrainbow-1.2.0.tgz
-      vite: https://registry.npmjs.org/vite/-/vite-5.4.0.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz)
+      vite: https://registry.npmjs.org/vite/-/vite-5.4.0.tgz(@types/node@24.12.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -5256,16 +5262,16 @@ snapshots:
       - supports-color
       - terser
 
-  vite@https://registry.npmjs.org/vite/-/vite-5.4.0.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz):
+  vite@https://registry.npmjs.org/vite/-/vite-5.4.0.tgz(@types/node@24.12.0):
     dependencies:
       esbuild: https://registry.npmjs.org/esbuild/-/esbuild-0.21.5.tgz
       postcss: https://registry.npmjs.org/postcss/-/postcss-8.4.41.tgz
       rollup: https://registry.npmjs.org/rollup/-/rollup-4.20.0.tgz
     optionalDependencies:
-      '@types/node': https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz
+      '@types/node': 24.12.0
       fsevents: 2.3.3
 
-  vitest@https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz):
+  vitest@https://registry.npmjs.org/vitest/-/vitest-2.0.5.tgz(@types/node@24.12.0):
     dependencies:
       '@ampproject/remapping': https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz
       '@vitest/expect': https://registry.npmjs.org/@vitest/expect/-/expect-2.0.5.tgz
@@ -5283,11 +5289,11 @@ snapshots:
       tinybench: https://registry.npmjs.org/tinybench/-/tinybench-2.9.0.tgz
       tinypool: https://registry.npmjs.org/tinypool/-/tinypool-1.0.0.tgz
       tinyrainbow: https://registry.npmjs.org/tinyrainbow/-/tinyrainbow-1.2.0.tgz
-      vite: https://registry.npmjs.org/vite/-/vite-5.4.0.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz)
-      vite-node: https://registry.npmjs.org/vite-node/-/vite-node-2.0.5.tgz(@types/node@https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz)
+      vite: https://registry.npmjs.org/vite/-/vite-5.4.0.tgz(@types/node@24.12.0)
+      vite-node: https://registry.npmjs.org/vite-node/-/vite-node-2.0.5.tgz(@types/node@24.12.0)
       why-is-node-running: https://registry.npmjs.org/why-is-node-running/-/why-is-node-running-2.3.0.tgz
     optionalDependencies:
-      '@types/node': https://registry.npmjs.org/@types/node/-/node-20.14.15.tgz
+      '@types/node': 24.12.0
     transitivePeerDependencies:
       - less
       - lightningcss
