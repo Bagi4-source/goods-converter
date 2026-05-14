@@ -113,6 +113,8 @@ describe("GoodsExporter", () => {
   });
 
   it("should work with different formatters", async () => {
+    // AvitoFormatter намеренно исключён — он требует options.avito с
+    // category/goodsType/condition/adType/apparelType и тестируется отдельно.
     const formatters = [
       new Formatters.JSONFormatter(),
       new Formatters.CSVFormatter(),

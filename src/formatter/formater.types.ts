@@ -1,4 +1,5 @@
 import { type Brand, type Category, type Product } from "../types";
+import { type AvitoSneakersFormatterOptions } from "./avito/types";
 
 import { type Writable } from "stream";
 
@@ -21,6 +22,13 @@ export interface FormatterOptions {
   companyName?: string;
 
   splitParams?: boolean;
+
+  /**
+   * Опции для Avito-форматтера. Сейчас единственный поддерживаемый — sneakers
+   * (template'ы 100368/100388). При добавлении других категорий тип расширится
+   * через discriminated union.
+   */
+  avito?: AvitoSneakersFormatterOptions;
 }
 
 export enum Extension {

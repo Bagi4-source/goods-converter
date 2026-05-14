@@ -29,6 +29,7 @@ export tasks with ease.
 - Insales
 - Tilda
 - WooCommerce
+- Avito XML
 
 ## Installation
 
